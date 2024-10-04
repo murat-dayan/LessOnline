@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text Sizes -->
+    <dimen name="text_small">12sp</dimen>          <!-- Küçük metin için -->
+    <dimen name="text_medium">16sp</dimen>         <!-- Orta metin için -->
+    <dimen name="text_large">20sp</dimen>          <!-- Büyük metin için -->
+    <dimen name="text_xlarge">24sp</dimen>         <!-- Çok büyük metin için -->
+    <dimen name="text_title">28sp</dimen>          <!-- Başlık metni için -->
+
+    <!-- Padding Values -->
+    <dimen name="padding_xsmall">8dp</dimen>        <!-- çok Küçük padding için -->
+    <dimen name="padding_small">12dp</dimen>        <!-- Küçük padding için -->
+    <dimen name="padding_medium">16dp</dimen>      <!-- Orta padding için -->
+    <dimen name="padding_large">24dp</dimen>       <!-- Büyük padding için -->
+    <dimen name="padding_xlarge">32dp</dimen>      <!-- Çok büyük padding için -->
+
+    <!-- Margin Values -->
+    <dimen name="margin_small">8dp</dimen>         <!-- Küçük margin için -->
+    <dimen name="margin_medium">16dp</dimen>       <!-- Orta margin için -->
+    <dimen name="margin_large">24dp</dimen>        <!-- Büyük margin için -->
+    <dimen name="margin_xlarge">32dp</dimen>       <!-- Çok büyük margin için -->
+    <dimen name="margin_xxlarge">64dp</dimen>       <!-- Fazla büyük margin için -->
+
+    <!-- Button Sizes -->
+    <dimen name="button_height">48dp</dimen>       <!-- Düğme yüksekliği -->
+    <dimen name="button_padding">12dp</dimen>      <!-- Düğme içindeki padding -->
+
+    <!-- Icon Sizes -->
+    <dimen name="icon_small">24dp</dimen>          <!-- Küçük ikon boyutu -->
+    <dimen name="icon_medium">32dp</dimen>         <!-- Orta ikon boyutu -->
+    <dimen name="icon_large">48dp</dimen>          <!-- Büyük ikon boyutu -->
+
+    <!-- Card Size -->
+    <dimen name="card_elevation">4dp</dimen>       <!-- Kart için gölge yüksekliği -->
+    <dimen name="card_margin">16dp</dimen>
+</resources>
