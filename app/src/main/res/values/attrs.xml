@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorCustomColor" format="color"/>
+    <attr name="colorOnCustomColor" format="color"/>
+    <attr name="colorCustomColorContainer" format="color"/>
+    <attr name="colorOnCustomColorContainer" format="color"/>
+</resources>

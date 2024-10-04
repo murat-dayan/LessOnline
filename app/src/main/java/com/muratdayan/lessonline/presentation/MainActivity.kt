@@ -9,7 +9,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
