@@ -10,4 +10,6 @@
     <string name="log_in_with_google">Log In With Google</string>
     <string name="don_t_have_an_account">Don\'t Have An Account?</string>
     <string name="sign_up">Sign Up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="user_name">User Name</string>
 </resources>

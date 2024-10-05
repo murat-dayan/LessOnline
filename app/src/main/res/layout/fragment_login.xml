@@ -26,14 +26,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15"/>
+        app:layout_constraintGuide_percent="0.10"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_bottom_gl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85"/>
+        app:layout_constraintGuide_percent="0.90"/>
 
     <TextView
         android:id="@+id/tv_title"
@@ -47,37 +47,45 @@
         app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
         app:layout_constraintTop_toTopOf="@id/horizontal_top_gl" />
 
-    <EditText
-        android:id="@+id/et_username"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/edittext_bg"
-        android:padding="@dimen/padding_small"
-        android:inputType="textEmailAddress"
-        android:fontFamily="@font/poppins"
-        android:textSize="@dimen/text_medium"
-        android:hint="@string/email"
         android:layout_marginTop="@dimen/margin_xxlarge"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
-        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"/>
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl">
 
-    <EditText
-        android:id="@+id/et_password"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:background="@drawable/edittext_bg"
-        android:padding="@dimen/padding_small"
-        android:inputType="textPassword"
-        android:fontFamily="@font/poppins"
-        android:textSize="@dimen/text_medium"
-        android:hint="@string/password"
-        android:drawableEnd="@drawable/ic_close_eye"
         android:layout_marginTop="@dimen/margin_medium"
-        app:layout_constraintTop_toBottomOf="@id/et_username"
+        app:endIconDrawable="@drawable/ic_close_eye"
+        app:endIconMode="custom"
+        app:layout_constraintTop_toBottomOf="@id/til_email"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
-        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"/>
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tv_forgotten_password"
@@ -88,7 +96,7 @@
         android:textStyle="bold"
         android:textColor="@color/md_theme_primary"
         android:layout_marginTop="@dimen/margin_small"
-        app:layout_constraintTop_toBottomOf="@id/et_password"
+        app:layout_constraintTop_toBottomOf="@id/til_password"
         app:layout_constraintRight_toRightOf="@id/vertical_right_gl"/>
 
     <Button
@@ -96,7 +104,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/log_in"
+        android:visibility="visible"
         android:paddingVertical="@dimen/padding_small"
+        android:layout_marginTop="@dimen/margin_xlarge"
+        app:layout_constraintTop_toBottomOf="@id/tv_forgotten_password"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"/>
+
+    <ProgressBar
+        android:id="@+id/pb_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/margin_xlarge"
         app:layout_constraintTop_toBottomOf="@id/tv_forgotten_password"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"

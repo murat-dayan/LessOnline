@@ -29,9 +29,9 @@ class LoginViewModel @Inject constructor(
                         _loginState.value = LoginState.Success
                         return@addOnCompleteListener
                     }
-                    _loginState.value = LoginState.Error
+                    _loginState.value = LoginState.Error(task.exception?.message)
                 }else{
-                    _loginState.value = LoginState.Error
+                    _loginState.value = LoginState.Error(task.exception?.message)
                 }
             }
 
@@ -44,6 +44,6 @@ sealed class LoginState{
     object Nothing: LoginState()
     object Loading: LoginState()
     object Success: LoginState()
-    object Error: LoginState()
+    data class Error(val message: String? = null): LoginState()
 
 }
