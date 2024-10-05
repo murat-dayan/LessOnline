@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
                         binding.pbLogin.visibility = View.GONE
                         binding.btnLogin.visibility = View.VISIBLE
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
-                        //Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
+                        Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
 
                     }
                     is LoginState.Error -> {
@@ -77,6 +77,10 @@ class LoginFragment : Fragment() {
 
         binding.tvSignUp.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_registerFragment)
+        }
+
+        binding.tvForgottenPassword.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
         }
     }
 

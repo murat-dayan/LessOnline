@@ -12,4 +12,8 @@
     <string name="sign_up">Sign Up</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="user_name">User Name</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="like">Like</string>
+    <string name="search">Search</string>
 </resources>
