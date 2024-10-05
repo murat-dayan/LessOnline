@@ -59,6 +59,8 @@ dependencies {
 
     //FIREBASE
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
 
     //NAVIGATION
     implementation(libs.androidx.navigation.fragment.ktx)
