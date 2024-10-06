@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.muratdayan.lessonline.R
@@ -50,7 +51,7 @@ class RegisterFragment : Fragment() {
                     is SignUpState.Success -> {
                         binding.pbRegister.visibility = View.GONE
                         binding.btnSignUp.visibility = View.VISIBLE
-                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_getProfileInfoFragment)
                     }
 
                     is SignUpState.Error -> {

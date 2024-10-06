@@ -3,6 +3,8 @@ package com.muratdayan.lessonline.presentation.features.auth.register
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
+import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
 ) : ViewModel() {
 
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Nothing)
@@ -33,7 +36,13 @@ class RegisterViewModel @Inject constructor(
                         user.updateProfile(profileUpdates)
                             .addOnCompleteListener { profileTask ->
                                 if (profileTask.isSuccessful) {
-                                    _signUpState.value = SignUpState.Success
+                                    val currentUser = firebaseAuth.currentUser
+                                    currentUser?.let {
+                                        val uid = it.uid
+                                        val email = it.email
+                                        val name = it.displayName
+                                        createUserProfile(uid, email, name)
+                                    }
                                 } else {
                                     _signUpState.value =
                                         SignUpState.Error(profileTask.exception?.message)
@@ -45,6 +54,24 @@ class RegisterViewModel @Inject constructor(
                 } else {
                     _signUpState.value = SignUpState.Error(task.exception?.message)
                 }
+            }
+    }
+
+    private fun createUserProfile(uid: String, email: String?, name: String?) {
+        val userProfile = UserProfile(
+            email = email ?: "",
+            name = name ?: "",
+            profilePhoto = "",
+            isProfileComplete = false
+        )
+
+        firestore.collection("users").document(uid)
+            .set(userProfile)
+            .addOnSuccessListener {
+                _signUpState.value = SignUpState.Success
+            }
+            .addOnFailureListener {e->
+                _signUpState.value = SignUpState.Error(e.message)
             }
     }
 
