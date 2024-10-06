@@ -19,6 +19,13 @@
         />
 
     <item
+        android:id="@+id/addPostFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_add"
+        android:title="@string/add_post"/>
+
+    <item
         android:id="@+id/likeFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
