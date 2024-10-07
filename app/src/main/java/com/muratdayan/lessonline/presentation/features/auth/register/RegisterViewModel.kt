@@ -59,10 +59,16 @@ class RegisterViewModel @Inject constructor(
 
     private fun createUserProfile(uid: String, email: String?, name: String?) {
         val userProfile = UserProfile(
-            email = email ?: "",
-            name = name ?: "",
-            profilePhoto = "",
-            isProfileComplete = false
+            userId = uid,
+            username = name ?: "",
+            userEmail = email ?: "",
+            bio = "",
+            followers = emptyList(),
+            following = emptyList(),
+            profilePhotoUrl = "",
+            postPhotoUrls = emptyList(),
+            isProfileComplete = false,
+            role = "Student"
         )
 
         firestore.collection("users").document(uid)

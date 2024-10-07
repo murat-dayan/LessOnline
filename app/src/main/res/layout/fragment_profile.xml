@@ -1,19 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.features.main.profile.ProfileFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_left_gl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PROFILE"
-        android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_right_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_top_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_bottom_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <ImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_person"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle_shape"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_top_gl"
+        />
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:text="asdasda"
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        app:layout_constraintStart_toEndOf="@id/iv_profile"
+        app:layout_constraintTop_toTopOf="@id/horizontal_top_gl" />
+
+    <TextView
+        android:id="@+id/tv_followers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="22"
+        android:textSize="@dimen/text_xlarge"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintEnd_toStartOf="@+id/tv_following"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/iv_profile"
+        app:layout_constraintTop_toBottomOf="@id/tv_username" />
+
+    <TextView
+        android:id="@+id/tv_following"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="23"
+        android:textSize="@dimen/text_xlarge"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_small"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_followers"
+        app:layout_constraintTop_toBottomOf="@id/tv_username" />
+
+
+    <TextView
+        android:id="@+id/tv_bio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="bio"
+        android:textSize="@dimen/text_medium"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

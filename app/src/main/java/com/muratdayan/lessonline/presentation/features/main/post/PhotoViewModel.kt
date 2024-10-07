@@ -14,13 +14,12 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.concurrent.ExecutorService
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPostViewModel @Inject constructor() : ViewModel() {
+class PhotoViewModel @Inject constructor() : ViewModel() {
 
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var imageCapture: ImageCapture

@@ -35,16 +35,44 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.90"/>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/tv_bio"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="get user Profile"
-        android:textSize="30sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:maxLines="5"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:gravity="top|start"
+        android:hint="Tell us about yourself"
+        app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        />
+
+    <Spinner
+        android:id="@+id/sp_role"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@id/tv_bio"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        />
+
+
+    <Button
+        android:id="@+id/btn_add_photo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Add Photo"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@id/sp_role"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        />
+
 
     <TextView
         android:id="@+id/tv_not_now"

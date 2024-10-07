@@ -1,11 +1,8 @@
 package com.muratdayan.lessonline.presentation.features.main.post
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.Image
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,18 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.camera2.internal.annotation.CameraExecutor
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentAddPostBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.ExecutorService
 
 @AndroidEntryPoint
 class AddPostFragment : Fragment() {
@@ -32,7 +20,7 @@ class AddPostFragment : Fragment() {
     private var _binding: FragmentAddPostBinding? = null
     private val binding get() = _binding!!
 
-    private val addPostViewModel: AddPostViewModel by viewModels()
+    private val photoViewModel: PhotoViewModel by viewModels()
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
@@ -42,7 +30,7 @@ class AddPostFragment : Fragment() {
         ActivityResultContracts.RequestPermission()
     ){isGranted->
         if (isGranted){
-            addPostViewModel.startCamera(this, requireContext(),binding.previewView)
+            photoViewModel.startCamera(this, requireContext(),binding.previewView)
         }else{
             Toast.makeText(requireContext(),"permission need",Toast.LENGTH_SHORT).show()
         }
@@ -52,7 +40,7 @@ class AddPostFragment : Fragment() {
         ActivityResultContracts.RequestPermission()
     ){isGranted->
         if (isGranted){
-            addPostViewModel.openGallery(galleryLauncher)
+            photoViewModel.openGallery(galleryLauncher)
         }else{
             Toast.makeText(requireContext(),"cant open gallery",Toast.LENGTH_SHORT).show()
         }
@@ -74,7 +62,7 @@ class AddPostFragment : Fragment() {
             ActivityResultContracts.StartActivityForResult()
         ){result->
             if (result.resultCode == PackageManager.PERMISSION_GRANTED){
-                addPostViewModel.startCamera(this,requireContext(),binding.previewView)
+                photoViewModel.startCamera(this,requireContext(),binding.previewView)
             }else{
                 Toast.makeText(requireContext(),"Camera cant open",Toast.LENGTH_SHORT).show()
             }
@@ -84,15 +72,15 @@ class AddPostFragment : Fragment() {
             ActivityResultContracts.GetContent()
         ){uri->
             uri?.let {
-                addPostViewModel.handleGalleryResult(it,requireContext())
+                photoViewModel.handleGalleryResult(it,requireContext())
             }
         }
 
         binding.btnOpenGallery.setOnClickListener {
-            addPostViewModel.checkGalleryPermission(requireContext(),galleryPermissionLauncher,galleryLauncher)
+            photoViewModel.checkGalleryPermission(requireContext(),galleryPermissionLauncher,galleryLauncher)
         }
 
-        addPostViewModel.checkCameraPermission(this,requireContext(),cameraPermissionLauncher,binding.previewView)
+        photoViewModel.checkCameraPermission(this,requireContext(),cameraPermissionLauncher,binding.previewView)
 
 
     }
@@ -104,6 +92,6 @@ class AddPostFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding=null
-        addPostViewModel.shutdownExecutor()
+        photoViewModel.shutdownExecutor()
     }
 }
