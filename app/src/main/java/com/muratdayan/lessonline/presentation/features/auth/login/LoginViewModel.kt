@@ -1,20 +1,38 @@
 package com.muratdayan.lessonline.presentation.features.auth.login
 
+import android.content.Context
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.credentials.CredentialManager
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.muratdayan.lessonline.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.security.MessageDigest
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Nothing)
     val loginState = _loginState.asStateFlow()
-
 
     fun login(
         email: String,
@@ -26,7 +44,7 @@ class LoginViewModel @Inject constructor(
             .addOnCompleteListener {task->
                 if (task.isSuccessful){
                     task.result.user?.let {
-                        _loginState.value = LoginState.Success
+                        _loginState.value = LoginState.Success()
                         return@addOnCompleteListener
                     }
                     _loginState.value = LoginState.Error(task.exception?.message)
@@ -37,13 +55,60 @@ class LoginViewModel @Inject constructor(
 
     }
 
+    private lateinit var googleSignInClient: GoogleSignInClient
+
+    fun initializeGoogleSignInClient(context: Context) {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(context,gso)
+    }
+
+    fun loginWithGoogle(activityResultLauncher: ActivityResultLauncher<Intent>){
+        val signInIntent = googleSignInClient.signInIntent
+        activityResultLauncher.launch(signInIntent)
+    }
+
+    fun handleGoogleSignInResult(data:Intent?){
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        if (task.isSuccessful){
+            val account = task.result
+            account?.let {
+                val credential = GoogleAuthProvider.getCredential(it.idToken,null)
+                signInWithFirebase(credential)
+            }
+        }else{
+            _loginState.value = LoginState.Error(task.exception?.message)
+        }
+    }
+
+    private fun signInWithFirebase(credential: AuthCredential){
+        firebaseAuth.signInWithCredential(credential)
+            .addOnCompleteListener {task->
+                if (task.isSuccessful){
+                    task.result.user?.let {
+                        _loginState.value = LoginState.Success(true)
+                        return@addOnCompleteListener
+                    }
+                    _loginState.value = LoginState.Error(task.exception?.message)
+                }else{
+                    _loginState.value = LoginState.Error(task.exception?.message)
+                }
+            }
+    }
+
+
+
+
 
 }
 
 sealed class LoginState{
     object Nothing: LoginState()
     object Loading: LoginState()
-    object Success: LoginState()
+    data class Success(val isGoogleLogin: Boolean= false): LoginState()
     data class Error(val message: String? = null): LoginState()
 
 }

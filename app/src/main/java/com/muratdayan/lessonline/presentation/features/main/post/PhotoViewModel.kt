@@ -84,14 +84,14 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun hasGalleryPermission(context: Context): Boolean {
+    private fun hasGalleryPermission(context: Context): Boolean {
         return ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.READ_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun requestGalleryPermission(launcher: ActivityResultLauncher<String>) {
+    private fun requestGalleryPermission(launcher: ActivityResultLauncher<String>) {
         launcher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 

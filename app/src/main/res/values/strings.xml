@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Lesson Line</string>
+    <string name="default_web_client_id">377872457546-nph9rk4p822ug327tgr19kfmhk8gif7i.apps.googleusercontent.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="log_in">Log In</string>
@@ -18,4 +19,5 @@
     <string name="search">Search</string>
     <string name="add_post">Add Post</string>
     <string name="insert_photo">Insert Photo</string>
+    <string name="selected_photo">Selected Photo</string>
 </resources>

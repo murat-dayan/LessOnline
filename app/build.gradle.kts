@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.google.gms.google.services)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -61,6 +62,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
+    implementation (libs.play.services.auth)
 
     //NAVIGATION
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -72,9 +74,13 @@ dependencies {
     //COROUTINES
     implementation(libs.kotlinx.coroutines.android)
 
+    // CAMERA
     implementation (libs.androidx.camera.core)
     implementation( libs.androidx.camera.camera2)
     implementation (libs.androidx.camera.lifecycle)
     implementation (libs.androidx.camera.view)
     implementation (libs.guava)
+
+    //CREDENTIAL
+    implementation(libs.androidx.credentials)
 }
