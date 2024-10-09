@@ -20,4 +20,6 @@
     <string name="add_post">Add Post</string>
     <string name="insert_photo">Insert Photo</string>
     <string name="selected_photo">Selected Photo</string>
+    <string name="write_your_question_or_idea">Write your question or idea</string>
+    <string name="share">Share</string>
 </resources>

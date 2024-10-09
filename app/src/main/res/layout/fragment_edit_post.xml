@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.features.main.post.EditPostFragment">
+    tools:context=".presentation.features.main.post.edit.EditPostFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_left_gl"
@@ -46,6 +46,44 @@
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
         app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
         app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"/>
+
+    <EditText
+        android:id="@+id/et_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/write_your_question_or_idea"
+        android:gravity="top|start"
+        android:maxLines="4"
+        android:minLines="4"
+        android:singleLine="false"
+        android:textSize="@dimen/text_medium"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/iv_photo"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"/>
+
+    <Button
+        android:id="@+id/btn_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/share"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        app:layout_constraintBottom_toBottomOf="@id/horizontal_bottom_gl"/>
+
+    <ProgressBar
+        android:id="@+id/pb_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        app:layout_constraintBottom_toBottomOf="@id/horizontal_bottom_gl"/>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
