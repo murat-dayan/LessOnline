@@ -59,10 +59,10 @@ class EditPostFragment : Fragment() {
                             val photoUri = uploadState.downloadUri
                             photoUri?.let {
                                 val comment = binding.etComment.text.toString()
-                                editPostViewModel.savePostToFirebase(photoUri, comment)
+                                editPostViewModel.savePostToFirebase(photoUri, comment){
+                                    findNavController().navigate(R.id.action_editPostFragment_to_homeFragment)
+                                }
                             }
-                             //Uncomment the next line if you want to navigate after saving
-                            findNavController().popBackStack(R.id.homeFragment, false)
                         }
                         is UploadAndSaveState.Error -> {
                             binding.pbShare.visibility = View.GONE

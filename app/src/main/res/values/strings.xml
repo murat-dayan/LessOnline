@@ -22,4 +22,6 @@
     <string name="selected_photo">Selected Photo</string>
     <string name="write_your_question_or_idea">Write your question or idea</string>
     <string name="share">Share</string>
+    <string name="user_photo">User Photo</string>
+    <string name="post_photo">Post Photo</string>
 </resources>

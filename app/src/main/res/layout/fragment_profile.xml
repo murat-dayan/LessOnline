@@ -39,7 +39,7 @@
         android:id="@+id/iv_profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_person"
+        tools:srcCompat="@tools:sample/avatars"
         android:scaleType="centerCrop"
         android:background="@drawable/circle_shape"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
