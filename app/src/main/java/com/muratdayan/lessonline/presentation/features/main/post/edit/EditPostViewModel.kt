@@ -53,8 +53,17 @@ class EditPostViewModel @Inject constructor(
 
             firebaseFirestore.collection("posts")
                 .add(post)
-                .addOnSuccessListener {
-                    _uploadState.value = UploadAndSaveState.Success()
+                .addOnSuccessListener {documentReference->
+
+                    val updatedPost = post.copy(postId = documentReference.id)
+                    firebaseFirestore.collection("posts").document(documentReference.id)
+                        .set(updatedPost)
+                        .addOnSuccessListener {
+                            _uploadState.value = UploadAndSaveState.Success()
+                        }
+                        .addOnFailureListener {
+                            _uploadState.value = UploadAndSaveState.Error(it.message)
+                        }
                 }
                 .addOnFailureListener {
                     _uploadState.value = UploadAndSaveState.Error(it.message)

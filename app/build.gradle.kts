@@ -83,4 +83,6 @@ dependencies {
 
     //CREDENTIAL
     implementation(libs.androidx.credentials)
+
+    implementation (libs.glide)
 }

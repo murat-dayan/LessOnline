@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentEditPostBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -60,9 +61,8 @@ class EditPostFragment : Fragment() {
                                 val comment = binding.etComment.text.toString()
                                 editPostViewModel.savePostToFirebase(photoUri, comment)
                             }
-                            // Uncomment the next line if you want to navigate after saving
-                            //val navController = findNavController()
-                            //navController.navigate(EditPostFragmentDirections.actionEditPostFragmentToHomeFragment())
+                             //Uncomment the next line if you want to navigate after saving
+                            findNavController().popBackStack(R.id.homeFragment, false)
                         }
                         is UploadAndSaveState.Error -> {
                             binding.pbShare.visibility = View.GONE
