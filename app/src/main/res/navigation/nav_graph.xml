@@ -44,7 +44,7 @@
         tools:layout="@layout/fragment_like" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.muratdayan.lessonline.presentation.features.main.profile.ProfileFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.profile.yourprofile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment

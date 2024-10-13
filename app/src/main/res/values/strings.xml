@@ -26,4 +26,6 @@
     <string name="post_photo">Post Photo</string>
     <string name="save">Save</string>
     <string name="not_now">Not Now</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.muratdayan.lessonline.presentation.features.main.profile
+package com.muratdayan.lessonline.presentation.features.main.profile.yourprofile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.muratdayan.lessonline.R
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.muratdayan.lessonline.databinding.FragmentProfileBinding
+import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -21,6 +22,8 @@ class ProfileFragment : Fragment() {
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
+    private lateinit var basicPostListAdapter: BasicPostListAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +35,18 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profileViewModel.getUserProfile()
+        basicPostListAdapter = BasicPostListAdapter()
+        binding.rvMyPosts.apply {
+            layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
+            adapter = basicPostListAdapter
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            profileViewModel.userPosts.collectLatest { posts->
+                basicPostListAdapter.submitList(posts)
+            }
+        }
+
 
         lifecycleScope.launch {
             profileViewModel.userProfile.collectLatest { userProfile->
@@ -40,6 +54,7 @@ class ProfileFragment : Fragment() {
                     binding.tvUsername.text = userProfile.username
                     binding.tvFollowers.text = userProfile.followers.size.toString()
                     binding.tvFollowing.text = userProfile.following.size.toString()
+                    binding.tvBio.text = userProfile.bio
                 }else{
                     binding.tvUsername.text = "User not found"
                     binding.tvFollowers.text = "0"
@@ -47,6 +62,9 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+
+        profileViewModel.getUserProfile()
+        profileViewModel.getPosts()
     }
 
     override fun onDestroy() {
