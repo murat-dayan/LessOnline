@@ -59,7 +59,7 @@
         tools:layout="@layout/fragment_forget_password" />
     <fragment
         android:id="@+id/getProfileInfoFragment"
-        android:name="com.muratdayan.lessonline.presentation.features.main.profile.GetProfileInfoFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.profile.info.GetProfileInfoFragment"
         android:label="fragment_get_profile_info"
         tools:layout="@layout/fragment_get_profile_info" >
         <action

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.features.main.profile.GetProfileInfoFragment">
+    tools:context=".presentation.features.main.profile.info.GetProfileInfoFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_left_gl"
@@ -36,6 +36,16 @@
         app:layout_constraintGuide_percent="0.90"/>
 
     <EditText
+        android:id="@+id/et_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Username"
+        app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"/>
+
+    <EditText
         android:id="@+id/tv_bio"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,7 +54,8 @@
         android:minLines="5"
         android:gravity="top|start"
         android:hint="Tell us about yourself"
-        app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"
+        android:layout_marginTop="@dimen/margin_xlarge"
+        app:layout_constraintTop_toBottomOf="@id/et_username"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
         />
@@ -78,13 +89,22 @@
         android:id="@+id/tv_not_now"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Not Now"
+        android:text="@string/not_now"
         android:textSize="15sp"
         android:textColor="@color/md_theme_primary"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/horizontal_bottom_gl"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
 
+        />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_bottom_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,4 +24,6 @@
     <string name="share">Share</string>
     <string name="user_photo">User Photo</string>
     <string name="post_photo">Post Photo</string>
+    <string name="save">Save</string>
+    <string name="not_now">Not Now</string>
 </resources>

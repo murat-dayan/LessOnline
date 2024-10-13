@@ -4,7 +4,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,18 +11,15 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import kotlin.math.log
 
 @AndroidEntryPoint
 class LoginFragment (): Fragment() {
@@ -75,7 +71,11 @@ class LoginFragment (): Fragment() {
                         binding.btnLogin.visibility = View.VISIBLE
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                         if (loginState.isGoogleLogin){
-                            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_getProfileInfoFragment)
+                            if (loginState.isNewUser){
+                                Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_getProfileInfoFragment)
+                            }else{
+                                Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
+                            }
                         }else{
                             Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
                         }

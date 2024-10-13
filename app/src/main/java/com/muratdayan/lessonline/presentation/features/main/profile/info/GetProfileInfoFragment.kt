@@ -1,4 +1,4 @@
-package com.muratdayan.lessonline.presentation.features.main.profile
+package com.muratdayan.lessonline.presentation.features.main.profile.info
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,17 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentGetProfileInfoBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class GetProfileInfoFragment : Fragment() {
 
     private var _binding: FragmentGetProfileInfoBinding? = null
     private val binding get() = _binding!!
+
+    private val getProfileInfoViewModel: GetProfileInfoViewModel by viewModels()
+
+    private var selectedRole: String?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +46,7 @@ class GetProfileInfoFragment : Fragment() {
 
         binding.spRole.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedRole = parent?.getItemAtPosition(position) as String
+                selectedRole = parent?.getItemAtPosition(position) as String
                 Toast.makeText(requireContext(),"$selectedRole",Toast.LENGTH_SHORT).show()
             }
 
@@ -48,6 +56,33 @@ class GetProfileInfoFragment : Fragment() {
 
         }
 
+        lifecycleScope.launch {
+            getProfileInfoViewModel.saveState.collectLatest { saveState->
+                when(saveState){
+                    is SaveState.Success -> {
+                        Navigation.findNavController(view).navigate(R.id.action_getProfileInfoFragment_to_homeFragment)
+                    }
+                    is SaveState.Error -> {
+                        Toast.makeText(requireContext(),saveState.message,Toast.LENGTH_SHORT).show()
+                    }
+                    is SaveState.Loading -> {
+                        Toast.makeText(requireContext(),"Loading",Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {}
+                }
+            }
+        }
+
+        binding.btnSave.setOnClickListener {
+            val name = binding.etUsername.text.toString().trim()
+            val bio = binding.tvBio.text.toString().trim()
+
+            if (name.isNotEmpty() && selectedRole != null){
+                getProfileInfoViewModel.createUserProfile(name,bio,selectedRole)
+            }else{
+                Toast.makeText(requireContext(),"Please Fill ",Toast.LENGTH_SHORT).show()
+            }
+        }
 
         binding.tvNotNow.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_getProfileInfoFragment_to_homeFragment)

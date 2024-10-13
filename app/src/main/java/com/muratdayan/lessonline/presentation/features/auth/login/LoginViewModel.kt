@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.lessonline.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
+    private val firebaseFirestore: FirebaseFirestore
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Nothing)
@@ -52,7 +54,6 @@ class LoginViewModel @Inject constructor(
                     _loginState.value = LoginState.Error(task.exception?.message)
                 }
             }
-
     }
 
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -88,27 +89,35 @@ class LoginViewModel @Inject constructor(
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener {task->
                 if (task.isSuccessful){
-                    task.result.user?.let {
-                        _loginState.value = LoginState.Success(true)
-                        return@addOnCompleteListener
+                    task.result.user?.let {user->
+                        checkIfUserProfileExists(userId = user.uid)
                     }
-                    _loginState.value = LoginState.Error(task.exception?.message)
                 }else{
                     _loginState.value = LoginState.Error(task.exception?.message)
                 }
             }
     }
 
-
-
-
+    private fun checkIfUserProfileExists(userId:String){
+        firebaseFirestore.collection("users").document(userId).get()
+            .addOnSuccessListener { document->
+                if (document.exists()){
+                    _loginState.value = LoginState.Success(isGoogleLogin = true, isNewUser = false)
+                }else{
+                    _loginState.value = LoginState.Success(true, isNewUser = true)
+                }
+            }
+            .addOnFailureListener {exc->
+                _loginState.value = LoginState.Error(exc.message)
+            }
+    }
 
 }
 
 sealed class LoginState{
     object Nothing: LoginState()
     object Loading: LoginState()
-    data class Success(val isGoogleLogin: Boolean= false): LoginState()
+    data class Success(val isGoogleLogin: Boolean= false, val isNewUser:Boolean = false): LoginState()
     data class Error(val message: String? = null): LoginState()
 
 }
