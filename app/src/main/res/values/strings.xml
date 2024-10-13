@@ -28,4 +28,5 @@
     <string name="not_now">Not Now</string>
     <string name="following">Following</string>
     <string name="followers">Followers</string>
+    <string name="comment">Comment</string>
 </resources>
