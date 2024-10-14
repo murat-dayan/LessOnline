@@ -14,6 +14,7 @@ class AnswerAdapter : ListAdapter<Answer,AnswerAdapter.AnswerViewHolder>(AnswerD
         fun bind(answer: Answer){
             binding.tvAnswer.text = answer.answer
             binding.tvUsername.text = answer.username
+
         }
     }
 

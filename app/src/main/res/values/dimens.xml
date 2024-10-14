@@ -13,6 +13,7 @@
     <dimen name="padding_medium">16dp</dimen>      <!-- Orta padding için -->
     <dimen name="padding_large">24dp</dimen>       <!-- Büyük padding için -->
     <dimen name="padding_xlarge">32dp</dimen>      <!-- Çok büyük padding için -->
+    <dimen name="padding_xxlarge">64dp</dimen>
 
     <!-- Margin Values -->
     <dimen name="margin_small">8dp</dimen>         <!-- Küçük margin için -->

@@ -112,13 +112,6 @@ class LoginViewModel @Inject constructor(
             _loginState.value = LoginState.Success()
         }
     }
-
-    fun logout() {
-        firebaseAuth.signOut()
-        preferenceHelper.saveUserLoginStatus(false) // Çıkış yapınca oturumu kapat
-        _loginState.value = LoginState.Nothing
-    }
-
 }
 
 sealed class LoginState{

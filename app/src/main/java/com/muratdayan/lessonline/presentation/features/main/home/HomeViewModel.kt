@@ -33,5 +33,16 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun updatePostInFirebase(post: Post){
+        val postRef = firebaseFirestore.collection("posts").document(post.postId)
+        postRef.update("likeCount",post.likeCount,"likedByUsers",post.likedByUsers)
+            .addOnSuccessListener {
+                fetchPosts()
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+            }
+    }
+
 
 }

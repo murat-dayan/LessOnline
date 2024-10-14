@@ -30,4 +30,7 @@
     <string name="followers">Followers</string>
     <string name="comment">Comment</string>
     <string name="send_answer">Send Answer</string>
+    <string name="back">Back</string>
+    <string name="settings">Settings</string>
+    <string name="sign_out">Sign Out</string>
 </resources>

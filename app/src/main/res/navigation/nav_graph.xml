@@ -46,7 +46,11 @@
         android:id="@+id/profileFragment"
         android:name="com.muratdayan.lessonline.presentation.features.main.profile.yourprofile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.muratdayan.lessonline.presentation.features.main.search.SearchFragment"
@@ -86,5 +90,14 @@
         <action
             android:id="@+id/action_editPostFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.profile.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

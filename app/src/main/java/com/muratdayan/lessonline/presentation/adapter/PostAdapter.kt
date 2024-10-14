@@ -8,13 +8,15 @@
     import androidx.recyclerview.widget.DiffUtil
     import androidx.recyclerview.widget.RecyclerView
     import com.bumptech.glide.Glide
+    import com.google.firebase.auth.FirebaseAuth
     import com.muratdayan.lessonline.R
     import com.muratdayan.lessonline.databinding.PostItemBinding
     import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
     class PostAdapter(
         private var postList: List<Post>,
-        private val onAnswerIconClick: (String)->Unit
+        private val onAnswerIconClick: (String)->Unit,
+        private val onLikeIconClick: (Post)->Unit
     ): RecyclerView.Adapter<PostAdapter.PostRowHolder>() {
 
         inner class PostRowHolder(view: View): RecyclerView.ViewHolder(view){
@@ -29,6 +31,17 @@
                     .into(binding.ivPostPhoto)
                 binding.ibtnAnswer.setOnClickListener {
                     onAnswerIconClick(post.postId)
+                }
+                binding.tvLikeCounts.text = post.likeCount.toString()
+                binding.ibtnLike.setImageResource(
+                    if (FirebaseAuth.getInstance().currentUser?.let { post.likedByUsers.contains(it.uid) } == true){
+                        R.drawable.ic_like
+                    }else{
+                        R.drawable.ic_like_outline
+                    }
+                )
+                binding.ibtnLike.setOnClickListener {
+                    onLikeIconClick(post)
                 }
             }
         }

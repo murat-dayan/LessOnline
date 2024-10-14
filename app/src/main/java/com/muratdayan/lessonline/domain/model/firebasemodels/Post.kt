@@ -9,5 +9,8 @@ data class Post(
     val userPhoto:String="",
     val photoUri: String="",
     val comment:String="",
+    var likeCount:Int =0,
+    val answerCount:Int=0,
+    var likedByUsers: List<String> = emptyList(),
     val timestamp:Any = System.currentTimeMillis()
 )
