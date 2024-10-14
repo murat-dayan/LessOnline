@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentHomeBinding
 import com.muratdayan.lessonline.presentation.adapter.PostAdapter
+import com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers.AnswersBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -37,7 +38,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postAdapter = PostAdapter(emptyList())
+        postAdapter = PostAdapter(emptyList()){
+            val answersBottomSheet = AnswersBottomSheetFragment(it)
+            answersBottomSheet.show(childFragmentManager,answersBottomSheet.tag)
+        }
         binding.rvPosts.apply {
             adapter = postAdapter
             layoutManager = LinearLayoutManager(requireContext())

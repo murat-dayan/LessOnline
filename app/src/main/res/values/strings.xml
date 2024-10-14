@@ -29,4 +29,5 @@
     <string name="following">Following</string>
     <string name="followers">Followers</string>
     <string name="comment">Comment</string>
+    <string name="send_answer">Send Answer</string>
 </resources>

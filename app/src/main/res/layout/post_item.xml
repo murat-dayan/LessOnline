@@ -38,7 +38,7 @@
                     android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="mrt"
+                    tools:text="Profile Name"
                     android:layout_marginStart="@dimen/margin_small"
                     android:textSize="@dimen/text_large"
                     android:textStyle="bold"
@@ -76,8 +76,8 @@
                 android:layout_margin="@dimen/margin_small"
                 android:contentDescription="@string/like"
                 android:src="@drawable/ic_like_outline"
-                android:background=""
-                app:layout_constraintTop_toBottomOf="@id/iv_post_photo"
+                android:background="@color/transparent"
+                app:layout_constraintTop_toBottomOf="@id/tv_post_comment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_like_counts"
                 />
@@ -93,25 +93,25 @@
 
 
             <ImageButton
-                android:id="@+id/ibtn_comment"
+                android:id="@+id/ibtn_answer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_small"
                 android:contentDescription="@string/comment"
-                android:src="@drawable/ic_comment"
-                android:background=""
-                app:layout_constraintTop_toBottomOf="@id/iv_post_photo"
-                app:layout_constraintEnd_toStartOf="@+id/tv_comments_count"
+                android:src="@drawable/ic_answer"
+                android:background="@color/transparent"
+                app:layout_constraintTop_toBottomOf="@id/tv_post_comment"
+                app:layout_constraintEnd_toStartOf="@+id/tv_answers_count"
                 />
 
             <TextView
-                android:id="@+id/tv_comments_count"
+                android:id="@+id/tv_answers_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 Comments"
+                android:text="0 Answers"
                 android:layout_margin="@dimen/margin_small"
-                app:layout_constraintTop_toTopOf="@id/ibtn_comment"
-                app:layout_constraintBottom_toBottomOf="@id/ibtn_comment"
+                app:layout_constraintTop_toTopOf="@id/ibtn_answer"
+                app:layout_constraintBottom_toBottomOf="@id/ibtn_answer"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

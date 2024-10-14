@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.lessonline.R
+import com.muratdayan.lessonline.presentation.util.PreferenceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore,
+    private val preferenceHelper:PreferenceHelper
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Nothing)
@@ -46,6 +48,7 @@ class LoginViewModel @Inject constructor(
             .addOnCompleteListener {task->
                 if (task.isSuccessful){
                     task.result.user?.let {
+                        preferenceHelper.saveUserLoginStatus(true)
                         _loginState.value = LoginState.Success()
                         return@addOnCompleteListener
                     }
@@ -102,14 +105,28 @@ class LoginViewModel @Inject constructor(
         firebaseFirestore.collection("users").document(userId).get()
             .addOnSuccessListener { document->
                 if (document.exists()){
+                    preferenceHelper.saveUserLoginStatus(true)
                     _loginState.value = LoginState.Success(isGoogleLogin = true, isNewUser = false)
                 }else{
+                    preferenceHelper.saveUserLoginStatus(true)
                     _loginState.value = LoginState.Success(true, isNewUser = true)
                 }
             }
             .addOnFailureListener {exc->
                 _loginState.value = LoginState.Error(exc.message)
             }
+    }
+
+    fun checkIfUserLoggedIn(){
+        if (preferenceHelper.isUserLoggedIn()){
+            _loginState.value = LoginState.Success()
+        }
+    }
+
+    fun logout() {
+        firebaseAuth.signOut()
+        preferenceHelper.saveUserLoginStatus(false) // Çıkış yapınca oturumu kapat
+        _loginState.value = LoginState.Nothing
     }
 
 }

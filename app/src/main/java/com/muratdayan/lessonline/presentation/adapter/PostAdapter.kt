@@ -13,7 +13,8 @@
     import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
     class PostAdapter(
-        private var postList: List<Post>
+        private var postList: List<Post>,
+        private val onAnswerIconClick: (String)->Unit
     ): RecyclerView.Adapter<PostAdapter.PostRowHolder>() {
 
         inner class PostRowHolder(view: View): RecyclerView.ViewHolder(view){
@@ -26,6 +27,9 @@
                 Glide.with(binding.ivPostPhoto.context)
                     .load(uri)
                     .into(binding.ivPostPhoto)
+                binding.ibtnAnswer.setOnClickListener {
+                    onAnswerIconClick(post.postId)
+                }
             }
         }
 
