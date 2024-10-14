@@ -8,10 +8,12 @@
     import androidx.fragment.app.viewModels
     import androidx.lifecycle.lifecycleScope
     import androidx.recyclerview.widget.LinearLayoutManager
+    import com.google.android.material.bottomsheet.BottomSheetBehavior
     import com.google.android.material.bottomsheet.BottomSheetDialogFragment
     import com.muratdayan.lessonline.databinding.BottomSheetFragmentAnswersBinding
     import com.muratdayan.lessonline.presentation.adapter.AnswerAdapter
     import dagger.hilt.android.AndroidEntryPoint
+    import kotlinx.coroutines.Dispatchers
     import kotlinx.coroutines.flow.collectLatest
     import kotlinx.coroutines.launch
 
@@ -39,6 +41,10 @@
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
+            val bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
+            bottomSheetBehavior.peekHeight = 500 // Yüksekliği ihtiyacınıza göre ayarlayın
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
             answerViewModel.getAnswers(postId)
 
             answerAdapter = AnswerAdapter()
@@ -47,7 +53,7 @@
                 adapter = answerAdapter
             }
 
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.Main) {
                 answerViewModel.answers.collectLatest {answerList->
                     Log.d("Answers", "Answer list size: ${answerList.size}")
                     answerAdapter.submitList(answerList)
