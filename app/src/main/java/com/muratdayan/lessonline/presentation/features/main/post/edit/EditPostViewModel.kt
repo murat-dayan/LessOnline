@@ -53,7 +53,7 @@ class EditPostViewModel @Inject constructor(
                 .get()
                 .addOnSuccessListener { document ->
                     val username = document.getString("username")
-                    val userPhoto = document.getString("userPhoto")
+                    val userPhoto = document.getString("profilePhotoUrl")
                     val post = Post(
                         userId = user.uid,
                         username = username ?: "",

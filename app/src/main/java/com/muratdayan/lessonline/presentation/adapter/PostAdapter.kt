@@ -25,10 +25,13 @@
             fun bind(post: Post){
                 binding.tvPostComment.text = post.comment
                 binding.tvUsername.text = post.username
-                val uri = Uri.parse(post.photoUri)
                 Glide.with(binding.ivPostPhoto.context)
-                    .load(uri)
+                    .load(post.photoUri)
                     .into(binding.ivPostPhoto)
+
+                Glide.with(binding.ivUserPhoto.context)
+                    .load(post.userPhoto)
+                    .into(binding.ivUserPhoto)
                 binding.ibtnAnswer.setOnClickListener {
                     onAnswerIconClick(post.postId)
                 }

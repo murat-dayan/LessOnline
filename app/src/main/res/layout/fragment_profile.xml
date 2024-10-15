@@ -35,17 +35,18 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:contentDescription="@string/profile"
         tools:srcCompat="@tools:sample/avatars"
         android:scaleType="centerCrop"
-        android:background="@drawable/circle_shape"
+        app:shapeAppearanceOverlay="@style/CircleImageView"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/md_theme_primary"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_top_gl"
-        />
+        app:layout_constraintTop_toBottomOf="@id/horizontal_top_gl"/>
 
     <TextView
         android:id="@+id/tv_username"
