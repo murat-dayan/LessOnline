@@ -11,10 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentForgetPasswordBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class ForgetPasswordFragment : Fragment() {
 
     private var _binding: FragmentForgetPasswordBinding? = null

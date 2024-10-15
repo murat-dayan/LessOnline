@@ -11,7 +11,9 @@ import com.google.firebase.firestore.auth.User
 import com.muratdayan.lessonline.databinding.BasicPostItemBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
-class BasicPostListAdapter : ListAdapter<Post,BasicPostListAdapter.UserViewHolder>(UserDiffCallback()) {
+class BasicPostListAdapter(
+    private val onPostClick:(String)->Unit
+) : ListAdapter<Post,BasicPostListAdapter.UserViewHolder>(UserDiffCallback()) {
 
     class UserViewHolder(private val binding:BasicPostItemBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(post: Post){
@@ -40,5 +42,9 @@ class BasicPostListAdapter : ListAdapter<Post,BasicPostListAdapter.UserViewHolde
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(getItem(position))
+
+        holder.itemView.setOnClickListener {
+            onPostClick(getItem(position).photoUri)
+        }
     }
 }

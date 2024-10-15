@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentSettingsBinding
@@ -32,7 +33,11 @@ class SettingsFragment : Fragment() {
 
         binding.tvSignOut.setOnClickListener {
             settingsViewModel.logout()
-            Navigation.findNavController(requireView()).navigate(R.id.action_settingsFragment_to_loginFragment)
+            val navController = Navigation.findNavController(requireView())
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.nav_graph,true)
+                .build()
+            navController.navigate(R.id.action_settingsFragment_to_loginFragment,null,navOptions)
         }
 
         binding.ibtnBack.setOnClickListener {

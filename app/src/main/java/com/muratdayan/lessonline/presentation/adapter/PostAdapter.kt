@@ -25,9 +25,13 @@
             fun bind(post: Post){
                 binding.tvPostComment.text = post.comment
                 binding.tvUsername.text = post.username
-                Glide.with(binding.ivPostPhoto.context)
-                    .load(post.photoUri)
-                    .into(binding.ivPostPhoto)
+                if (post.photoUri.isNotEmpty()){
+                    Glide.with(binding.ivPostPhoto.context)
+                        .load(post.photoUri)
+                        .into(binding.ivPostPhoto)
+                }else{
+                    binding.ivPostPhoto.setImageResource(R.drawable.ic_person)
+                }
 
                 Glide.with(binding.ivUserPhoto.context)
                     .load(post.userPhoto)
