@@ -34,21 +34,37 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95"/>
 
+    <TextView
+        android:id="@+id/tv_answers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/answers"
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins"
+        app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_answers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_top_gl"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintTop_toBottomOf="@id/tv_answers"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
-        app:layout_constraintBottom_toTopOf="@id/et_answer"/>
+        app:layout_constraintBottom_toTopOf="@id/sp_answer"/>
 
-    <EditText
-        android:id="@+id/et_answer"
+    <Spinner
+        android:id="@+id/sp_answer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Write Your Answer"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/rv_answers"
         app:layout_constraintBottom_toTopOf="@id/horizontal_bottom_gl"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintEnd_toStartOf="@id/ibtn_send_answer"
@@ -63,7 +79,7 @@
         android:background="@color/transparent"
         app:layout_constraintBottom_toTopOf="@id/horizontal_bottom_gl"
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
-        app:layout_constraintTop_toTopOf="@id/et_answer"
+        app:layout_constraintTop_toTopOf="@id/sp_answer"
         />
 
 

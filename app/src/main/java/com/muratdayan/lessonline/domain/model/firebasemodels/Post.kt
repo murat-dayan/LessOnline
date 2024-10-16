@@ -12,5 +12,6 @@ data class Post(
     var likeCount:Int =0,
     val answerCount:Int=0,
     var likedByUsers: List<String> = emptyList(),
-    val timestamp:Any = System.currentTimeMillis()
+    val postAnswers: List<String> = emptyList(),
+    val timestamp:Any = System.currentTimeMillis(),
 )

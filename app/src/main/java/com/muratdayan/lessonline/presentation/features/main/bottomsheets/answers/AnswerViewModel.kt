@@ -26,6 +26,9 @@ class AnswerViewModel @Inject constructor(
     private val _addResult = MutableStateFlow<Boolean>(false)
     val addResult : StateFlow<Boolean> = _addResult.asStateFlow()
 
+    private val _postAnswers = MutableStateFlow<List<String>?>(null)
+    val postAnswers : StateFlow<List<String>?> = _postAnswers.asStateFlow()
+
 
     fun getAnswers(postId:String){
         val answersRef = firebaseFirestore.collection("posts").document(postId)
@@ -44,26 +47,65 @@ class AnswerViewModel @Inject constructor(
         }
     }
 
+    fun getPostAnswers(postId: String){
+        firebaseFirestore.collection("posts").document(postId)
+            .get()
+            .addOnSuccessListener { document->
+                if (document != null && document.exists()){
+                    val postAnswers = document.get("postAnswers") as? List<String>
+                    _postAnswers.value = postAnswers
+                }else{
+                    _postAnswers.value = emptyList()
+                }
+            }
+            .addOnFailureListener {
+                _postAnswers.value = emptyList()
+            }
+    }
+
+    private fun canUserAddAnswer(postId: String, onResult:(Boolean)->Unit){
+        val userId = firebaseAuth.currentUser!!.uid
+        val answersRef = firebaseFirestore.collection("posts").document(postId)
+            .collection("answers")
+            .whereEqualTo("userId",userId)
+
+        answersRef.get()
+            .addOnSuccessListener { querySnapshot->
+                if (querySnapshot.isEmpty){
+                    onResult(true)
+                }else{
+                    onResult(false)
+                }
+            }
+            .addOnFailureListener {
+                onResult(false)
+            }
+    }
+
     fun addAnswer(postId: String,answerText:String){
         firebaseAuth.currentUser?.let {
-            val answer = Answer(
-                postId = postId,
-                answer = answerText,
-                userId = it.uid,
-                username = it.displayName.toString(),
-            )
+            canUserAddAnswer(postId){canAdd->
+                if (canAdd){
+                    val answer = Answer(
+                        postId = postId,
+                        answer = answerText,
+                        userId = it.uid,
+                        username = it.displayName.toString(),
+                    )
 
-            firebaseFirestore.collection("posts").document(postId)
-                .collection("answers")
-                .add(answer)
-                .addOnSuccessListener {
-                    _addResult.value = true
-                }
-                .addOnFailureListener {error->
+                    firebaseFirestore.collection("posts").document(postId)
+                        .collection("answers")
+                        .add(answer)
+                        .addOnSuccessListener {
+                            _addResult.value = true
+                        }
+                        .addOnFailureListener {
+                            _addResult.value = false
+                        }
+                }else{
                     _addResult.value = false
                 }
-
-
+            }
         }
     }
 

@@ -1,10 +1,13 @@
     package com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers
 
+    import android.R
     import android.os.Bundle
     import android.util.Log
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
+    import android.widget.AdapterView
+    import android.widget.ArrayAdapter
     import androidx.fragment.app.viewModels
     import androidx.lifecycle.lifecycleScope
     import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +31,7 @@
         private val answerViewModel: AnswerViewModel by viewModels()
 
         private lateinit var answerAdapter: AnswerAdapter
+        private var selectedAnswer: String?=null
 
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -46,6 +50,7 @@
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
             answerViewModel.getAnswers(postId)
+            answerViewModel.getPostAnswers(postId)
 
             answerAdapter = AnswerAdapter()
             binding.rvAnswers.apply {
@@ -60,12 +65,34 @@
                 }
             }
 
-            binding.ibtnSendAnswer.setOnClickListener {
-                val answerText = binding.etAnswer.text.toString().trim()
-                if (answerText.isNotEmpty()){
-                    answerViewModel.addAnswer(postId,answerText)
-                    binding.etAnswer.text.clear()
+            lifecycleScope.launch {
+                answerViewModel.postAnswers.collectLatest {postAnswers->
+                    postAnswers?.let {
+                        val adapter = ArrayAdapter(requireContext(),
+                            R.layout.simple_spinner_item,it)
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        binding.spAnswer.adapter = adapter
+                        Log.d("Answers", "Post answers size: $it")
+                    }
                 }
+            }
+
+            binding.ibtnSendAnswer.setOnClickListener {
+                selectedAnswer?.let {
+                    answerViewModel.addAnswer(postId,it)
+                }
+            }
+
+            binding.spAnswer.onItemSelectedListener = object  : AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    selectedAnswer = parent?.getItemAtPosition(position) as String
+                    Log.d("Answers", "Selected answer: $selectedAnswer")
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    // Handle the case where nothing is selected
+                }
+
             }
 
             lifecycleScope.launch {

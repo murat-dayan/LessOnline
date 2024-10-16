@@ -42,7 +42,8 @@ class EditPostViewModel @Inject constructor(
     fun savePostToFirebase(
         photoUri: String,
         comment: String,
-        onPostSaved: () -> Unit
+        postAnswers: List<String>,
+        onPostSaved: () -> Unit,
     ) {
         _uploadState.value = UploadAndSaveState.Loading
         val user = firebaseAuth.currentUser
@@ -60,6 +61,7 @@ class EditPostViewModel @Inject constructor(
                         userPhoto = userPhoto ?: "",
                         photoUri = photoUri,
                         comment = comment,
+                        postAnswers = postAnswers,
                         timestamp = System.currentTimeMillis()
                     )
 

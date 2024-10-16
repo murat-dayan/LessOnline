@@ -37,4 +37,6 @@
     <string name="full_image_close">Full Image Close</string>
     <string name="posts">Posts</string>
     <string name="follow">Follow</string>
+    <string name="write_your_answer">Write Your Answer</string>
+    <string name="answers">Answers</string>
 </resources>

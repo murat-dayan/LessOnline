@@ -64,6 +64,36 @@
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
         app:layout_constraintRight_toRightOf="@id/vertical_right_gl"/>
 
+    <EditText
+        android:id="@+id/et_new_answer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Add Answers"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        app:layout_constraintTop_toBottomOf="@id/et_comment"/>
+
+    <Button
+        android:id="@+id/btn_add_answer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Add Answer"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        app:layout_constraintTop_toBottomOf="@id/et_new_answer"/>
+
+    <LinearLayout
+        android:id="@+id/ll_answers"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_answer"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        />
+
     <Button
         android:id="@+id/btn_share"
         android:layout_width="wrap_content"
