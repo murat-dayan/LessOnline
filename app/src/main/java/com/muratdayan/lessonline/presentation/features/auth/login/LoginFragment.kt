@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentLoginBinding
@@ -70,14 +71,18 @@ class LoginFragment (): Fragment() {
                         binding.pbLogin.visibility = View.GONE
                         binding.btnLogin.visibility = View.VISIBLE
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                        val navController = Navigation.findNavController(requireView())
+                        val navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.nav_graph,true)
+                            .build()
                         if (loginState.isGoogleLogin){
                             if (loginState.isNewUser){
-                                Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_getProfileInfoFragment)
+                                navController.navigate(R.id.action_loginFragment_to_getProfileInfoFragment)
                             }else{
-                                Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
+                                navController.navigate(R.id.action_loginFragment_to_homeFragment,null,navOptions)
                             }
                         }else{
-                            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
+                            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment,null,navOptions)
                         }
 
                     }

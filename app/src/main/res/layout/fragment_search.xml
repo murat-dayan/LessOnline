@@ -27,20 +27,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.10"/>
+        app:layout_constraintGuide_percent="0.05"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_bottom_gl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90"/>
+        app:layout_constraintGuide_percent="0.95"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
         app:startIconDrawable="@drawable/ic_search"
@@ -54,7 +54,15 @@
             android:paddingStart="@dimen/padding_xxlarge"
             android:paddingEnd="@dimen/padding_xxlarge"
             />
-
-
     </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_posts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/til_search"
+        app:layout_constraintBottom_toBottomOf="@id/horizontal_bottom_gl"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

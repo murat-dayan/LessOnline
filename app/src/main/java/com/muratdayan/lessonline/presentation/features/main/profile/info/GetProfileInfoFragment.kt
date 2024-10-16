@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentGetProfileInfoBinding
@@ -60,7 +61,11 @@ class GetProfileInfoFragment : Fragment() {
             getProfileInfoViewModel.saveState.collectLatest { saveState->
                 when(saveState){
                     is SaveState.Success -> {
-                        Navigation.findNavController(view).navigate(R.id.action_getProfileInfoFragment_to_homeFragment)
+                        val navController = Navigation.findNavController(requireView())
+                        val navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.nav_graph,true)
+                            .build()
+                        navController.navigate(R.id.action_getProfileInfoFragment_to_homeFragment,null,navOptions)
                     }
                     is SaveState.Error -> {
                         Toast.makeText(requireContext(),saveState.message,Toast.LENGTH_SHORT).show()
@@ -85,7 +90,11 @@ class GetProfileInfoFragment : Fragment() {
         }
 
         binding.tvNotNow.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_getProfileInfoFragment_to_homeFragment)
+            val navController = Navigation.findNavController(requireView())
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.nav_graph,true)
+                .build()
+            navController.navigate(R.id.action_getProfileInfoFragment_to_homeFragment,null,navOptions)
         }
     }
 

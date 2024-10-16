@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -96,7 +97,11 @@ class EditPostFragment : Fragment() {
                                         comment,
                                         postAnswers
                                     ) {
-                                        findNavController().navigate(R.id.action_editPostFragment_to_homeFragment)
+                                        val navController = Navigation.findNavController(requireView())
+                                        val navOptions = NavOptions.Builder()
+                                            .setPopUpTo(R.id.nav_graph,true)
+                                            .build()
+                                        navController.navigate(R.id.action_editPostFragment_to_homeFragment,null,navOptions)
                                     }
                                 }
                             } else {
