@@ -1,5 +1,6 @@
 package com.muratdayan.lessonline.presentation.features.main.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
@@ -7,6 +8,7 @@ import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,20 +17,27 @@ class HomeViewModel @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore
 ): ViewModel() {
 
-    private val _postList = MutableStateFlow<List<Post>>(emptyList())
-    val postList:StateFlow<List<Post>> = _postList
+    private val _postList = MutableStateFlow<PostListState>(PostListState.Nothing)
+    val postList:StateFlow<PostListState> = _postList.asStateFlow()
 
 
     fun fetchPosts(){
+        _postList.value  = PostListState.Loading
         viewModelScope.launch {
             firebaseFirestore.collection("posts").get()
                 .addOnSuccessListener {result->
                     val postList = result.toObjects(Post::class.java)
-                    _postList.value = postList
+                    Log.d("HomeViewModel", "Fetched posts: $postList") // Log ekleyin
+                    if (postList.isNotEmpty()) {
+                        _postList.value = PostListState.Success(postList)
+                    } else {
+                        _postList.value = PostListState.Error("No posts found")
+                    }
                 }
                 .addOnFailureListener {exception->
+                    _postList.value = PostListState.Error(exception.message)
                     exception.printStackTrace()
-                    // Handle failure
+                    Log.e("HomeViewModel", "Error fetching posts: ${exception.message}")
                 }
         }
     }
@@ -39,10 +48,16 @@ class HomeViewModel @Inject constructor(
             .addOnSuccessListener {
                 fetchPosts()
             }
-            .addOnFailureListener {
-                it.printStackTrace()
+            .addOnFailureListener {exception->
+                exception.printStackTrace()
+                Log.e("HomeViewModel", "Error fetching posts: ${exception.message}")
             }
     }
 
-
+    sealed class PostListState{
+        object Nothing: PostListState()
+        object Loading: PostListState()
+        data class Success(val postList: List<Post>): PostListState()
+        data class Error(val message: String? = null): PostListState()
+    }
 }

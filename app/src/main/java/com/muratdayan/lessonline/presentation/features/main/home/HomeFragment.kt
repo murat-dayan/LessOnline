@@ -2,6 +2,7 @@ package com.muratdayan.lessonline.presentation.features.main.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,8 +61,20 @@ class HomeFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            homeViewModel.postList.collectLatest {postList->
-                postAdapter.updatePostList(postList)
+            homeViewModel.postList.collectLatest {postListState->
+                when(postListState){
+                    is HomeViewModel.PostListState.Loading->{
+                        startShimmer()
+                    }
+                    is HomeViewModel.PostListState.Success->{
+                        stopShimmer()
+                        postAdapter.updatePostList(postListState.postList)
+                    }
+                    is HomeViewModel.PostListState.Error->{
+                        Log.d("HomeFragment","postliststate: ${postListState.message}")
+                    }
+                    else->{}
+                }
             }
         }
 
@@ -80,7 +93,7 @@ class HomeFragment : Fragment() {
                 post.likeCount--
             } else {
                 // Kullanıcı daha önce beğenmemiş, beğeniyi ekle
-                post.likedByUsers = post.likedByUsers + currentUserId
+                post.likedByUsers += currentUserId
                 post.likeCount++
             }
             homeViewModel.updatePostInFirebase(post)
@@ -88,6 +101,18 @@ class HomeFragment : Fragment() {
         } else {
             // Kullanıcı oturum açmamış
         }
+    }
+
+    private fun startShimmer(){
+        binding.sflForPost.visibility = View.VISIBLE
+        binding.rvPosts.visibility = View.GONE
+        binding.sflForPost.startShimmer()
+    }
+
+    private fun stopShimmer(){
+        binding.sflForPost.visibility = View.GONE
+        binding.rvPosts.visibility = View.VISIBLE
+        binding.sflForPost.stopShimmer()
     }
 
     override fun onDestroy() {

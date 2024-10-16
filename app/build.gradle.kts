@@ -84,5 +84,9 @@ dependencies {
     //CREDENTIAL
     implementation(libs.androidx.credentials)
 
+    //GLIDE
     implementation (libs.glide)
+
+    //SHIMMER
+    implementation (libs.shimmer)
 }
