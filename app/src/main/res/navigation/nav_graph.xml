@@ -36,7 +36,11 @@
         android:id="@+id/homeFragment"
         android:name="com.muratdayan.lessonline.presentation.features.main.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_otherProfileFragment"
+            app:destination="@id/otherProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/likeFragment"
         android:name="com.muratdayan.lessonline.presentation.features.main.like.LikeFragment"
@@ -99,5 +103,14 @@
         <action
             android:id="@+id/action_settingsFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherProfileFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.profile.otherprofile.OtherProfileFragment"
+        android:label="fragment_other_profile"
+        tools:layout="@layout/fragment_other_profile" >
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
 </navigation>

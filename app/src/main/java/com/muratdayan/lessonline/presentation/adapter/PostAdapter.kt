@@ -16,7 +16,8 @@
     class PostAdapter(
         private var postList: List<Post>,
         private val onAnswerIconClick: (String)->Unit,
-        private val onLikeIconClick: (Post)->Unit
+        private val onLikeIconClick: (Post)->Unit,
+        private val onProfilePhotoClick:(String)->Unit
     ): RecyclerView.Adapter<PostAdapter.PostRowHolder>() {
 
         inner class PostRowHolder(view: View): RecyclerView.ViewHolder(view){
@@ -49,6 +50,9 @@
                 )
                 binding.ibtnLike.setOnClickListener {
                     onLikeIconClick(post)
+                }
+                binding.ivUserPhoto.setOnClickListener {
+                    onProfilePhotoClick(post.userId)
                 }
             }
         }

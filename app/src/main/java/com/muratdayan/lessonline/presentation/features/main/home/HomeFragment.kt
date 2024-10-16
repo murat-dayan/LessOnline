@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.lessonline.R
@@ -44,8 +45,11 @@ class HomeFragment : Fragment() {
         postAdapter = PostAdapter(emptyList(),{
             val answersBottomSheet = AnswersBottomSheetFragment(it)
             answersBottomSheet.show(childFragmentManager,answersBottomSheet.tag)
-        }){post->
+        },{post->
             toggleLike(post)
+        }){userId->
+            val action = HomeFragmentDirections.actionHomeFragmentToOtherProfileFragment(userId)
+            Navigation.findNavController(requireView()).navigate(action)
         }
 
 
