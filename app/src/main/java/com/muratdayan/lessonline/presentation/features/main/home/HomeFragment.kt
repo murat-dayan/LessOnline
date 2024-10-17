@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -49,9 +50,11 @@ class HomeFragment : Fragment() {
             answersBottomSheet.show(childFragmentManager,answersBottomSheet.tag)
         },{post->
             toggleLike(post)
-        }){userId->
+        },{userId->
             val action = HomeFragmentDirections.actionHomeFragmentToOtherProfileFragment(userId)
             Navigation.findNavController(requireView()).navigate(action)
+        }){postId,ibtn_bookmarkIcon->
+
         }
 
 
@@ -59,6 +62,7 @@ class HomeFragment : Fragment() {
             adapter = postAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+
 
         lifecycleScope.launch {
             homeViewModel.postList.collectLatest {postListState->
@@ -102,6 +106,7 @@ class HomeFragment : Fragment() {
             // Kullanıcı oturum açmamış
         }
     }
+
 
     private fun startShimmer(){
         binding.sflForPost.visibility = View.VISIBLE

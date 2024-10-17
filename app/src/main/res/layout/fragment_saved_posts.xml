@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.features.main.profile.settings.SettingsFragment">
+    tools:context=".presentation.features.main.savedpost.SavedPostsFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_left_gl"
@@ -45,14 +45,13 @@
         android:background="@color/transparent"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"
-        app:layout_constraintBottom_toTopOf="@id/sv_settings"
         />
 
     <TextView
-        android:id="@+id/tv_settings"
+        android:id="@+id/tv_saved_posts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/settings"
+        android:text="@string/saved_posts"
         android:textSize="@dimen/text_large"
         android:textStyle="bold"
         android:layout_marginStart="@dimen/margin_small"
@@ -61,64 +60,14 @@
         app:layout_constraintBottom_toBottomOf="@id/ibtn_back"
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"/>
 
-    <ScrollView
-        android:id="@+id/sv_settings"
-        android:layout_width="0dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_saved_posts"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_medium"
         app:layout_constraintTop_toBottomOf="@id/ibtn_back"
-        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
-        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
-
-        <LinearLayout
-            android:id="@+id/ll_settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/ll_saved_posts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tv_saved_posts"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/saved_posts"
-                    android:textSize="@dimen/text_medium"
-                    android:textStyle="bold"
-                    android:padding="@dimen/padding_small"
-                    />
-
-                <ImageButton
-                    android:id="@+id/ibtn_saved_posts"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/saved_posts"
-                    android:src="@drawable/ic_arrow_right"
-                    android:background="@color/transparent"
-                    />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_sign_out"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_out"
-                android:textSize="@dimen/text_medium"
-                android:textStyle="bold"
-                android:padding="@dimen/padding_small"
-                android:textColor="@color/md_theme_error"
-                />
-
-        </LinearLayout>
-
-    </ScrollView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

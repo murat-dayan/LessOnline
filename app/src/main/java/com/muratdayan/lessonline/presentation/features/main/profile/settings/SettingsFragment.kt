@@ -44,6 +44,10 @@ class SettingsFragment : Fragment() {
             Navigation.findNavController(requireView()).navigateUp()
         }
 
+        binding.ibtnSavedPosts.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.action_settingsFragment_to_savedPostsFragment)
+        }
+
     }
 
     override fun onDestroy() {

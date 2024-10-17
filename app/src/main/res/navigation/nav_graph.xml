@@ -103,6 +103,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_savedPostsFragment"
+            app:destination="@id/savedPostsFragment" />
     </fragment>
     <fragment
         android:id="@+id/otherProfileFragment"
@@ -113,4 +116,9 @@
             android:name="userId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/savedPostsFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.savedpost.SavedPostsFragment"
+        android:label="fragment_saved_posts"
+        tools:layout="@layout/fragment_saved_posts" />
 </navigation>

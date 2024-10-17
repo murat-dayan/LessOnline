@@ -5,6 +5,8 @@
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
+    import android.widget.ImageButton
+    import android.widget.ImageView
     import androidx.recyclerview.widget.DiffUtil
     import androidx.recyclerview.widget.RecyclerView
     import com.bumptech.glide.Glide
@@ -17,7 +19,8 @@
         private var postList: List<Post>,
         private val onAnswerIconClick: (String)->Unit,
         private val onLikeIconClick: (Post)->Unit,
-        private val onProfilePhotoClick:(String)->Unit
+        private val onProfilePhotoClick:(String)->Unit,
+        private val onBookmarkIconClick: (String,ImageButton) -> Unit
     ): RecyclerView.Adapter<PostAdapter.PostRowHolder>() {
 
         inner class PostRowHolder(view: View): RecyclerView.ViewHolder(view){
@@ -53,6 +56,9 @@
                 }
                 binding.ivUserPhoto.setOnClickListener {
                     onProfilePhotoClick(post.userId)
+                }
+                binding.ibtnSave.setOnClickListener {
+                    onBookmarkIconClick(post.postId,binding.ibtnSave)
                 }
             }
         }

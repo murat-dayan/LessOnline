@@ -12,5 +12,6 @@ data class UserProfile(
     val profilePhotoUrl: String = "", // Profil fotoğrafının URL'si (Firebase Storage URL)
     val postPhotoUrls: List<String> = emptyList(), // Kullanıcının paylaştığı fotoğrafların URL'leri
     val isProfileComplete: Boolean = false,
-    val role: String = "Student"
+    val role: String = "Student",
+    val savedPosts: List<String> = emptyList()
 )
