@@ -14,13 +14,15 @@
     import com.muratdayan.lessonline.R
     import com.muratdayan.lessonline.databinding.PostItemBinding
     import com.muratdayan.lessonline.domain.model.firebasemodels.Post
+    import com.muratdayan.lessonline.presentation.features.main.home.HomeViewModel
 
     class PostAdapter(
         private var postList: List<Post>,
         private val onAnswerIconClick: (String)->Unit,
         private val onLikeIconClick: (Post)->Unit,
         private val onProfilePhotoClick:(String)->Unit,
-        private val onBookmarkIconClick: (String,ImageButton) -> Unit
+        private val onBookmarkIconClick: (String,ImageButton) -> Unit,
+        private val onPostPhotoClick:(String)->Unit
     ): RecyclerView.Adapter<PostAdapter.PostRowHolder>() {
 
         inner class PostRowHolder(view: View): RecyclerView.ViewHolder(view){
@@ -59,6 +61,13 @@
                 }
                 binding.ibtnSave.setOnClickListener {
                     onBookmarkIconClick(post.postId,binding.ibtnSave)
+                }
+                binding.ibtnSave.setImageResource(
+                    if (post.isBookmarked) R.drawable.ic_bookmark else R.drawable.ic_bookmark_outline
+                )
+
+                binding.ivPostPhoto.setOnClickListener {
+                    onPostPhotoClick(post.photoUri)
                 }
             }
         }

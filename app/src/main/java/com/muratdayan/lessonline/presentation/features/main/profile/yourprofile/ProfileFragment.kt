@@ -56,20 +56,10 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        basicPostListAdapter = BasicPostListAdapter(){postPhotoUri->
-            binding.ivFullImage.visibility = View.VISIBLE
-            binding.ibtnCloseFullImage.visibility = View.VISIBLE
-
-            Glide.with(requireContext())
-                .load(postPhotoUri)
-                .into(binding.ivFullImage)
+        basicPostListAdapter = BasicPostListAdapter{postId->
+            val action = ProfileFragmentDirections.actionProfileFragmentToPostDetailFragment(postId)
+            Navigation.findNavController(requireView()).navigate(action)
         }
-
-        binding.ibtnCloseFullImage.setOnClickListener {
-            binding.ivFullImage.visibility = View.GONE
-            binding.ibtnCloseFullImage.visibility = View.GONE
-        }
-
 
         binding.rvMyPosts.apply {
             layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)

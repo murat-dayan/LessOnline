@@ -13,5 +13,6 @@ data class Post(
     val answerCount:Int=0,
     var likedByUsers: List<String> = emptyList(),
     val postAnswers: List<String> = emptyList(),
+    var isBookmarked : Boolean = false,
     val timestamp:Any = System.currentTimeMillis(),
 )

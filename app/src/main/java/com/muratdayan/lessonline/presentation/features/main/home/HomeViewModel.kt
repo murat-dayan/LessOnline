@@ -26,23 +26,38 @@ class HomeViewModel @Inject constructor(
 
     fun fetchPosts() {
         _postList.value = PostListState.Loading
-        viewModelScope.launch {
-            firebaseFirestore.collection("posts").get()
-                .addOnSuccessListener { result ->
-                    val postList = result.toObjects(Post::class.java)
-                    Log.d("HomeViewModel", "Fetched posts: $postList") // Log ekleyin
-                    if (postList.isNotEmpty()) {
-                        _postList.value = PostListState.Success(postList)
-                    } else {
-                        _postList.value = PostListState.Error("No posts found")
-                    }
+        val userId = firebaseAuth.currentUser?.uid
+        if (userId != null){
+            val userRef = firebaseFirestore.collection("users").document(userId)
+            userRef.get()
+                .addOnSuccessListener { userSnapshot->
+                    val savedPosts = userSnapshot.get("savedPosts") as? List<String> ?: emptyList()
+
+                    firebaseFirestore.collection("posts").get()
+                        .addOnSuccessListener { result ->
+                            val postList = result.toObjects(Post::class.java).map { post->
+                                post.isBookmarked = savedPosts.contains(post.postId)
+                                post
+                            }
+                            _postList.value = if (postList.isNotEmpty()){
+                                PostListState.Success(postList)
+                            }else {
+                                PostListState.Error("No Posts Foundd")
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            _postList.value = PostListState.Error(exception.message)
+                            exception.printStackTrace()
+                            Log.e("HomeViewModel", "Error fetching posts: ${exception.message}")
+                        }
                 }
-                .addOnFailureListener { exception ->
-                    _postList.value = PostListState.Error(exception.message)
-                    exception.printStackTrace()
-                    Log.e("HomeViewModel", "Error fetching posts: ${exception.message}")
+                .addOnFailureListener { exception->
+                    Log.e("HomeViewModel","Error fetching userdataa: ${exception.message}")
                 }
         }
+
+
+
     }
 
     fun updatePostInFirebase(post: Post) {
@@ -55,6 +70,49 @@ class HomeViewModel @Inject constructor(
                 exception.printStackTrace()
                 Log.e("HomeViewModel", "Error fetching posts: ${exception.message}")
             }
+    }
+
+    fun toggleBookmark(postId:String){
+        val userId = firebaseAuth.currentUser?.uid
+        if (userId != null){
+            val userRef = firebaseFirestore.collection("users").document(userId)
+            val postRef = firebaseFirestore.collection("posts").document(postId)
+
+            firebaseFirestore.runTransaction { transaction->
+                val snapshot = transaction.get(userRef)
+                val savedPosts = snapshot.get("savedPosts") as? List<String> ?: emptyList()
+
+                if (savedPosts.contains(postId)){
+                    transaction.update(postRef,"bookmarked",false)
+                    transaction.update(userRef,"savedPosts",FieldValue.arrayRemove(postId))
+                }else{
+                    transaction.update(userRef,"savedPosts",FieldValue.arrayUnion(postId))
+                    transaction.update(postRef,"bookmarked",true)
+                }
+            }
+                .addOnSuccessListener {
+                    fetchPosts()
+                }
+                .addOnFailureListener {e->
+                    Log.e("HomeViewModel","Error Updating bookmark: ${e.message}")
+                }
+        }
+    }
+
+    fun isPostBookMarked(postId: String,onResult:(Boolean)->Unit){
+        val userId = firebaseAuth.currentUser?.uid
+        if (userId != null){
+            val userRef = firebaseFirestore.collection("users").document(userId)
+            userRef.get()
+                .addOnSuccessListener { document->
+                    val savedPosts = document.get("savedPosts") as? List<String> ?: emptyList()
+                    onResult(savedPosts.contains(postId))
+                }
+                .addOnFailureListener { e->
+                    Log.e("HomeViewModel","Error fetching bookmark: ${e.message}")
+                    onResult(false)
+                }
+        }
     }
 
     sealed class PostListState {

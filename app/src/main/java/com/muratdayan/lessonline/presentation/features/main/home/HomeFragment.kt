@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentHomeBinding
@@ -45,16 +46,28 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postAdapter = PostAdapter(emptyList(),{
+        postAdapter = PostAdapter(emptyList(), onAnswerIconClick = {
             val answersBottomSheet = AnswersBottomSheetFragment(it)
             answersBottomSheet.show(childFragmentManager,answersBottomSheet.tag)
-        },{post->
+        },onLikeIconClick = {post->
             toggleLike(post)
-        },{userId->
+        },onProfilePhotoClick = {userId->
             val action = HomeFragmentDirections.actionHomeFragmentToOtherProfileFragment(userId)
             Navigation.findNavController(requireView()).navigate(action)
-        }){postId,ibtn_bookmarkIcon->
+        },onBookmarkIconClick = {postId,_->
+            homeViewModel.toggleBookmark(postId)
+        }){postPhotoUri->
+            binding.ivFullImage.visibility = View.VISIBLE
+            binding.ibtnCloseFullImage.visibility = View.VISIBLE
 
+            Glide.with(requireContext())
+                .load(postPhotoUri)
+                .into(binding.ivFullImage)
+        }
+
+        binding.ibtnCloseFullImage.setOnClickListener {
+            binding.ivFullImage.visibility = View.GONE
+            binding.ibtnCloseFullImage.visibility = View.GONE
         }
 
 

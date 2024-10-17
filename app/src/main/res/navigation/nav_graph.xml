@@ -54,12 +54,19 @@
         <action
             android:id="@+id/action_profileFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.muratdayan.lessonline.presentation.features.main.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"
         android:name="com.muratdayan.lessonline.presentation.features.auth.forgetpassword.ForgetPasswordFragment"
@@ -120,5 +127,18 @@
         android:id="@+id/savedPostsFragment"
         android:name="com.muratdayan.lessonline.presentation.features.main.savedpost.SavedPostsFragment"
         android:label="fragment_saved_posts"
-        tools:layout="@layout/fragment_saved_posts" />
+        tools:layout="@layout/fragment_saved_posts" >
+        <action
+            android:id="@+id/action_savedPostsFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.post.detail.PostDetailFragment"
+        android:label="fragment_post_detail"
+        tools:layout="@layout/fragment_post_detail" >
+        <argument
+            android:name="postId"
+            app:argType="string" />
+    </fragment>
 </navigation>

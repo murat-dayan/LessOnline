@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentSearchBinding
 import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
+import com.muratdayan.lessonline.presentation.features.main.profile.yourprofile.ProfileFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,8 +40,9 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        basicPostListAdapter = BasicPostListAdapter{
-
+        basicPostListAdapter = BasicPostListAdapter(){postId->
+            val action = SearchFragmentDirections.actionSearchFragmentToPostDetailFragment(postId)
+            Navigation.findNavController(requireView()).navigate(action)
         }
 
         binding.rvSearchPosts.apply {

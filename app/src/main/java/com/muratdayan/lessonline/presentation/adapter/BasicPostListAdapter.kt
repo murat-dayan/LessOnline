@@ -12,7 +12,7 @@ import com.muratdayan.lessonline.databinding.BasicPostItemBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
 class BasicPostListAdapter(
-    private val onPostClick:(String)->Unit
+    private val onPostClick: (String) -> Unit
 ) : ListAdapter<Post,BasicPostListAdapter.UserViewHolder>(UserDiffCallback()) {
 
     class UserViewHolder(private val binding:BasicPostItemBinding): RecyclerView.ViewHolder(binding.root){
@@ -44,7 +44,7 @@ class BasicPostListAdapter(
         holder.bind(getItem(position))
 
         holder.itemView.setOnClickListener {
-            onPostClick(getItem(position).photoUri)
+            onPostClick(getItem(position).postId)
         }
     }
 }
