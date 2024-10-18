@@ -40,4 +40,5 @@
     <string name="write_your_answer">Write Your Answer</string>
     <string name="answers">Answers</string>
     <string name="saved_posts">Saved Posts</string>
+    <string name="detail">Detail</string>
 </resources>

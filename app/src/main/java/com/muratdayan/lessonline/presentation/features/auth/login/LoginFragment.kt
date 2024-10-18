@@ -18,12 +18,13 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentLoginBinding
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginFragment (): Fragment() {
+class LoginFragment (): BaseFragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -62,15 +63,14 @@ class LoginFragment (): Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             loginViewModel.loginState.collectLatest {loginState->
                 when(loginState){
-                    is LoginState.Nothing -> {}
+                    is LoginState.Nothing -> {
+                        hideLoading()
+                    }
                     is LoginState.Loading -> {
-                        binding.pbLogin.visibility = View.VISIBLE
-                        binding.btnLogin.visibility = View.INVISIBLE
+                        showLoading()
                     }
                     is LoginState.Success -> {
-                        binding.pbLogin.visibility = View.GONE
-                        binding.btnLogin.visibility = View.VISIBLE
-                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                        hideLoading()
                         val navController = Navigation.findNavController(requireView())
                         val navOptions = NavOptions.Builder()
                             .setPopUpTo(R.id.nav_graph,true)
@@ -87,8 +87,7 @@ class LoginFragment (): Fragment() {
 
                     }
                     is LoginState.Error -> {
-                        binding.pbLogin.visibility = View.GONE
-                        binding.btnLogin.visibility = View.VISIBLE
+                        hideLoading()
                         Toast.makeText(requireContext(), "Error: ${loginState.message}", Toast.LENGTH_SHORT).show()
                     }
                 }

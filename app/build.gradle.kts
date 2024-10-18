@@ -89,4 +89,7 @@ dependencies {
 
     //SHIMMER
     implementation (libs.shimmer)
+
+    //LOTTIE
+    implementation (libs.lottie)
 }

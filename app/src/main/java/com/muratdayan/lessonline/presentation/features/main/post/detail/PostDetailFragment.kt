@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -70,6 +71,10 @@ class PostDetailFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        binding.ibtnBack.setOnClickListener {
+            Navigation.findNavController(requireView()).navigateUp()
         }
 
         postDetailViewModel.getPostById(postId)
