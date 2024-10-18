@@ -92,4 +92,6 @@ dependencies {
 
     //LOTTIE
     implementation (libs.lottie)
+
+    implementation(libs.android.image.cropper)
 }

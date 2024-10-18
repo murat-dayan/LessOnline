@@ -35,6 +35,16 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.90"/>
 
+    <ImageButton
+        android:id="@+id/ibtn_edit_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/edit_photo"
+        android:src="@drawable/ic_edit"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toStartOf="@id/vertical_right_gl"
+        app:layout_constraintBottom_toTopOf="@id/iv_photo"/>
+
 
     <ImageView
         android:id="@+id/iv_photo"

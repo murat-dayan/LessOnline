@@ -15,12 +15,13 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentRegisterBinding
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseFragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
@@ -42,21 +43,20 @@ class RegisterFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             registerViewModel.signUpState.collectLatest { signUpState ->
                 when (signUpState) {
-                    is SignUpState.Nothing -> {}
+                    is SignUpState.Nothing -> {
+                        hideLoading()
+                    }
                     is SignUpState.Loading -> {
-                        binding.pbRegister.visibility = View.VISIBLE
-                        binding.btnSignUp.visibility = View.INVISIBLE
+                        showLoading()
                     }
 
                     is SignUpState.Success -> {
-                        binding.pbRegister.visibility = View.GONE
-                        binding.btnSignUp.visibility = View.VISIBLE
+                        hideLoading()
                         Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_getProfileInfoFragment)
                     }
 
                     is SignUpState.Error -> {
-                        binding.pbRegister.visibility = View.GONE
-                        binding.btnSignUp.visibility = View.VISIBLE
+                        hideLoading()
                         Toast.makeText(requireContext(), "Error: ${signUpState.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
