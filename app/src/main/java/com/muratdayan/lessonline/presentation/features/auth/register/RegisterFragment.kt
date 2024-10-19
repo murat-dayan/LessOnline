@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -52,7 +53,11 @@ class RegisterFragment : BaseFragment() {
 
                     is SignUpState.Success -> {
                         hideLoading()
-                        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_getProfileInfoFragment)
+                        val navController = Navigation.findNavController(requireView())
+                        val navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.registerFragment,true)
+                            .build()
+                        navController.navigate(R.id.action_registerFragment_to_getProfileInfoFragment,null,navOptions)
                     }
 
                     is SignUpState.Error -> {

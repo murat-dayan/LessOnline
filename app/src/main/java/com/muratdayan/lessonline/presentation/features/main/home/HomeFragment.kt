@@ -52,8 +52,15 @@ class HomeFragment : Fragment() {
         },onLikeIconClick = {post->
             toggleLike(post)
         },onProfilePhotoClick = {userId->
-            val action = HomeFragmentDirections.actionHomeFragmentToOtherProfileFragment(userId)
-            Navigation.findNavController(requireView()).navigate(action)
+            val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+            if (userId == currentUserId) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_profileFragment)
+            } else {
+                // Diğer kullanıcının profiline tıklanmışsa OtherProfileFragment'a yönlendir
+                val action = HomeFragmentDirections.actionHomeFragmentToOtherProfileFragment(userId)
+                Navigation.findNavController(requireView()).navigate(action)
+            }
         },onBookmarkIconClick = {postId,_->
             homeViewModel.toggleBookmark(postId)
         }){postPhotoUri->
@@ -78,14 +85,18 @@ class HomeFragment : Fragment() {
 
 
         lifecycleScope.launch {
+            var isFirstLoad = true
             homeViewModel.postList.collectLatest {postListState->
                 when(postListState){
                     is HomeViewModel.PostListState.Loading->{
-                        startShimmer()
+                        if (isFirstLoad){
+                            startShimmer()
+                        }
                     }
                     is HomeViewModel.PostListState.Success->{
                         stopShimmer()
                         postAdapter.updatePostList(postListState.postList)
+                        isFirstLoad = false
                     }
                     is HomeViewModel.PostListState.Error->{
                         Log.d("HomeFragment","postliststate: ${postListState.message}")

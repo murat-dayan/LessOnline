@@ -1,7 +1,6 @@
 package com.muratdayan.lessonline.presentation.features.main.profile.info
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +13,13 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentGetProfileInfoBinding
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class GetProfileInfoFragment : Fragment() {
+class GetProfileInfoFragment : BaseFragment() {
 
     private var _binding: FragmentGetProfileInfoBinding? = null
     private val binding get() = _binding!!
@@ -61,19 +61,23 @@ class GetProfileInfoFragment : Fragment() {
             getProfileInfoViewModel.saveState.collectLatest { saveState->
                 when(saveState){
                     is SaveState.Success -> {
+                        hideLoading()
                         val navController = Navigation.findNavController(requireView())
                         val navOptions = NavOptions.Builder()
-                            .setPopUpTo(R.id.nav_graph,true)
+                            .setPopUpTo(R.id.getProfileInfoFragment,true)
                             .build()
                         navController.navigate(R.id.action_getProfileInfoFragment_to_homeFragment,null,navOptions)
                     }
                     is SaveState.Error -> {
+                        hideLoading()
                         Toast.makeText(requireContext(),saveState.message,Toast.LENGTH_SHORT).show()
                     }
                     is SaveState.Loading -> {
-                        Toast.makeText(requireContext(),"Loading",Toast.LENGTH_SHORT).show()
+                        showLoading()
                     }
-                    else -> {}
+                    else -> {
+                        hideLoading()
+                    }
                 }
             }
         }
@@ -92,7 +96,7 @@ class GetProfileInfoFragment : Fragment() {
         binding.tvNotNow.setOnClickListener {
             val navController = Navigation.findNavController(requireView())
             val navOptions = NavOptions.Builder()
-                .setPopUpTo(R.id.nav_graph,true)
+                .setPopUpTo(R.id.getProfileInfoFragment,true)
                 .build()
             navController.navigate(R.id.action_getProfileInfoFragment_to_homeFragment,null,navOptions)
         }

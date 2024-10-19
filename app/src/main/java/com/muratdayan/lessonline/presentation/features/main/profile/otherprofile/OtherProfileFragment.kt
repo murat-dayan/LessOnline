@@ -2,18 +2,16 @@ package com.muratdayan.lessonline.presentation.features.main.profile.otherprofil
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentOtherProfileBinding
-import com.muratdayan.lessonline.presentation.features.main.post.edit.EditPostFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -29,7 +27,7 @@ class OtherProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View{
         _binding = FragmentOtherProfileBinding.inflate(inflater,container,false)
         return binding.root
     }

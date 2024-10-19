@@ -73,7 +73,7 @@ class LoginFragment (): BaseFragment() {
                         hideLoading()
                         val navController = Navigation.findNavController(requireView())
                         val navOptions = NavOptions.Builder()
-                            .setPopUpTo(R.id.nav_graph,true)
+                            .setPopUpTo(R.id.loginFragment,true)
                             .build()
                         if (loginState.isGoogleLogin){
                             if (loginState.isNewUser){
@@ -109,7 +109,11 @@ class LoginFragment (): BaseFragment() {
         }
 
         binding.tvSignUp.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_registerFragment)
+            val navController = Navigation.findNavController(requireView())
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.loginFragment,true)
+                .build()
+            navController.navigate(R.id.action_loginFragment_to_registerFragment,null,navOptions)
         }
 
         binding.tvForgottenPassword.setOnClickListener {
