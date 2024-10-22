@@ -45,10 +45,14 @@
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/likeFragment"
-        android:name="com.muratdayan.lessonline.presentation.features.main.like.LikeFragment"
+        android:id="@+id/answernotificationsfragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.answernotifications.AnswersNotificationsFragment"
         android:label="fragment_like"
-        tools:layout="@layout/fragment_like" />
+        tools:layout="@layout/fragment_answer_notifications" >
+        <action
+            android:id="@+id/action_answernotificationsfragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.muratdayan.lessonline.presentation.features.main.profile.yourprofile.ProfileFragment"

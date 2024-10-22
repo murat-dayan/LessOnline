@@ -42,4 +42,5 @@
     <string name="saved_posts">Saved Posts</string>
     <string name="detail">Detail</string>
     <string name="edit_photo">Edit Photo</string>
+    <string name="answer_notifications">Answer Notifications</string>
 </resources>

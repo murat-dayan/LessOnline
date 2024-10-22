@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.lessonline.domain.model.firebasemodels.Answer
+import com.muratdayan.lessonline.domain.model.firebasemodels.NotificationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,14 +84,14 @@ class AnswerViewModel @Inject constructor(
     }
 
     fun addAnswer(postId: String,answerText:String){
-        firebaseAuth.currentUser?.let {
+        firebaseAuth.currentUser?.let {currentUser->
             canUserAddAnswer(postId){canAdd->
                 if (canAdd){
                     val answer = Answer(
                         postId = postId,
                         answer = answerText,
-                        userId = it.uid,
-                        username = it.displayName.toString(),
+                        userId = currentUser.uid,
+                        username = currentUser.displayName.toString(),
                     )
 
                     firebaseFirestore.collection("posts").document(postId)
@@ -98,6 +99,7 @@ class AnswerViewModel @Inject constructor(
                         .add(answer)
                         .addOnSuccessListener {
                             _addResult.value = true
+                            sendNotificationToPostOwner(postId,currentUser.uid)
                         }
                         .addOnFailureListener {
                             _addResult.value = false
@@ -107,6 +109,25 @@ class AnswerViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun sendNotificationToPostOwner(postId: String,commenterId:String){
+        firebaseFirestore.collection("posts").document(postId).get()
+            .addOnSuccessListener { document->
+                val postOwnerId = document.getString("userId")
+                if (postOwnerId != null && postOwnerId != commenterId){
+                    val noticationData = NotificationModel(
+                        postId = postId,
+                        commenterId = commenterId,
+                        timestamp = System.currentTimeMillis(),
+                        commenterName = firebaseAuth.currentUser?.displayName.toString()
+                    )
+
+                    firebaseFirestore.collection("users").document(postOwnerId)
+                        .collection("notifications")
+                        .add(noticationData)
+                }
+            }
     }
 
 

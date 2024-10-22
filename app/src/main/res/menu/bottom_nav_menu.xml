@@ -26,12 +26,11 @@
         android:title="@string/add_post"/>
 
     <item
-        android:id="@+id/likeFragment"
+        android:id="@+id/answernotificationsfragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/ic_like"
-        android:title="@string/like"
-        />
+        android:icon="@drawable/ic_answer"
+        android:title="@string/answer_notifications" />
 
     <item
         android:id="@+id/profileFragment"

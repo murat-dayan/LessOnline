@@ -11,6 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.ActivityMainBinding
 import com.muratdayan.lessonline.presentation.features.auth.login.LoginState
@@ -26,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
 
-    private val loginViewModel:LoginViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,43 +43,69 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigationView){v,insets->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigationView) { v, insets ->
             v.setPadding(0, 0, 0, 0)
             insets
         }
 
 
 
-        navHostFragment = supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment
         navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
 
         loginViewModel.checkIfUserLoggedIn()
 
         lifecycleScope.launch {
-            loginViewModel.loginState.collectLatest {state->
-                when(state){
-                    is LoginState.Success->{
+            loginViewModel.loginState.collectLatest { state ->
+                when (state) {
+                    is LoginState.Success -> {
                         navController.navigate(R.id.homeFragment)
                     }
-                    else->{
+
+                    else -> {
                         navController.navigate(R.id.loginFragment)
                     }
                 }
             }
         }
 
-        navController.addOnDestinationChangedListener{_, destination, _ ->
-            when(destination.id){
-                R.id.loginFragment, R.id.registerFragment, R.id.getProfileInfoFragment,R.id.forgetPasswordFragment, R.id.editPostFragment -> {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        if (currentUserId != null) {
+            listenForNotifications(currentUserId, binding.bottomNavigationView)
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.loginFragment, R.id.registerFragment, R.id.getProfileInfoFragment, R.id.forgetPasswordFragment, R.id.editPostFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
+
                 else -> {
                     binding.bottomNavigationView.visibility = View.VISIBLE
                 }
             }
         }
 
+    }
+
+    private fun listenForNotifications(
+        currentUserId: String,
+        bottomNavigationView: BottomNavigationView
+    ) {
+        FirebaseFirestore.getInstance().collection("users").document(currentUserId)
+            .collection("notifications")
+            .addSnapshotListener { snapshot, error ->
+                val notificationCount = snapshot?.size() ?: 0
+                val badge = bottomNavigationView.getOrCreateBadge(R.id.answernotificationsfragment)
+                if (notificationCount > 0) {
+                    badge.number = notificationCount
+                    badge.isVisible = true
+                } else {
+                    badge.isVisible = false
+                }
+            }
     }
 
     override fun onSupportNavigateUp(): Boolean {

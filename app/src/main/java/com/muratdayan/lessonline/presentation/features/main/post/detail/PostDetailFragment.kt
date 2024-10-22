@@ -16,13 +16,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentPostDetailBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers.AnswersBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PostDetailFragment : Fragment() {
+class PostDetailFragment : BaseFragment() {
 
     private var _binding: FragmentPostDetailBinding?=null
     private val binding get() = _binding!!
