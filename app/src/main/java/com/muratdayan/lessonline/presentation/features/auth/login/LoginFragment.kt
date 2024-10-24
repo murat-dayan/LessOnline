@@ -45,6 +45,8 @@ class LoginFragment (): BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loginViewModel.checkIfUserIsLoggedIn()
+
         loginViewModel.initializeGoogleSignInClient(requireContext())
 
         activityResultLauncher = registerForActivityResult(
