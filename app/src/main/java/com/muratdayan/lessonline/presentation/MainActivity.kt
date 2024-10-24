@@ -2,6 +2,7 @@ package com.muratdayan.lessonline.presentation
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     private val loginViewModel: LoginViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
 
-        loginViewModel.checkIfUserLoggedIn()
 
         lifecycleScope.launch {
             loginViewModel.loginState.collectLatest { state ->
@@ -88,6 +90,30 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Giriş durumu kontrolü
+        if (mainViewModel.isUserLoggedIn()) {
+            // Kullanıcı giriş yaptıysa, HomeFragment'a git
+            navController.navigate(R.id.homeFragment)
+            navController.popBackStack(R.id.loginFragment, true)
+        } else {
+            // Kullanıcı giriş yapmadıysa, LoginFragment'a git
+            navController.navigate(R.id.loginFragment)
+        }
+
+        // OnBackPressedDispatcher ile geri tuşunu kontrol et
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val currentDestination = navController.currentDestination?.id
+
+                // Eğer HomeFragment'taysak geri tuşuna basıldığında hiçbir şey yapma
+                if (currentDestination == R.id.homeFragment) {
+                    isEnabled = false // Bu callback'i devre dışı bırak
+                } else {
+                    navController.popBackStack() // Normal geri tuşu davranışını uygula
+                }
+            }
+        })
+
     }
 
     private fun listenForNotifications(
@@ -107,6 +133,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()

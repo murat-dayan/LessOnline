@@ -54,10 +54,7 @@ class RegisterFragment : BaseFragment() {
                     is SignUpState.Success -> {
                         hideLoading()
                         val navController = Navigation.findNavController(requireView())
-                        val navOptions = NavOptions.Builder()
-                            .setPopUpTo(R.id.registerFragment,true)
-                            .build()
-                        navController.navigate(R.id.action_registerFragment_to_getProfileInfoFragment,null,navOptions)
+                        navController.navigate(R.id.action_registerFragment_to_getProfileInfoFragment)
                     }
 
                     is SignUpState.Error -> {

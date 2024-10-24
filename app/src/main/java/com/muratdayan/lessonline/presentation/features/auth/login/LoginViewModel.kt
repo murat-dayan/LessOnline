@@ -106,12 +106,6 @@ class LoginViewModel @Inject constructor(
                 _loginState.value = LoginState.Error(exc.message)
             }
     }
-
-    fun checkIfUserLoggedIn(){
-        if (preferenceHelper.isUserLoggedIn()){
-            _loginState.value = LoginState.Success()
-        }
-    }
 }
 
 sealed class LoginState{
