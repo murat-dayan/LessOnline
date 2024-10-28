@@ -22,6 +22,7 @@ import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 @AndroidEntryPoint
 class LoginFragment (): BaseFragment() {
@@ -87,7 +88,7 @@ class LoginFragment (): BaseFragment() {
                     }
                     is LoginState.Error -> {
                         hideLoading()
-                        Toast.makeText(requireContext(), "Error: ${loginState.message}", Toast.LENGTH_SHORT).show()
+                        showError(loginState.message.toString())
                     }
                 }
             }

@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 open class BaseFragment: Fragment() {
 
     private var loadingDialog: LoadingDialogFragment? = null
+    private var errorDialog : ErrorDialogFragment?=null
     private var isLoadingDialogVisible = false
 
     fun showLoading() {
@@ -31,6 +32,27 @@ open class BaseFragment: Fragment() {
                 it.dismiss()
                 loadingDialog = null
                 isLoadingDialogVisible = false // Diyalog kapatıldığında flag'i güncelle
+            }
+        }
+    }
+
+    fun showError(errorText: String) {
+        if (errorDialog == null) {
+            errorDialog = ErrorDialogFragment(errorText)
+        }
+
+        errorDialog?.let {
+            if (!it.isAdded && !isLoadingDialogVisible) {
+                it.show(parentFragmentManager, "error")
+            }
+        }
+    }
+
+    fun hideError() {
+        errorDialog?.let {
+            if (it.isAdded) {
+                it.dismiss()
+                errorDialog = null
             }
         }
     }
