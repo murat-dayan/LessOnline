@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
-        android:name="com.muratdayan.lessonline.presentation.features.main.post.AddPostFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.post.add.AddPostFragment"
         android:label="fragment_add_post"
         tools:layout="@layout/fragment_add_post" >
         <action

@@ -4,10 +4,14 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCapture.OnImageCapturedCallback
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -15,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.File
 import java.util.concurrent.ExecutorService
 import javax.inject.Inject
 
@@ -106,6 +111,28 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
         } ?: run {
             Toast.makeText(context, "Resim seçilemedi", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun takePhoto(context:Context,onImageCaptured: (Uri?)->Unit){
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(createImageFile(context)).build()
+
+        imageCapture.takePicture(outputOptions,ContextCompat.getMainExecutor(context),
+            object : ImageCapture.OnImageSavedCallback{
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    onImageCaptured(outputFileResults.savedUri)
+                }
+
+                override fun onError(exception: ImageCaptureException) {
+                    Log.e("PhotoViewModel",exception.message.toString())
+                }
+
+            })
+
+    }
+
+    private fun createImageFile(context: Context): File {
+        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return  File.createTempFile("JPEG_${System.currentTimeMillis()}_",".jpg",storageDir)
     }
 
 }

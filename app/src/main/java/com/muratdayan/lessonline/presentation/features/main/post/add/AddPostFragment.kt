@@ -1,9 +1,8 @@
-package com.muratdayan.lessonline.presentation.features.main.post
+package com.muratdayan.lessonline.presentation.features.main.post.add
 
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.databinding.FragmentAddPostBinding
+import com.muratdayan.lessonline.presentation.features.main.post.PhotoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -85,6 +85,15 @@ class AddPostFragment : Fragment() {
         }
 
         photoViewModel.checkCameraPermission(this,requireContext(),cameraPermissionLauncher,binding.previewView)
+
+        binding.fabTakePhoto.setOnClickListener {
+            photoViewModel.takePhoto(requireContext()){uri ->
+                uri?.let {
+                    val action = AddPostFragmentDirections.actionAddPostFragmentToEditPostFragment(it.toString())
+                    Navigation.findNavController(requireView()).navigate(action)
+                } ?: Toast.makeText(requireContext(),"Photo not Taken",Toast.LENGTH_SHORT).show()
+            }
+        }
 
 
     }

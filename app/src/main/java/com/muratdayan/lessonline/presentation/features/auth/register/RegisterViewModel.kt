@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
+import com.muratdayan.lessonline.presentation.util.PreferenceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val preferenceHelper: PreferenceHelper
 ) : ViewModel() {
 
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Nothing)
@@ -74,6 +76,7 @@ class RegisterViewModel @Inject constructor(
         firestore.collection("users").document(uid)
             .set(userProfile)
             .addOnSuccessListener {
+                preferenceHelper.saveUserLoginStatus(true)
                 _signUpState.value = SignUpState.Success
             }
             .addOnFailureListener {e->
