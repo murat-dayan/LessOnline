@@ -93,5 +93,9 @@ dependencies {
     //LOTTIE
     implementation (libs.lottie)
 
+    // IMAGE CROP
     implementation(libs.android.image.cropper)
+
+    // ADMOB
+    implementation (libs.play.services.ads)
 }

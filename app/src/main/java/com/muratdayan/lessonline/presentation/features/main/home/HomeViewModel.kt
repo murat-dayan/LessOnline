@@ -1,8 +1,11 @@
 package com.muratdayan.lessonline.presentation.features.main.home
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.ads.AdRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,6 +25,21 @@ class HomeViewModel @Inject constructor(
 
     private val _postList = MutableStateFlow<PostListState>(PostListState.Nothing)
     val postList: StateFlow<PostListState> = _postList.asStateFlow()
+
+    // AdRequest'i canlı veri olarak yönetmek için LiveData
+    private val _adRequest = MutableLiveData<AdRequest>()
+    val adRequest: LiveData<AdRequest> get() = _adRequest
+
+    init {
+        loadAd() // Reklamı başlat
+    }
+
+    private fun loadAd() {
+        // AdRequest oluşturuluyor
+        val request = AdRequest.Builder()
+            .build()
+        _adRequest.value = request
+    }
 
 
     fun fetchPosts() {

@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.LoadAdError
 import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentHomeBinding
@@ -45,6 +48,23 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        homeViewModel.adRequest.observe(viewLifecycleOwner){adRequest->
+            binding.adView.loadAd(adRequest)
+        }
+
+        binding.adView.adListener = object : AdListener(){
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                Toast.makeText(requireContext(),"reklam yüklendi",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onAdFailedToLoad(p0: LoadAdError) {
+                super.onAdFailedToLoad(p0)
+                Log.e("HomeFragment",p0.message)
+            }
+
+        }
 
         postAdapter = PostAdapter(emptyList(), onAnswerIconClick = {
             val answersBottomSheet = AnswersBottomSheetFragment(it)
@@ -109,6 +129,7 @@ class HomeFragment : Fragment() {
         homeViewModel.fetchPosts()
 
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     private fun toggleLike(post: Post) {

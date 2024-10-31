@@ -25,6 +25,7 @@ navigationFragmentKtx = "2.8.2"
 navigationUiKtx = "2.8.2"
 firebaseFirestore = "25.1.0"
 firebaseStorage = "21.0.1"
+playServicesAds = "23.5.0"
 playServicesAuth = "21.2.0"
 shimmer = "0.5.0"
 
@@ -56,6 +57,7 @@ androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navi
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
