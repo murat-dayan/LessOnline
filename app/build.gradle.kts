@@ -98,4 +98,7 @@ dependencies {
 
     // ADMOB
     implementation (libs.play.services.ads)
+
+    // BILLING LIBRARY
+    implementation(libs.billing.ktx)
 }

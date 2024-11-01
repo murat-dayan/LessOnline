@@ -13,5 +13,6 @@ data class UserProfile(
     val postPhotoUrls: List<String> = emptyList(), // Kullanıcının paylaştığı fotoğrafların URL'leri
     val isProfileComplete: Boolean = false,
     val role: String = "Student",
-    val savedPosts: List<String> = emptyList()
+    val savedPosts: List<String> = emptyList(),
+    val isPremium: Boolean = false
 )

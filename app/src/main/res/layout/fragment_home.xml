@@ -8,25 +8,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.features.main.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/tv_app_name"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LessOnLine"
-        android:layout_margin="@dimen/margin_small"
-        android:textSize="@dimen/text_large"
-        android:fontFamily="@font/poppins"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        >
+
+        <TextView
+            android:id="@+id/tv_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LessOnLine"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/margin_small"
+            android:textSize="@dimen/text_large"
+            android:fontFamily="@font/poppins"
+
+            />
+
+        <ImageButton
+            android:id="@+id/iv_premium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/transparent"
+            android:contentDescription="@string/premium_icon"
+            android:src="@drawable/ic_premium"
+            />
+
+    </LinearLayout>
+
+
     
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/sfl_for_post"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/tv_app_name"
+        app:layout_constraintTop_toBottomOf="@id/ll_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +91,7 @@
         ads:adUnitId="ca-app-pub-3351884605326484/1404724853"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintTop_toBottomOf="@id/tv_app_name"
+        ads:layout_constraintTop_toBottomOf="@id/ll_header"
         />
 
     <FrameLayout

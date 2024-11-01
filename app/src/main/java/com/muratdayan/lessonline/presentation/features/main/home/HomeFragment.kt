@@ -128,6 +128,10 @@ class HomeFragment : Fragment() {
 
         homeViewModel.fetchPosts()
 
+        binding.ivPremium.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_premiumFragment)
+        }
+
     }
 
 
