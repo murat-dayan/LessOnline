@@ -15,15 +15,17 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.muratdayan.lessonline.R
+import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.databinding.FragmentProfileBinding
 import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import com.muratdayan.lessonline.presentation.features.main.post.PhotoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment() {
 
     private var _binding : FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -104,21 +106,36 @@ class ProfileFragment : Fragment() {
 
 
         lifecycleScope.launch {
-            profileViewModel.userProfile.collectLatest { userProfile->
-                if (userProfile != null){
-                    binding.tvUsername.text = userProfile.username
-                    binding.tvFollowers.text = userProfile.followers.size.toString()
-                    binding.tvFollowing.text = userProfile.following.size.toString()
-                    binding.tvBio.text = userProfile.bio
-                    if (userProfile.profilePhotoUrl.isNotEmpty()){
-                        Glide.with(requireContext())
-                            .load(userProfile.profilePhotoUrl)
-                            .into(binding.ivProfile)
+            profileViewModel.userProfile.collectLatest { result->
+                when(result){
+                    is Result.Error -> {
+                        hideLoading()
+                        showError(result.exception.message.toString())
                     }
-                }else{
-                    binding.tvUsername.text = "User not found"
-                    binding.tvFollowers.text = "0"
-                    binding.tvFollowing.text = "0"
+                    Result.Loading -> {
+                        showLoading()
+                    }
+                    is Result.Success -> {
+                        hideLoading()
+                        val userProfile = result.data
+                        if (userProfile != null){
+                            binding.tvUsername.text = userProfile.username
+                            binding.tvFollowers.text = userProfile.followers.size.toString()
+                            binding.tvFollowing.text = userProfile.following.size.toString()
+                            binding.tvBio.text = userProfile.bio
+                            if (userProfile.profilePhotoUrl.isNotEmpty()){
+                                Glide.with(requireContext())
+                                    .load(userProfile.profilePhotoUrl)
+                                    .into(binding.ivProfile)
+                            }
+                        }else{
+                            binding.tvUsername.text = "User not found"
+                            binding.tvFollowers.text = "0"
+                            binding.tvFollowing.text = "0"
+                        }
+                    }
+
+                    Result.Idle -> {}
                 }
             }
         }

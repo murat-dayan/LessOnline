@@ -3,14 +3,19 @@ package com.muratdayan.lessonline.presentation.features.main.profile.yourprofile
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.muratdayan.lessonline.core.Result
+import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 
@@ -18,10 +23,11 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseFirestore: FirebaseFirestore,
-    private val firebaseStorage: FirebaseStorage
+    private val firebaseStorage: FirebaseStorage,
+    private val firebaseRepository: FirebaseRepository
 ): ViewModel()  {
 
-    private val _userProfile = MutableStateFlow<UserProfile?>(null)
+    private val _userProfile = MutableStateFlow<Result<UserProfile?>>(Result.Idle)
     val userProfile = _userProfile.asStateFlow()
 
     private val _userPosts = MutableStateFlow<List<Post>>(emptyList())
@@ -32,28 +38,10 @@ class ProfileViewModel @Inject constructor(
 
 
     fun getUserProfile(){
-        val currentUser = firebaseAuth.currentUser
-        if (currentUser != null){
-            val uid = currentUser.uid
-            val userDocRef = firebaseFirestore.collection("users").document(uid)
-
-            userDocRef.get()
-                .addOnSuccessListener {document->
-                    if (document != null && document.exists()){
-                        val userProfile = document.toObject(UserProfile::class.java)
-                        _userProfile.value = userProfile
-                    }else{
-                        _userProfile.value = null
-                        Log.d("ProfileViewModel", "User profile not found")
-                    }
-                }
-                .addOnFailureListener {
-                    _userProfile.value = null
-                    Log.d("ProfileViewModel", "Error getting user profile", it)
-                }
-        }else{
-            _userProfile.value = null
-            Log.d("ProfileViewModel", "Current user is null")
+        viewModelScope.launch {
+            firebaseRepository.getUserProfile().collectLatest { result->
+                _userProfile.value = result
+            }
         }
     }
 

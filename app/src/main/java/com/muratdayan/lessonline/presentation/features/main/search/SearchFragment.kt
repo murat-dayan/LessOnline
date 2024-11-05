@@ -14,13 +14,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentSearchBinding
 import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import com.muratdayan.lessonline.presentation.features.main.profile.yourprofile.ProfileFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
 
     private var _binding : FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -76,9 +77,6 @@ class SearchFragment : Fragment() {
         })
 
         searchViewModel.fetchPosts()
-
-
-
     }
 
     override fun onDestroy() {

@@ -11,13 +11,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.databinding.FragmentOtherProfileBinding
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class OtherProfileFragment : Fragment() {
+class OtherProfileFragment : BaseFragment() {
 
     private var _binding : FragmentOtherProfileBinding?=null
     private val binding get() = _binding!!
@@ -42,17 +44,32 @@ class OtherProfileFragment : Fragment() {
         otherProfileViewModel.getUserProfile(otherUserId)
 
         lifecycleScope.launch {
-            otherProfileViewModel.userProfile.collectLatest { userProfile->
-                if (userProfile != null){
-                    binding.tvUsername.text = userProfile.username
-                    binding.tvFollowers.text = userProfile.followers.size.toString()
-                    binding.tvFollowing.text = userProfile.following.size.toString()
-                    binding.tvBio.text = userProfile.bio
-                    if (userProfile.profilePhotoUrl.isNotEmpty()){
-                        Glide.with(requireContext())
-                            .load(userProfile.profilePhotoUrl)
-                            .into(binding.ivProfile)
+            otherProfileViewModel.userProfile.collectLatest { result->
+                when(result){
+                    is Result.Error -> {
+                        hideLoading()
+                        showError(result.exception.message.toString())
                     }
+                    Result.Loading -> {
+                        showLoading()
+                    }
+                    is Result.Success -> {
+                        hideLoading()
+                        val userProfile = result.data
+                        if (userProfile != null){
+                            binding.tvUsername.text = userProfile.username
+                            binding.tvFollowers.text = userProfile.followers.size.toString()
+                            binding.tvFollowing.text = userProfile.following.size.toString()
+                            binding.tvBio.text = userProfile.bio
+                            if (userProfile.profilePhotoUrl.isNotEmpty()){
+                                Glide.with(requireContext())
+                                    .load(userProfile.profilePhotoUrl)
+                                    .into(binding.ivProfile)
+                            }
+                        }
+                    }
+
+                    Result.Idle -> {}
                 }
             }
         }

@@ -1,63 +1,42 @@
 package com.muratdayan.lessonline.presentation.features.main.profile.info
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
-import com.muratdayan.lessonline.presentation.features.auth.register.SignUpState
+import com.muratdayan.lessonline.core.Result
+import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GetProfileInfoViewModel @Inject constructor(
-    private val firebaseFirestore: FirebaseFirestore,
-    private val firebaseAuth: FirebaseAuth
-) : ViewModel(){
+    private val firebaseAuth: FirebaseAuth,
+    private val firebaseRepository: FirebaseRepository
+) : ViewModel() {
 
-    private val _saveState = MutableStateFlow<SaveState>(SaveState.Nothing)
+    private val _saveState = MutableStateFlow<Result<Unit>>(Result.Idle)
     val saveState = _saveState.asStateFlow()
 
 
-    fun createUserProfile(name: String, bio:String?,role:String?) {
+    fun createUserProfile(name: String, bio: String?, role: String?) {
 
         val uid = firebaseAuth.currentUser?.uid ?: return
         val email = firebaseAuth.currentUser?.email ?: return
+        val newRole = role ?: "Student"
 
-        _saveState.value = SaveState.Loading
+        viewModelScope.launch {
 
-        firebaseAuth.currentUser?.let { user ->
-            val userProfile =
-                UserProfile(
-                    userId = user.uid,
-                    username = name,
-                    userEmail = email,
-                    bio = bio ?: "",
-                    followers = emptyList(),
-                    following = emptyList(),
-                    profilePhotoUrl = "",
-                    postPhotoUrls = emptyList(),
-                    isProfileComplete = false,
-                    role = role ?: "Student"
-                )
+            firebaseRepository.createUserProfile(
+                uid, email = email, name = name, bio = bio, role = newRole
+            ).collectLatest { result ->
+                _saveState.value = result
+            }
 
-
-            firebaseFirestore.collection("users").document(uid)
-                .set(userProfile)
-                .addOnSuccessListener {
-                    _saveState.value = SaveState.Success
-                }
-                .addOnFailureListener { e ->
-                    _saveState.value = SaveState.Error(e.message)
-                }
         }
     }
-}
-
-sealed class SaveState {
-    object Nothing : SaveState()
-    object Loading : SaveState()
-    object Success : SaveState()
-    data class Error(val message: String? = null) : SaveState()
 }

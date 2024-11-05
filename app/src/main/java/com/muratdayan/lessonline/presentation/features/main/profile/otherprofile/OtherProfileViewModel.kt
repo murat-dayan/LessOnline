@@ -5,11 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.muratdayan.lessonline.core.Result
+import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -17,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class OtherProfileViewModel @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val firebaseRepository: FirebaseRepository
 ) :ViewModel(){
 
 
@@ -27,7 +31,7 @@ class OtherProfileViewModel @Inject constructor(
     private val _followMessage = MutableStateFlow<String?>(null)
     val followMessage: StateFlow<String?> = _followMessage.asStateFlow()
 
-    private val _userProfile = MutableStateFlow<UserProfile?>(null)
+    private val _userProfile = MutableStateFlow<Result<UserProfile?>>(Result.Idle)
     val userProfile = _userProfile.asStateFlow()
 
     private val currentUserId: String get() = firebaseAuth.currentUser?.uid?:""
@@ -102,22 +106,11 @@ class OtherProfileViewModel @Inject constructor(
     }
 
     fun getUserProfile(otherUserId: String){
-            val userDocRef = firebaseFirestore.collection("users").document(otherUserId)
-
-            userDocRef.get()
-                .addOnSuccessListener {document->
-                    if (document != null && document.exists()){
-                        val userProfile = document.toObject(UserProfile::class.java)
-                        _userProfile.value = userProfile
-                    }else{
-                        _userProfile.value = null
-                        Log.d("ProfileViewModel", "User profile not found")
-                    }
-                }
-                .addOnFailureListener {
-                    _userProfile.value = null
-                    Log.d("ProfileViewModel", "Error getting user profile", it)
-                }
+        viewModelScope.launch {
+            firebaseRepository.getUserProfile(otherUserId = otherUserId).collectLatest { result->
+                _userProfile.value = result
+            }
+        }
     }
 
 }

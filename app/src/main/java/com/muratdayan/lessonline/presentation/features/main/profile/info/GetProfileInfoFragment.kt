@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
+import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.databinding.FragmentGetProfileInfoBinding
 import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,9 +59,9 @@ class GetProfileInfoFragment : BaseFragment() {
         }
 
         lifecycleScope.launch {
-            getProfileInfoViewModel.saveState.collectLatest { saveState->
-                when(saveState){
-                    is SaveState.Success -> {
+            getProfileInfoViewModel.saveState.collectLatest { result->
+                when(result){
+                    is Result.Success -> {
                         hideLoading()
                         val navController = Navigation.findNavController(requireView())
                         val navOptions = NavOptions.Builder()
@@ -68,15 +69,16 @@ class GetProfileInfoFragment : BaseFragment() {
                             .build()
                         navController.navigate(R.id.action_getProfileInfoFragment_to_homeFragment,null,navOptions)
                     }
-                    is SaveState.Error -> {
+                    is Result.Error -> {
                         hideLoading()
-                        Toast.makeText(requireContext(),saveState.message,Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),result.exception.message.toString(),Toast.LENGTH_SHORT).show()
                     }
-                    is SaveState.Loading -> {
+                    is Result.Loading -> {
                         showLoading()
                     }
-                    else -> {
-                        hideLoading()
+
+                    Result.Idle -> {
+
                     }
                 }
             }

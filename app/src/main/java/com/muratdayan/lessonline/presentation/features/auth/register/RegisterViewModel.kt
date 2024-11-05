@@ -1,21 +1,25 @@
 package com.muratdayan.lessonline.presentation.features.auth.register
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import com.muratdayan.lessonline.core.Result
+import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
 import com.muratdayan.lessonline.presentation.util.PreferenceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore,
-    private val preferenceHelper: PreferenceHelper
+    private val preferenceHelper: PreferenceHelper,
+    private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Nothing)
@@ -60,30 +64,25 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun createUserProfile(uid: String, email: String?, name: String?) {
-        val userProfile = UserProfile(
-            userId = uid,
-            username = name ?: "",
-            userEmail = email ?: "",
-            bio = "",
-            followers = emptyList(),
-            following = emptyList(),
-            profilePhotoUrl = "",
-            postPhotoUrls = emptyList(),
-            isProfileComplete = false,
-            role = "Student"
-        )
+        viewModelScope.launch {
+            firebaseRepository.createUserProfile(uid, email, name).collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        _signUpState.value = SignUpState.Loading
+                    }
+                    is Result.Success -> {
+                        preferenceHelper.saveUserLoginStatus(true)
+                        _signUpState.value = SignUpState.Success
+                    }
+                    is Result.Error -> {
+                        _signUpState.value = SignUpState.Error(result.exception.message)
+                    }
 
-        firestore.collection("users").document(uid)
-            .set(userProfile)
-            .addOnSuccessListener {
-                preferenceHelper.saveUserLoginStatus(true)
-                _signUpState.value = SignUpState.Success
+                    Result.Idle -> {}
+                }
             }
-            .addOnFailureListener {e->
-                _signUpState.value = SignUpState.Error(e.message)
-            }
+        }
     }
-
 
 }
 
