@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="selectedColor">#8C4A60</color>
+    <color name="unSelectedColor">#B3B3B3</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
@@ -156,4 +158,6 @@
     <color name="colorOnCustomColor_highContrast">#FFFFFF</color>
     <color name="colorCustomColorContainer_highContrast">#1B4472</color>
     <color name="colorOnCustomColorContainer_highContrast">#FFFFFF</color>
+
 </resources>
+

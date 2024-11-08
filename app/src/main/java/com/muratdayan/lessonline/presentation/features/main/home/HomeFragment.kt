@@ -3,13 +3,10 @@ package com.muratdayan.lessonline.presentation.features.main.home
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -22,13 +19,14 @@ import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentHomeBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 import com.muratdayan.lessonline.presentation.adapter.PostAdapter
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers.AnswersBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -49,7 +47,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeViewModel.adRequest.observe(viewLifecycleOwner){adRequest->
+        /*homeViewModel.adRequest.observe(viewLifecycleOwner){adRequest->
             binding.adView.loadAd(adRequest)
         }
 
@@ -64,7 +62,7 @@ class HomeFragment : Fragment() {
                 Log.e("HomeFragment",p0.message)
             }
 
-        }
+        }*/
 
         postAdapter = PostAdapter(emptyList(), onAnswerIconClick = {
             val answersBottomSheet = AnswersBottomSheetFragment(it)
@@ -117,8 +115,16 @@ class HomeFragment : Fragment() {
                         stopShimmer()
                         postAdapter.updatePostList(postListState.postList)
                         isFirstLoad = false
+
+                        if (postListState.postList.isEmpty()) {
+                            binding.tvEmptyList.visibility = View.VISIBLE
+                        } else {
+                            binding.tvEmptyList.visibility = View.GONE
+                        }
                     }
                     is HomeViewModel.PostListState.Error->{
+                        stopShimmer()
+                        showError(postListState.message.toString())
                         Log.d("HomeFragment","postliststate: ${postListState.message}")
                     }
                     else->{}
@@ -129,7 +135,7 @@ class HomeFragment : Fragment() {
         homeViewModel.fetchPosts()
 
         binding.ivPremium.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_premiumFragment)
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatBotFragment)
         }
 
     }

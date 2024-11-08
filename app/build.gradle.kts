@@ -45,6 +45,8 @@ android {
 
 dependencies {
 
+    implementation(project(":chatbot"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -101,4 +103,7 @@ dependencies {
 
     // BILLING LIBRARY
     implementation(libs.billing.ktx)
+
+    // SPLASH SCREEN API
+    implementation (libs.androidx.core.splashscreen)
 }

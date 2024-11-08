@@ -45,14 +45,14 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun hasCameraPermission(context: Context): Boolean {
+    private fun hasCameraPermission(context: Context): Boolean {
         return ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun requestCameraPermission(launcher: ActivityResultLauncher<String>) {
+    private fun requestCameraPermission(launcher: ActivityResultLauncher<String>) {
         launcher.launch(Manifest.permission.CAMERA)
     }
 
@@ -66,7 +66,7 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
     }
 
 
-    fun bindPreview(fragment:Fragment,cameraProvider: ProcessCameraProvider, previewView: PreviewView) {
+    private fun bindPreview(fragment:Fragment, cameraProvider: ProcessCameraProvider, previewView: PreviewView) {
         val preview = Preview.Builder().build().also {
             it.setSurfaceProvider(previewView.surfaceProvider)
         }

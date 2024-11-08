@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_homeFragment_to_premiumFragment"
             app:destination="@id/premiumFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatBotFragment"
+            app:destination="@id/chatBotFragment" />
     </fragment>
     <fragment
         android:id="@+id/answernotificationsfragment"
@@ -162,4 +165,8 @@
         android:name="com.muratdayan.lessonline.presentation.features.main.premium.PremiumFragment"
         android:label="fragment_premium"
         tools:layout="@layout/fragment_premium" />
+    <fragment
+        android:id="@+id/chatBotFragment"
+        android:name="com.muratdayan.chatbot.presentation.chatbot.ChatBotFragment"
+        android:label="ChatBotFragment" />
 </navigation>
