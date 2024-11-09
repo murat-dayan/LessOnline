@@ -6,7 +6,7 @@
         android:id="@+id/homeFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/home_bottom_nav_icon_state"
         android:title="@string/home"
         />
 
