@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
+import com.muratdayan.lessonline.presentation.util.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,6 +56,7 @@ class EditPostViewModel @Inject constructor(
                 .addOnSuccessListener { document ->
                     val username = document.getString("username")
                     val userPhoto = document.getString("profilePhotoUrl")
+                    val userRole = document.getString("role")
                     val post = Post(
                         userId = user.uid,
                         username = username ?: "",
@@ -62,6 +64,7 @@ class EditPostViewModel @Inject constructor(
                         photoUri = photoUri,
                         comment = comment,
                         postAnswers = postAnswers,
+                        ownerRole = userRole ?: UserRole.STUDENT.toString(),
                         timestamp = System.currentTimeMillis()
                     )
 

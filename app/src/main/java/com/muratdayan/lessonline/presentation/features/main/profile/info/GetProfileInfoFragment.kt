@@ -15,6 +15,7 @@ import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.databinding.FragmentGetProfileInfoBinding
 import com.muratdayan.lessonline.presentation.base.BaseFragment
+import com.muratdayan.lessonline.presentation.util.UserRole
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class GetProfileInfoFragment : BaseFragment() {
 
     private val getProfileInfoViewModel: GetProfileInfoViewModel by viewModels()
 
-    private var selectedRole: String?=null
+    private var selectedRole: UserRole?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +41,7 @@ class GetProfileInfoFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val roles = arrayOf("Student","Teacher")
+        val roles = arrayOf(UserRole.STUDENT,UserRole.TEACHER)
 
         val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,roles)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -48,8 +49,8 @@ class GetProfileInfoFragment : BaseFragment() {
 
         binding.spRole.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedRole = parent?.getItemAtPosition(position) as String
-                Toast.makeText(requireContext(),"$selectedRole",Toast.LENGTH_SHORT).show()
+                selectedRole = parent?.getItemAtPosition(position) as UserRole
+                //Toast.makeText(requireContext(),"$selectedRole",Toast.LENGTH_SHORT).show()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

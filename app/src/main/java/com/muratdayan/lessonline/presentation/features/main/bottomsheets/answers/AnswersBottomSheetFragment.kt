@@ -1,6 +1,7 @@
     package com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers
 
     import android.R
+    import android.annotation.SuppressLint
     import android.os.Bundle
     import android.util.Log
     import android.view.LayoutInflater
@@ -9,6 +10,7 @@
     import android.widget.AdapterView
     import android.widget.ArrayAdapter
     import androidx.fragment.app.viewModels
+    import androidx.lifecycle.Observer
     import androidx.lifecycle.lifecycleScope
     import androidx.recyclerview.widget.LinearLayoutManager
     import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -33,6 +35,8 @@
         private lateinit var answerAdapter: AnswerAdapter
         private var selectedAnswer: String?=null
 
+        private var isPostOwner:Boolean = false
+
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -42,6 +46,7 @@
             return binding.root
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
@@ -51,18 +56,28 @@
 
             answerViewModel.getAnswers(postId)
             answerViewModel.getPostAnswers(postId)
+            answerViewModel.checkIfPostOwner(postId)
 
-            answerAdapter = AnswerAdapter()
-            binding.rvAnswers.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = answerAdapter
-            }
 
-            lifecycleScope.launch(Dispatchers.Main) {
-                answerViewModel.answers.collectLatest {answerList->
-                    Log.d("Answers", "Answer list size: ${answerList.size}")
-                    answerAdapter.submitList(answerList)
+
+
+
+
+            answerViewModel.isPostOwner.observe(viewLifecycleOwner) { isPostOwnerRes ->
+                answerAdapter = AnswerAdapter(isPostOwnerRes)
+
+                binding.rvAnswers.apply {
+                    layoutManager = LinearLayoutManager(requireContext())
+                    adapter = answerAdapter
                 }
+
+                lifecycleScope.launch(Dispatchers.Main) {
+                    answerViewModel.answers.collectLatest {answerList->
+                        Log.d("Answers", "Answer list size: ${answerList.size}")
+                        answerAdapter.submitList(answerList)
+                    }
+                }
+
             }
 
             lifecycleScope.launch {
@@ -102,9 +117,6 @@
                     }
                 }
             }
-
-            
-
         }
 
         override fun onDestroy() {

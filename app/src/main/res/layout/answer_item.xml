@@ -49,6 +49,20 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_username"
                 app:layout_constraintStart_toStartOf="@id/tv_username"/>
 
+            <ImageButton
+                android:id="@+id/ibtn_discuss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/discuss"
+                android:src="@drawable/ic_discuss"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/transparent"
+                app:layout_constraintTop_toBottomOf="@id/tv_timestamp"
+                app:layout_constraintEnd_toEndOf="@id/tv_timestamp"
+                app:layout_constraintStart_toStartOf="@id/tv_timestamp"
+                />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

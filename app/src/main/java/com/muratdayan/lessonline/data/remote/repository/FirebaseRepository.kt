@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
+import com.muratdayan.lessonline.presentation.util.UserRole
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -43,7 +44,7 @@ class FirebaseRepository @Inject constructor(
         email:String?,
         name:String?,
         bio:String? ="",
-        role:String = "Student",
+        role:UserRole = UserRole.STUDENT,
     ) : Flow<Result<Unit>> = flow {
         emit(Result.Loading)
 

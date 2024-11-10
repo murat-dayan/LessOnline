@@ -1,11 +1,15 @@
 package com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.auth.User
 import com.muratdayan.lessonline.domain.model.firebasemodels.Answer
 import com.muratdayan.lessonline.domain.model.firebasemodels.NotificationModel
+import com.muratdayan.lessonline.presentation.util.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,8 +31,28 @@ class AnswerViewModel @Inject constructor(
     private val _addResult = MutableStateFlow<Boolean>(false)
     val addResult : StateFlow<Boolean> = _addResult.asStateFlow()
 
+
     private val _postAnswers = MutableStateFlow<List<String>?>(null)
     val postAnswers : StateFlow<List<String>?> = _postAnswers.asStateFlow()
+
+    private val _isPostOwner = MutableLiveData<Boolean>()
+    val isPostOwner: LiveData<Boolean> = _isPostOwner
+
+    fun checkIfPostOwner(postId: String){
+        val currentUserId = firebaseAuth.currentUser?.uid
+        if (currentUserId == null){
+            _isPostOwner.value = false
+            return
+        }
+        firebaseFirestore.collection("posts").document(postId).get()
+            .addOnSuccessListener { document->
+                val postOwnerId = document.getString("userId")
+                _isPostOwner.value = postOwnerId == currentUserId
+            }
+            .addOnFailureListener {
+                _isPostOwner.value = false
+            }
+    }
 
 
     fun getAnswers(postId:String){
@@ -129,20 +153,12 @@ class AnswerViewModel @Inject constructor(
                 }
             }
     }
-
-
-    suspend fun loadAnswers(postId: String) {
+    /*suspend fun loadAnswers(postId: String) {
         // Veri yükleme kodu
         answers.collectLatest { newAnswers ->
             _answers.value = newAnswers // StateFlow veya LiveData kullanıyorsanız
             Log.d("Answers", "Answer list size: ${newAnswers.size}")
         }
-    }
-
-
-
-
-
-
+    }*/
 
 }

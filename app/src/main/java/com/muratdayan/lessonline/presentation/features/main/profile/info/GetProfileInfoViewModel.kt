@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
+import com.muratdayan.lessonline.presentation.util.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,11 +24,11 @@ class GetProfileInfoViewModel @Inject constructor(
     val saveState = _saveState.asStateFlow()
 
 
-    fun createUserProfile(name: String, bio: String?, role: String?) {
+    fun createUserProfile(name: String, bio: String?, role: UserRole?) {
 
         val uid = firebaseAuth.currentUser?.uid ?: return
         val email = firebaseAuth.currentUser?.email ?: return
-        val newRole = role ?: "Student"
+        val newRole = role ?: UserRole.STUDENT
 
         viewModelScope.launch {
 
