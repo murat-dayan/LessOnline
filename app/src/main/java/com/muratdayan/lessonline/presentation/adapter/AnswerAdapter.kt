@@ -14,13 +14,14 @@ import com.muratdayan.lessonline.presentation.util.UserRole
 import java.util.Date
 
 class AnswerAdapter(
-    private val isPostOwner: Boolean
+    private val isPostOwner: Boolean,
+    private val currentUserId: String
 ) : ListAdapter<Answer, AnswerAdapter.AnswerViewHolder>(AnswerDiffCallback()) {
 
 
     class AnswerViewHolder(private val binding: AnswerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(answer: Answer, isPostOwner: Boolean) {
+        fun bind(answer: Answer, isPostOwner: Boolean, currentUserId: String) {
             binding.tvAnswer.text = answer.answer
             binding.tvUsername.text = answer.username
             val savedTimeStamp = answer.timestamp as? Long ?: return
@@ -30,7 +31,7 @@ class AnswerAdapter(
 
 
             binding.ibtnDiscuss.visibility =
-                if (isPostOwner) View.VISIBLE else View.GONE
+                if (isPostOwner && answer.userId != currentUserId) View.VISIBLE else View.GONE
 
 
         }
@@ -69,6 +70,6 @@ class AnswerAdapter(
     }
 
     override fun onBindViewHolder(holder: AnswerViewHolder, position: Int) {
-        holder.bind(getItem(position), isPostOwner)
+        holder.bind(getItem(position), isPostOwner ,currentUserId)
     }
 }

@@ -15,6 +15,7 @@
     import androidx.recyclerview.widget.LinearLayoutManager
     import com.google.android.material.bottomsheet.BottomSheetBehavior
     import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+    import com.google.firebase.auth.FirebaseAuth
     import com.muratdayan.lessonline.databinding.BottomSheetFragmentAnswersBinding
     import com.muratdayan.lessonline.presentation.adapter.AnswerAdapter
     import dagger.hilt.android.AndroidEntryPoint
@@ -64,7 +65,8 @@
 
 
             answerViewModel.isPostOwner.observe(viewLifecycleOwner) { isPostOwnerRes ->
-                answerAdapter = AnswerAdapter(isPostOwnerRes)
+                val currentUserId =FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                answerAdapter = AnswerAdapter(isPostOwnerRes, currentUserId)
 
                 binding.rvAnswers.apply {
                     layoutManager = LinearLayoutManager(requireContext())

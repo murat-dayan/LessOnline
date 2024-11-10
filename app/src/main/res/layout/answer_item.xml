@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_margin="@dimen/margin_small"
         app:cardCornerRadius="@dimen/card_corner_radius"
         >
@@ -49,22 +50,21 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_username"
                 app:layout_constraintStart_toStartOf="@id/tv_username"/>
 
-            <ImageButton
-                android:id="@+id/ibtn_discuss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/discuss"
-                android:src="@drawable/ic_discuss"
-                android:visibility="gone"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:background="@color/transparent"
-                app:layout_constraintTop_toBottomOf="@id/tv_timestamp"
-                app:layout_constraintEnd_toEndOf="@id/tv_timestamp"
-                app:layout_constraintStart_toStartOf="@id/tv_timestamp"
-                />
+
 
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/ibtn_discuss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/discuss"
+        android:src="@drawable/ic_discuss"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"
+        android:background="@color/transparent"
+        />
 </LinearLayout>
