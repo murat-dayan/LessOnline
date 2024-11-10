@@ -70,4 +70,28 @@ class FirebaseRepository @Inject constructor(
     }.catch { exception ->
         emit(Result.Error(exception))  // Hata oluşursa hatayı yay
     }
+
+    suspend fun checkUserRole(): Flow<Result<Boolean>> = flow{
+        emit(Result.Loading)
+
+        val userId = firebaseAuth.currentUser?.uid
+
+        if (userId == null){
+            emit(Result.Error(NullPointerException("Current user is null")))
+            return@flow
+        }
+
+        val userDocRef = firebaseFirestore.collection("users").document(userId)
+        val document = userDocRef.get().await()
+
+        if (document.exists()){
+            val userProfile = document.toObject(UserProfile::class.java)
+            val isTeacher = userProfile?.role == UserRole.TEACHER
+            emit(Result.Success(isTeacher))
+        }else{
+            emit(Result.Success(false))
+        }
+    }.catch { exception->
+        emit(Result.Error(exception))
+    }
 }

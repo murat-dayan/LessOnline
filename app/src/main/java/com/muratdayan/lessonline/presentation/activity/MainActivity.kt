@@ -1,6 +1,7 @@
-package com.muratdayan.lessonline.presentation
+package com.muratdayan.lessonline.presentation.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -11,7 +12,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -59,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
 
+        mainViewModel.checkUserRole()
+        mainViewModel.checkAuthUser()
+
 
         lifecycleScope.launch {
             loginViewModel.loginState.collectLatest { state ->
@@ -72,6 +75,14 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        mainViewModel.isTeacher.observe(this){isTeacher->
+            Log.d("MainActivity","isTeacher-> $isTeacher")
+            val menu = binding.bottomNavigationView.menu
+            val addPostMenuItem = menu.findItem(R.id.addPostFragment)
+            addPostMenuItem.isVisible = isTeacher
+            binding.bottomNavigationView.invalidate()
         }
 
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
