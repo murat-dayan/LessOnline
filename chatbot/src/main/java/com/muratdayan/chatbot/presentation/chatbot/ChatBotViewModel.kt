@@ -34,7 +34,18 @@ class ChatBotViewModel @Inject constructor(
                 if (token != null){
                     Log.i("ChatBotViewModel",token)
                     viewModelScope.launch {
-                        val response = chatRepository.getChatResponse(idToken = token, message = message)
+                        val newMessage = """
+                            Bu uygulama, öğretmen ve öğrenciler arasında etkileşim sağlayan bir platformdur.
+                        Öğretmenler, postlar paylaşabilir, yorum yapabilir, beğenebilir ve premium özelliklere sahip olabilirler.
+                        Öğretmenler, kendi postlarına yorum yapan öğrencilerle özel sohbet edebilir.
+                        .Eğer birazdan yazacağım
+                        mesaj bu üstte verdiğim bilgilerle doğrudan alakasız bir soru veya metin ise  bana sadece 
+                         'böyle bir bilgiye sahip değilim' diye cevap yaz başka bişey yazma sadece ama 
+                         üstteki bilgilerle alakalı bir soruysa üstteki bilgilere göre cevap ver. mesajım iki noktadan sonraki her şey olabilir
+                         işte iki nokta : 
+                        ${message}
+                        """.trimIndent()
+                        val response = chatRepository.getChatResponse(idToken = token, message = newMessage)
                         if (response.isSuccessful){
                             val body = response.body()
                             if (body != null) {
