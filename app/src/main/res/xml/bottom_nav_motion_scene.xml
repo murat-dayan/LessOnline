@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetStart="@id/start"
+        app:constraintSetEnd="@id/end"
+        app:duration="600">
+
+        <!-- Kaydırma hareketi ile animasyonu tetikle -->
+        <OnSwipe
+            app:dragDirection="dragDown"
+            app:touchAnchorId="@id/bottomNavigationView"
+            app:touchAnchorSide="bottom" />
+    </Transition>
+
+    <!-- Başlangıç durumu: BottomNavigationView normal konumda -->
+    <ConstraintSet android:id="@id/start">
+        <Constraint
+            android:id="@id/bottomNavigationView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:alpha="1.0"/>
+    </ConstraintSet>
+
+    <!-- Bitiş durumu: BottomNavigationView kaybolur, yerine yeni bir öğe gelir -->
+    <ConstraintSet android:id="@id/end">
+        <Constraint
+            android:id="@id/bottomNavigationView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:alpha="0.0"
+        android:translationY="100dp" /> <!-- Aşağıya kayma -->
+
+    </ConstraintSet>
+
+</MotionScene>
