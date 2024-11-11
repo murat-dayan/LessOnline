@@ -38,7 +38,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        installSplashScreen().apply {
+            setKeepOnScreenCondition{
+                !mainViewModel.isReady.value
+            }
+        }
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -53,6 +57,10 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         supportActionBar?.hide()
+
+        val menu = binding.bottomNavigationView.menu
+        val addPostMenuItem = menu.findItem(R.id.addPostFragment)
+        addPostMenuItem.isVisible = false
 
         navHostFragment =
             supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment
@@ -79,8 +87,6 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.isTeacher.observe(this){isTeacher->
             Log.d("MainActivity","isTeacher-> $isTeacher")
-            val menu = binding.bottomNavigationView.menu
-            val addPostMenuItem = menu.findItem(R.id.addPostFragment)
             addPostMenuItem.isVisible = isTeacher
             binding.bottomNavigationView.invalidate()
         }

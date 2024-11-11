@@ -9,6 +9,9 @@ import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.presentation.util.PreferenceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +25,16 @@ class MainViewModel @Inject constructor(
 
     private val _isTeacher = MutableLiveData<Boolean>()
     val isTeacher: LiveData<Boolean> get() = _isTeacher
+
+    private val _isReady = MutableStateFlow(false)
+    val isReady = _isReady.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            delay(3000L)
+            _isReady.value = true
+        }
+    }
 
     fun checkUserRole(){
         viewModelScope.launch {
