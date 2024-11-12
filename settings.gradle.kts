@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Lesson Line"
 include(":app")
 include(":chatbot")
+include(":chat")

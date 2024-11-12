@@ -43,7 +43,7 @@ class ChatBotViewModel @Inject constructor(
                          'böyle bir bilgiye sahip değilim' diye cevap yaz başka bişey yazma sadece ama 
                          üstteki bilgilerle alakalı bir soruysa üstteki bilgilere göre cevap ver. mesajım iki noktadan sonraki her şey olabilir
                          işte iki nokta : 
-                        ${message}
+                        $message
                         """.trimIndent()
                         val response = chatRepository.getChatResponse(idToken = token, message = newMessage)
                         if (response.isSuccessful){

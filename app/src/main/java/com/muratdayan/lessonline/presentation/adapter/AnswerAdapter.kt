@@ -1,7 +1,5 @@
 package com.muratdayan.lessonline.presentation.adapter
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +8,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.muratdayan.lessonline.databinding.AnswerItemBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Answer
-import com.muratdayan.lessonline.presentation.util.UserRole
 import java.util.Date
 
 class AnswerAdapter(
     private val isPostOwner: Boolean,
-    private val currentUserId: String
+    private val currentUserId: String,
+    private val onDiscussIconClick:(userId:String)->Unit
 ) : ListAdapter<Answer, AnswerAdapter.AnswerViewHolder>(AnswerDiffCallback()) {
 
 
     class AnswerViewHolder(private val binding: AnswerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(answer: Answer, isPostOwner: Boolean, currentUserId: String) {
+        fun bind(
+            answer: Answer,
+            isPostOwner: Boolean,
+            currentUserId: String,
+            onDiscussIconClick: (userId: String) -> Unit
+        ) {
             binding.tvAnswer.text = answer.answer
             binding.tvUsername.text = answer.username
             val savedTimeStamp = answer.timestamp as? Long ?: return
@@ -32,6 +35,10 @@ class AnswerAdapter(
 
             binding.ibtnDiscuss.visibility =
                 if (isPostOwner && answer.userId != currentUserId) View.VISIBLE else View.GONE
+
+            binding.ibtnDiscuss.setOnClickListener {
+                onDiscussIconClick.invoke(answer.userId)
+            }
 
 
         }
@@ -70,6 +77,6 @@ class AnswerAdapter(
     }
 
     override fun onBindViewHolder(holder: AnswerViewHolder, position: Int) {
-        holder.bind(getItem(position), isPostOwner ,currentUserId)
+        holder.bind(getItem(position), isPostOwner ,currentUserId,onDiscussIconClick)
     }
 }

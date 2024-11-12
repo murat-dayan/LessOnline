@@ -2,6 +2,7 @@
 
     import android.R
     import android.annotation.SuppressLint
+    import android.net.Uri
     import android.os.Bundle
     import android.util.Log
     import android.view.LayoutInflater
@@ -12,6 +13,7 @@
     import androidx.fragment.app.viewModels
     import androidx.lifecycle.Observer
     import androidx.lifecycle.lifecycleScope
+    import androidx.navigation.fragment.findNavController
     import androidx.recyclerview.widget.LinearLayoutManager
     import com.google.android.material.bottomsheet.BottomSheetBehavior
     import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -66,7 +68,10 @@
 
             answerViewModel.isPostOwner.observe(viewLifecycleOwner) { isPostOwnerRes ->
                 val currentUserId =FirebaseAuth.getInstance().currentUser?.uid ?: ""
-                answerAdapter = AnswerAdapter(isPostOwnerRes, currentUserId)
+                answerAdapter = AnswerAdapter(isPostOwnerRes, currentUserId){id->
+                    val deepLink = Uri.parse("app://com.muratdayan.lessonline/chat/$id")
+                    findNavController().navigate(deepLink)
+                }
 
                 binding.rvAnswers.apply {
                     layoutManager = LinearLayoutManager(requireContext())

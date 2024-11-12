@@ -6,14 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.LoadAdError
 import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentHomeBinding
@@ -135,7 +132,7 @@ class HomeFragment : BaseFragment() {
         homeViewModel.fetchPosts()
 
         binding.ivPremium.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatBotFragment)
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chat_graph)
         }
 
     }

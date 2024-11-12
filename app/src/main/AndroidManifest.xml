@@ -38,6 +38,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data android:scheme="app" android:host="com.muratdayan.lessonline" />
             </intent-filter>
         </activity>
         <activity

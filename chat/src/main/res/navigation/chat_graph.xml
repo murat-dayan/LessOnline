@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chat_graph"
+    app:startDestination="@id/chatHistoryFragment">
+
+    <argument android:name="userId" app:argType="string" />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.muratdayan.chat.presentation.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <deepLink
+            android:id="@+id/deepLinkChat"
+            app:uri="app://com.muratdayan.lessonline/chat/{userId}" />
+        <argument
+            android:name="targetId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatHistoryFragment"
+        android:name="com.muratdayan.chat.presentation.chathistory.ChatHistoryFragment"
+        android:label="fragment_chat_history"
+        tools:layout="@layout/fragment_chat_history" >
+        <action
+            android:id="@+id/action_chatHistoryFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+</navigation>

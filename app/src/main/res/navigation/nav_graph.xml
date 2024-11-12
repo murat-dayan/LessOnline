@@ -5,6 +5,8 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <include android:id="@+id/chat_graph" app:graph = "@navigation/chat_graph"/>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.muratdayan.lessonline.presentation.features.auth.login.LoginFragment"
@@ -55,6 +57,15 @@
         <action
             android:id="@+id/action_homeFragment_to_chatBotFragment"
             app:destination="@id/chatBotFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatFragment2"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatHistoryFragment"
+            app:destination="@id/chatHistoryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chat_graph"
+            app:destination="@id/chat_graph" />
     </fragment>
     <fragment
         android:id="@+id/answernotificationsfragment"
@@ -169,4 +180,11 @@
         android:id="@+id/chatBotFragment"
         android:name="com.muratdayan.chatbot.presentation.chatbot.ChatBotFragment"
         android:label="ChatBotFragment" />
+
+    <dialog
+        android:id="@+id/answersBottomSheetFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers.AnswersBottomSheetFragment"
+        android:label="AnswersBottomSheetFragment" >
+    </dialog>
+
 </navigation>
