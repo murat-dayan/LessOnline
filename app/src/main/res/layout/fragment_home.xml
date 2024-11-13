@@ -31,13 +31,13 @@
             />
 
         <ImageButton
-            android:id="@+id/iv_premium"
+            android:id="@+id/ibtn_direct_messages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/transparent"
-            android:contentDescription="@string/premium_icon"
-            android:src="@drawable/ic_premium"
+            android:contentDescription="@string/direct_messages"
+            android:src="@drawable/ic_direct_message"
             />
 
     </LinearLayout>

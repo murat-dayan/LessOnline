@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.muratdayan.chat.databinding.FragmentChatBinding
@@ -37,7 +38,9 @@ class ChatFragment : Fragment() {
         val args :ChatFragmentArgs by navArgs()
 
         val userId = arguments?.getString("userId") ?: args.targetId!!
+
         if (userId.isNotEmpty()){
+            chatViewModel.getReceiverName(userId)
             chatViewModel.initiateChat(targetUserId = userId)
             //chatViewModel.chatIdState.value?.let { chatViewModel.observeMessages(it) }
             chatWithUserAdapter = ChatWithUserAdapter(){messageModel ->
@@ -56,6 +59,16 @@ class ChatFragment : Fragment() {
                         targetUserId = userId
                     )
                 }
+            }
+        }
+
+        binding.ibtnBack.setOnClickListener {
+            Navigation.findNavController(requireView()).navigateUp()
+        }
+
+        lifecycleScope.launch {
+            chatViewModel.receiverName.collect{receiverName->
+                binding.tvReceiverName.text = receiverName
             }
         }
 

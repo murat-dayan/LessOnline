@@ -8,6 +8,7 @@ import com.muratdayan.chat.data.repository.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +26,9 @@ class ChatViewModel @Inject constructor(
 
     private val _messagesState = MutableStateFlow<List<MessageModel>>(emptyList())
     val messagesState: StateFlow<List<MessageModel>> = _messagesState
+
+    private val _receiverName = MutableStateFlow<String>("")
+    val receiverName: StateFlow<String> = _receiverName
 
 
     fun initiateChat(targetUserId: String) {
@@ -62,6 +66,16 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             chatRepository.getMessages(chatId).collect{messages->
                 _messagesState.value = messages
+            }
+        }
+    }
+
+    fun getReceiverName(receiverId:String){
+        viewModelScope.launch {
+            chatRepository.getReceiverName(receiverId).collectLatest { receiverName->
+                if (receiverName != null) {
+                    _receiverName.value = receiverName
+                }
             }
         }
     }

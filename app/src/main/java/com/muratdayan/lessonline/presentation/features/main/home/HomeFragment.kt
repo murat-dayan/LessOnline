@@ -131,7 +131,7 @@ class HomeFragment : BaseFragment() {
 
         homeViewModel.fetchPosts()
 
-        binding.ivPremium.setOnClickListener {
+        binding.ibtnDirectMessages.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chat_graph)
         }
 

@@ -116,7 +116,7 @@ class ChatRepository @Inject constructor(
 
     fun getUserProfiles(userIds: List<String>): Flow<List<ChatUserModel>> = flow {
         try {
-            val userNames = userIds.mapNotNull { userId ->
+            val userNames = userIds.map { userId ->
                 val userSnapshot = firestore.collection("users").document(userId).get().await()
                 val name =userSnapshot.getString("username")
                 val id =userSnapshot.getString("userId")
@@ -126,7 +126,16 @@ class ChatRepository @Inject constructor(
         } catch (e: Exception) {
             emit(emptyList())
         }
+    }
 
+    fun getReceiverName(receiverId:String): Flow<String?> = flow {
+        try {
+            val userDoc = firestore.collection("users").document(receiverId).get().await()
+            val receiverName = userDoc.get("username").toString()
+            emit(receiverName)
+        }catch (e:Exception){
+            emit(null)
+        }
     }
 
 

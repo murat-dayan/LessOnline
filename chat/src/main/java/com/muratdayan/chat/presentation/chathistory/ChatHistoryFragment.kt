@@ -52,6 +52,10 @@ class ChatHistoryFragment : Fragment() {
             }
         }
 
+        binding.ibtnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
     }
 
     override fun onDestroyView() {

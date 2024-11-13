@@ -12,8 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
@@ -24,7 +24,6 @@ import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.io.File
 
 @AndroidEntryPoint
 class EditPostFragment : BaseFragment() {
@@ -157,6 +156,10 @@ class EditPostFragment : BaseFragment() {
                     editPostViewModel.uploadPhotoToFirebaseStorage(uri)
                 }
             }
+        }
+
+        binding.ibtnBack.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

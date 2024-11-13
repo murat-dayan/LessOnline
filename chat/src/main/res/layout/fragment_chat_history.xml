@@ -6,11 +6,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.chathistory.ChatHistoryFragment">
 
+    <ImageButton
+        android:id="@+id/ibtn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        android:layout_marginTop="10dp"
+        android:background="@color/transparent"
+        android:contentDescription="@string/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_direct_messages"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/direct_messages"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ibtn_back"
+        app:layout_constraintBottom_toBottomOf="@id/ibtn_back"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat_history"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/ibtn_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
