@@ -1,29 +1,29 @@
     package com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers
 
     import android.R
-    import android.annotation.SuppressLint
-    import android.net.Uri
-    import android.os.Bundle
-    import android.util.Log
-    import android.view.LayoutInflater
-    import android.view.View
-    import android.view.ViewGroup
-    import android.widget.AdapterView
-    import android.widget.ArrayAdapter
-    import androidx.fragment.app.viewModels
-    import androidx.lifecycle.Observer
-    import androidx.lifecycle.lifecycleScope
+import android.annotation.SuppressLint
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+    import androidx.navigation.NavDeepLinkRequest
     import androidx.navigation.fragment.findNavController
-    import androidx.recyclerview.widget.LinearLayoutManager
-    import com.google.android.material.bottomsheet.BottomSheetBehavior
-    import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-    import com.google.firebase.auth.FirebaseAuth
-    import com.muratdayan.lessonline.databinding.BottomSheetFragmentAnswersBinding
-    import com.muratdayan.lessonline.presentation.adapter.AnswerAdapter
-    import dagger.hilt.android.AndroidEntryPoint
-    import kotlinx.coroutines.Dispatchers
-    import kotlinx.coroutines.flow.collectLatest
-    import kotlinx.coroutines.launch
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.muratdayan.lessonline.databinding.BottomSheetFragmentAnswersBinding
+import com.muratdayan.lessonline.presentation.adapter.AnswerAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
     @AndroidEntryPoint
     class AnswersBottomSheetFragment(
@@ -70,7 +70,8 @@
                 val currentUserId =FirebaseAuth.getInstance().currentUser?.uid ?: ""
                 answerAdapter = AnswerAdapter(isPostOwnerRes, currentUserId){id->
                     val deepLink = Uri.parse("app://com.muratdayan.lessonline/chat/$id")
-                    findNavController().navigate(deepLink)
+                    val deepLinkRequest = NavDeepLinkRequest.Builder.fromUri(deepLink).build()
+                    findNavController().navigate(deepLinkRequest)
                 }
 
                 binding.rvAnswers.apply {

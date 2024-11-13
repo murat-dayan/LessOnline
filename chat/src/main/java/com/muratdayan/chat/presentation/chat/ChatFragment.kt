@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.muratdayan.chat.databinding.FragmentChatBinding
 import com.muratdayan.chat.presentation.adapter.ChatWithUserAdapter
@@ -33,9 +34,9 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val args = ChatFragmentArgs.fromBundle(requireArguments())
+        val args :ChatFragmentArgs by navArgs()
 
-        val userId = arguments?.getString("userId") ?: args.targetId
+        val userId = arguments?.getString("userId") ?: args.targetId!!
         if (userId.isNotEmpty()){
             chatViewModel.initiateChat(targetUserId = userId)
             //chatViewModel.chatIdState.value?.let { chatViewModel.observeMessages(it) }
