@@ -1,16 +1,20 @@
 package com.muratdayan.lessonline.presentation.features.main.post
 
 import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_MEDIA_IMAGES
+import android.Manifest.permission.READ_MEDIA_VIDEO
+import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCapture.OnImageCapturedCallback
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -29,7 +33,7 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var imageCapture: ImageCapture
 
-    fun checkGalleryPermission(context: Context,permissionLauncher: ActivityResultLauncher<String>, contentLauncher: ActivityResultLauncher<String>) {
+    fun checkGalleryPermission(context: Context,permissionLauncher: ActivityResultLauncher<Array<String>>, contentLauncher: ActivityResultLauncher<String>) {
         if (hasGalleryPermission(context)){
             openGallery(contentLauncher)
         }else{
@@ -90,14 +94,28 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun hasGalleryPermission(context: Context): Boolean {
-        return ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(context, READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED ) {
+                return  true
+            } else if (ContextCompat.checkSelfPermission(context, READ_MEDIA_VISUAL_USER_SELECTED) == PackageManager.PERMISSION_GRANTED) {
+                return true
+            }
+            else{
+                return false
+            }
+        }else{
+            return true
+        }
     }
 
-    private fun requestGalleryPermission(launcher: ActivityResultLauncher<String>) {
-        launcher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+    private fun requestGalleryPermission(launcher: ActivityResultLauncher<Array<String>>) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            launcher.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_VISUAL_USER_SELECTED))
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            launcher.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO))
+        } else {
+            launcher.launch(arrayOf(READ_EXTERNAL_STORAGE))
+        }
     }
 
     fun openGallery(launcher: ActivityResultLauncher<String>){

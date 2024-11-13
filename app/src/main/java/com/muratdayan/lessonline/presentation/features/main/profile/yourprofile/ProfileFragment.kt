@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -36,13 +35,19 @@ class ProfileFragment : BaseFragment() {
     private lateinit var basicPostListAdapter: BasicPostListAdapter
 
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
+
     private val galleryPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ){isGranted->
-        if (isGranted){
+        ActivityResultContracts.RequestMultiplePermissions()
+    ){permissions->
+        // permissions: Map<String, Boolean>
+        val allPermissionsGranted = permissions.values.all { it } // Eğer tüm izinler granted ise true döner
+
+        if (allPermissionsGranted) {
+            // Tüm izinler verilmişse galeriyi açabilirsin
             photoViewModel.openGallery(galleryLauncher)
-        }else{
-            Toast.makeText(requireContext(),"cant open gallery", Toast.LENGTH_SHORT).show()
+        } else {
+            // En az bir izin verilmemişse, kullanıcıya uyarı göster
+            Toast.makeText(requireContext(), "Can't open gallery without required permissions", Toast.LENGTH_SHORT).show()
         }
     }
 
