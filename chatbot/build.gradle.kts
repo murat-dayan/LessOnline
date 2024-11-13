@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -12,6 +14,17 @@ android {
 
     defaultConfig {
         minSdk = 24
+
+        val keyStoreFile = project.rootProject.file("apikeys.properties")
+        val properties = Properties()
+        properties.load(keyStoreFile.inputStream())
+        val generativeAiApiKey = properties.getProperty("GENERATIVE_AI_API_KEY") ?: ""
+
+        buildConfigField(
+            type = "String",
+            name = "GENERATIVE_AI_API_KEY",
+            value = generativeAiApiKey
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,8 +47,11 @@ android {
         jvmTarget = "1.8"
     }
 
+
+
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 

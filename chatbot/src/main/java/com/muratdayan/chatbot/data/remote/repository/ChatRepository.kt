@@ -2,7 +2,6 @@ package com.muratdayan.chatbot.data.remote.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.core.UserData
 import com.muratdayan.chatbot.data.remote.model.ChatRequestModel
 import com.muratdayan.chatbot.data.remote.model.ChatResponseModel
 import com.muratdayan.chatbot.data.remote.model.ContentModel
@@ -33,7 +32,7 @@ class ChatRepositoryImpl @Inject constructor(
             )
         )
 
-        return chatApiService.getChatbotResponse(idToken = idToken, apiKey = "AIzaSyAvAfShhAYjTIRXXP5HymHQRIyj4D1pujc",chatRequestModel)
+        return chatApiService.getChatbotResponse(idToken = idToken, apiKey = apiKey,chatRequestModel)
     }
 
     override fun getCurrentUser() = firebaseAuth.currentUser

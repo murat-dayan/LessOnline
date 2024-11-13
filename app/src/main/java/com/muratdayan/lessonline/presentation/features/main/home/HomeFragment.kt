@@ -135,6 +135,10 @@ class HomeFragment : BaseFragment() {
             Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chat_graph)
         }
 
+        binding.ibtnChatbot.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatBotFragment)
+        }
+
     }
 
 

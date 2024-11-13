@@ -1,8 +1,8 @@
 package com.muratdayan.chatbot.di
 
+import com.muratdayan.chatbot.BuildConfig
 import com.muratdayan.chatbot.data.remote.interceptors.ApiKeyInterceptor
 import com.muratdayan.chatbot.data.remote.repository.ChatApiService
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +17,7 @@ object NetworkModule {
 
     @Provides
     fun provideApiKey(): String {
-        return "AIzaSyAvAfShhAYjTIRXXP5HymHQRIyj4D1pujc"
+        return BuildConfig.GENERATIVE_AI_API_KEY
     }
 
     @Provides

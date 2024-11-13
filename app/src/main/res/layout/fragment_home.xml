@@ -40,6 +40,17 @@
             android:src="@drawable/ic_direct_message"
             />
 
+        <ImageButton
+            android:id="@+id/ibtn_chatbot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_medium"
+            android:background="@color/transparent"
+            android:contentDescription="@string/direct_messages"
+            android:src="@drawable/ic_premium"
+            />
+
     </LinearLayout>
 
     <TextView
