@@ -139,6 +139,15 @@ class HomeFragment : BaseFragment() {
             Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatBotFragment)
         }
 
+        binding.swlPosts.setOnRefreshListener {
+            refreshData()
+        }
+
+    }
+
+    private fun refreshData() {
+        homeViewModel.fetchPosts()
+        binding.swlPosts.isRefreshing = false
     }
 
 

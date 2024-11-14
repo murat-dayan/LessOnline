@@ -33,6 +33,7 @@ playServicesAds = "23.5.0"
 playServicesAuth = "21.2.0"
 retrofit = "2.11.0"
 shimmer = "0.5.0"
+swiperefreshlayout = "1.2.0-alpha01"
 
 [libraries]
 android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
@@ -45,6 +46,7 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigationFragmentKtx" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billingKtx" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 generativeai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "generativeai" }
