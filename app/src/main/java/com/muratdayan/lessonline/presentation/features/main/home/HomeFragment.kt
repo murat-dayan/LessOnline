@@ -1,6 +1,5 @@
 package com.muratdayan.lessonline.presentation.features.main.home
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentHomeBinding
-import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 import com.muratdayan.lessonline.presentation.adapter.PostAdapter
 import com.muratdayan.lessonline.presentation.base.BaseFragment
 import com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers.AnswersBottomSheetFragment
@@ -64,8 +62,10 @@ class HomeFragment : BaseFragment() {
         postAdapter = PostAdapter(emptyList(), onAnswerIconClick = {
             val answersBottomSheet = AnswersBottomSheetFragment(it)
             answersBottomSheet.show(childFragmentManager,answersBottomSheet.tag)
-        },onLikeIconClick = {post->
-            toggleLike(post)
+        },onLikeIconClick = {post,position->
+            homeViewModel.toggleLikePost(post){
+                postAdapter.notifyItemChanged(position)
+            }
         },onProfilePhotoClick = {userId->
             val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -135,10 +135,6 @@ class HomeFragment : BaseFragment() {
             Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chat_graph)
         }
 
-        binding.ibtnChatbot.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatBotFragment)
-        }
-
         binding.swlPosts.setOnRefreshListener {
             refreshData()
         }
@@ -149,29 +145,6 @@ class HomeFragment : BaseFragment() {
         homeViewModel.fetchPosts()
         binding.swlPosts.isRefreshing = false
     }
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun toggleLike(post: Post) {
-        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-        if (currentUserId != null) {
-            // Kullanıcı, "likedByUsers" listesinde mevcut mu kontrol et
-            if (post.likedByUsers.contains(currentUserId)) {
-                // Kullanıcı daha önce beğenmiş, beğeniyi kaldır
-                post.likedByUsers = post.likedByUsers.filter { it != currentUserId }
-                post.likeCount--
-            } else {
-                // Kullanıcı daha önce beğenmemiş, beğeniyi ekle
-                post.likedByUsers += currentUserId
-                post.likeCount++
-            }
-            homeViewModel.updatePostInFirebase(post)
-            postAdapter.notifyDataSetChanged()
-        } else {
-            // Kullanıcı oturum açmamış
-        }
-    }
-
 
     private fun startShimmer(){
         binding.sflForPost.visibility = View.VISIBLE

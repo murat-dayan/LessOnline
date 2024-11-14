@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.AdRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -14,7 +13,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,11 +76,12 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    fun updatePostInFirebase(post: Post) {
+    fun updatePostInFirebase(post: Post, onComplete: () -> Unit ={}) {
         val postRef = firebaseFirestore.collection("posts").document(post.postId)
         postRef.update("likeCount", post.likeCount, "likedByUsers", post.likedByUsers)
             .addOnSuccessListener {
                 fetchPosts()
+                onComplete.invoke()
             }
             .addOnFailureListener { exception ->
                 exception.printStackTrace()
@@ -130,6 +129,28 @@ class HomeViewModel @Inject constructor(
                     Log.e("HomeViewModel","Error fetching bookmark: ${e.message}")
                     onResult(false)
                 }
+        }
+    }
+
+    fun toggleLikePost(post: Post, onComplete: () -> Unit){
+        val currentUserId = firebaseAuth.currentUser?.uid
+        if (currentUserId != null) {
+            // Kullanıcı, "likedByUsers" listesinde mevcut mu kontrol et
+            if (post.likedByUsers.contains(currentUserId)) {
+                // Kullanıcı daha önce beğenmiş, beğeniyi kaldır
+                post.likedByUsers = post.likedByUsers.filter { it != currentUserId }
+                post.likeCount--
+            } else {
+                // Kullanıcı daha önce beğenmemiş, beğeniyi ekle
+                post.likedByUsers += currentUserId
+                post.likeCount++
+            }
+            updatePostInFirebase(post){
+                onComplete.invoke()
+            }
+
+        } else {
+            // Kullanıcı oturum açmamış
         }
     }
 

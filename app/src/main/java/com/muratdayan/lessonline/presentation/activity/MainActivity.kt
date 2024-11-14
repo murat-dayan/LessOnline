@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
+    private val animationDisplayDuration = 5000L
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,8 +82,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mainViewModel.isTeacher.observe(this){isTeacher->
-            Log.d("MainActivity","isTeacher-> $isTeacher")
+        mainViewModel.isTeacher.observe(this) { isTeacher ->
+            Log.d("MainActivity", "isTeacher-> $isTeacher")
             addPostMenuItem.isVisible = isTeacher
             binding.bottomNavigationView.invalidate()
         }
@@ -94,11 +95,13 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.loginFragment, R.id.registerFragment, R.id.getProfileInfoFragment, R.id.forgetPasswordFragment, R.id.editPostFragment -> {
+                R.id.loginFragment, R.id.registerFragment, R.id.getProfileInfoFragment,
+                R.id.forgetPasswordFragment, R.id.editPostFragment, R.id.chatBotFragment, com.muratdayan.chat.R.id.chatFragment, com.muratdayan.chat.R.id.chatHistoryFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
 
                 else -> {
+                    showLottieChatBot()
                     binding.bottomNavigationView.visibility = View.VISIBLE
                 }
             }
@@ -128,6 +131,20 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        binding.lvChatbot.setOnClickListener {
+            navController.navigate(R.id.chatBotFragment)
+        }
+
+    }
+
+    private fun showLottieChatBot() {
+        binding.lvChatbot.visibility = View.VISIBLE
+        binding.lvChatbot.playAnimation()
+
+        binding.lvChatbot.postDelayed({
+            binding.lvChatbot.cancelAnimation()
+            binding.lvChatbot.visibility = View.GONE
+        }, animationDisplayDuration)
     }
 
     private fun listenForNotifications(
@@ -147,7 +164,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
-
 
 
     override fun onSupportNavigateUp(): Boolean {

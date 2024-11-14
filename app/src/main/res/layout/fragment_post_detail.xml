@@ -41,7 +41,7 @@
 
         <include
             android:id="@+id/inc_post_item"
-            layout="@layout/post_item"
+            layout="@layout/item_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 

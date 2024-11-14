@@ -56,6 +56,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lv_chatbot"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:lottie_rawRes="@raw/chatbot"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

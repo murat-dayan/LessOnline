@@ -1,25 +1,21 @@
     package com.muratdayan.lessonline.presentation.adapter
 
-    import android.net.Uri
-    import android.text.Layout
     import android.view.LayoutInflater
-    import android.view.View
-    import android.view.ViewGroup
-    import android.widget.ImageButton
-    import android.widget.ImageView
-    import androidx.recyclerview.widget.DiffUtil
-    import androidx.recyclerview.widget.RecyclerView
-    import com.bumptech.glide.Glide
-    import com.google.firebase.auth.FirebaseAuth
-    import com.muratdayan.lessonline.R
-    import com.muratdayan.lessonline.databinding.PostItemBinding
-    import com.muratdayan.lessonline.domain.model.firebasemodels.Post
-    import com.muratdayan.lessonline.presentation.features.main.home.HomeViewModel
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.muratdayan.lessonline.R
+import com.muratdayan.lessonline.databinding.PostItemBinding
+import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
     class PostAdapter(
         private var postList: List<Post>,
         private val onAnswerIconClick: (String)->Unit,
-        private val onLikeIconClick: (Post)->Unit,
+        private val onLikeIconClick: (post:Post,position:Int)->Unit,
         private val onProfilePhotoClick:(String)->Unit,
         private val onBookmarkIconClick: (String,ImageButton) -> Unit,
         private val onPostPhotoClick:(String)->Unit
@@ -54,7 +50,7 @@
                     }
                 )
                 binding.ibtnLike.setOnClickListener {
-                    onLikeIconClick(post)
+                    onLikeIconClick(post,adapterPosition)
                 }
                 binding.ivUserPhoto.setOnClickListener {
                     onProfilePhotoClick(post.userId)
@@ -73,7 +69,7 @@
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostRowHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.post_item,parent,false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post,parent,false)
             return PostRowHolder(view)
         }
 

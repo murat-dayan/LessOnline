@@ -20,7 +20,7 @@
 
         <TextView
             android:id="@+id/tv_app_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="LessOnLine"
             android:layout_weight="1"
@@ -38,17 +38,6 @@
             android:background="@color/transparent"
             android:contentDescription="@string/direct_messages"
             android:src="@drawable/ic_direct_message"
-            />
-
-        <ImageButton
-            android:id="@+id/ibtn_chatbot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/margin_medium"
-            android:background="@color/transparent"
-            android:contentDescription="@string/direct_messages"
-            android:src="@drawable/ic_premium"
             />
 
     </LinearLayout>
@@ -84,10 +73,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/post_item"/>
-            <include layout="@layout/post_item"/>
-            <include layout="@layout/post_item"/>
-            <include layout="@layout/post_item"/>
+            <include layout="@layout/item_post"/>
+            <include layout="@layout/item_post"/>
+            <include layout="@layout/item_post"/>
+            <include layout="@layout/item_post"/>
         </LinearLayout>
         
     </com.facebook.shimmer.ShimmerFrameLayout>
@@ -107,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            tools:listitem="@layout/post_item"
+            tools:listitem="@layout/item_post"
             />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -40,6 +40,7 @@
         <activity
             android:name=".presentation.activity.MainActivity"
             android:theme="@style/Theme.App.SplashScreen"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
