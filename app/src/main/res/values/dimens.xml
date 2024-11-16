@@ -35,4 +35,5 @@
     <dimen name="card_elevation">4dp</dimen>       <!-- Kart için gölge yüksekliği -->
     <dimen name="card_margin">16dp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="card_corner_radius_16">16dp</dimen>
 </resources>

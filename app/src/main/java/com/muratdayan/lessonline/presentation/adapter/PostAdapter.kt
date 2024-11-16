@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.lessonline.R
-import com.muratdayan.lessonline.databinding.PostItemBinding
+import com.muratdayan.lessonline.databinding.ItemPostBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
     class PostAdapter(
@@ -22,7 +22,7 @@ import com.muratdayan.lessonline.domain.model.firebasemodels.Post
     ): RecyclerView.Adapter<PostAdapter.PostRowHolder>() {
 
         inner class PostRowHolder(view: View): RecyclerView.ViewHolder(view){
-            val binding = PostItemBinding.bind(view)
+            val binding = ItemPostBinding.bind(view)
 
             fun bind(post: Post){
                 binding.tvPostComment.text = post.comment

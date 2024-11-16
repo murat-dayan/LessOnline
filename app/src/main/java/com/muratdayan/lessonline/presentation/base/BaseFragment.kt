@@ -1,9 +1,6 @@
 package com.muratdayan.lessonline.presentation.base
 
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
-import com.muratdayan.lessonline.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +17,7 @@ open class BaseFragment: Fragment() {
 
         loadingDialog?.let {
             if (!it.isAdded && !isLoadingDialogVisible) {
-                it.show(parentFragmentManager, "loading")
+                it.show(parentFragmentManager, "showLoading")
                 isLoadingDialogVisible = true // Diyalog açıldığında flag'i güncelle
             }
         }
@@ -43,9 +40,20 @@ open class BaseFragment: Fragment() {
 
         errorDialog?.let {
             if (!it.isAdded && !isLoadingDialogVisible) {
-                it.show(parentFragmentManager, "error")
+                it.show(parentFragmentManager, "ShowError")
             }
         }
+    }
+
+    fun showCustomAlertDialog(
+        message:String,
+        positiveText:String,
+        negativeText:String,
+        onPositiveClick:()->Unit,
+        onNegativeClick:()->Unit
+    ){
+        val dialog = CustomAlertDialogFragment(message,positiveText,negativeText,onPositiveClick,onNegativeClick)
+        dialog.show(parentFragmentManager,"customAlertDialog")
     }
 
     fun hideError() {

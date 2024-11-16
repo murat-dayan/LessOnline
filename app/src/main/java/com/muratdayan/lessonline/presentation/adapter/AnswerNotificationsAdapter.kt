@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.muratdayan.lessonline.databinding.AnswerNotificationItemBinding
+import com.muratdayan.lessonline.databinding.ItemAnswerNotificationBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.NotificationModel
 
 class AnswerNotificationsAdapter(
@@ -13,7 +13,7 @@ class AnswerNotificationsAdapter(
 ):
     ListAdapter<NotificationModel, AnswerNotificationsAdapter.AnswerNotificationsViewHolder>(NotificationDiffCallback()) {
 
-    class AnswerNotificationsViewHolder(private val binding: AnswerNotificationItemBinding) : RecyclerView.ViewHolder(binding.root){
+    class AnswerNotificationsViewHolder(private val binding: ItemAnswerNotificationBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(notification: NotificationModel){
             binding.tvUsername.text = notification.commenterName
 
@@ -38,7 +38,7 @@ class AnswerNotificationsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerNotificationsViewHolder {
-        val binding = AnswerNotificationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemAnswerNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AnswerNotificationsViewHolder(binding)
     }
 

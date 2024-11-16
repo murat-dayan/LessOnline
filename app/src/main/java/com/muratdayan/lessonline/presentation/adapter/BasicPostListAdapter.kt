@@ -7,15 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.firestore.auth.User
-import com.muratdayan.lessonline.databinding.BasicPostItemBinding
+import com.muratdayan.lessonline.databinding.ItemBasicPostBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
 class BasicPostListAdapter(
     private val onPostClick: (String) -> Unit
 ) : ListAdapter<Post,BasicPostListAdapter.UserViewHolder>(UserDiffCallback()) {
 
-    class UserViewHolder(private val binding:BasicPostItemBinding): RecyclerView.ViewHolder(binding.root){
+    class UserViewHolder(private val binding:ItemBasicPostBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(post: Post){
             val uri = Uri.parse(post.photoUri)
             Glide.with(binding.ivBasicPostPhoto.context)
@@ -36,7 +35,7 @@ class BasicPostListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        val binding = BasicPostItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = ItemBasicPostBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return UserViewHolder(binding)
     }
 

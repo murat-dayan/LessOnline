@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import com.muratdayan.lessonline.R
 
 class ErrorDialogFragment(
-    val errorText:String
+    private val errorText:String
 ) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

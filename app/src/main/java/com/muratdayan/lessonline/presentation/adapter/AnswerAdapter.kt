@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.muratdayan.lessonline.databinding.AnswerItemBinding
+import com.muratdayan.lessonline.databinding.ItemAnswerBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Answer
 import java.util.Date
 
@@ -17,7 +17,7 @@ class AnswerAdapter(
 ) : ListAdapter<Answer, AnswerAdapter.AnswerViewHolder>(AnswerDiffCallback()) {
 
 
-    class AnswerViewHolder(private val binding: AnswerItemBinding) :
+    class AnswerViewHolder(private val binding: ItemAnswerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             answer: Answer,
@@ -72,7 +72,7 @@ class AnswerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
-        val binding = AnswerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemAnswerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AnswerViewHolder(binding)
     }
 

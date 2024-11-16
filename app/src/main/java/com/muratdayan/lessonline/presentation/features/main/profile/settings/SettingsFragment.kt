@@ -1,7 +1,6 @@
 package com.muratdayan.lessonline.presentation.features.main.profile.settings
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +9,11 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentSettingsBinding
+import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment() {
+class SettingsFragment : BaseFragment() {
 
     private var _binding: FragmentSettingsBinding?=null
     private val binding get() = _binding!!
@@ -32,12 +32,22 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvSignOut.setOnClickListener {
-            settingsViewModel.logout()
-            val navController = Navigation.findNavController(requireView())
-            val navOptions = NavOptions.Builder()
-                .setPopUpTo(R.id.nav_graph,true)
-                .build()
-            navController.navigate(R.id.action_settingsFragment_to_loginFragment,null,navOptions)
+            showCustomAlertDialog(
+                message = "Do you want to sign out?",
+                positiveText = "Yes",
+                negativeText = "No",
+                onNegativeClick = {
+
+                },
+                onPositiveClick = {
+                    settingsViewModel.logout()
+                    val navController = Navigation.findNavController(requireView())
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(R.id.nav_graph,true)
+                        .build()
+                    navController.navigate(R.id.action_settingsFragment_to_loginFragment,null,navOptions)
+                }
+            )
         }
 
         binding.ibtnBack.setOnClickListener {
