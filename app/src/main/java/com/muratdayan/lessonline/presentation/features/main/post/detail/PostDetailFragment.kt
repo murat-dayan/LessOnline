@@ -12,10 +12,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentPostDetailBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
-import com.muratdayan.lessonline.presentation.base.BaseFragment
 import com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers.AnswersBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

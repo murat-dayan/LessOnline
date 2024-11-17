@@ -13,11 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
+import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.databinding.FragmentProfileBinding
 import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
-import com.muratdayan.lessonline.presentation.base.BaseFragment
 import com.muratdayan.lessonline.presentation.features.main.post.PhotoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

@@ -18,9 +18,9 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
+import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentEditPostBinding
-import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

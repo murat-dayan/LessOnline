@@ -1,4 +1,4 @@
-package com.muratdayan.lessonline.presentation.util
+package com.muratdayan.core.util
 
 import android.widget.EditText
 

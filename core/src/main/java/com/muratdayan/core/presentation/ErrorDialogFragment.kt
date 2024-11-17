@@ -1,11 +1,11 @@
-package com.muratdayan.lessonline.presentation.base
+package com.muratdayan.core.presentation
 
 import android.app.Dialog
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import com.muratdayan.lessonline.R
+import com.muratdayan.core.R
 
 class ErrorDialogFragment(
     private val errorText:String

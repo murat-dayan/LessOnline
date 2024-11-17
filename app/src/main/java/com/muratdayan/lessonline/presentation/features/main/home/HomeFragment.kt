@@ -11,10 +11,10 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentHomeBinding
 import com.muratdayan.lessonline.presentation.adapter.PostAdapter
-import com.muratdayan.lessonline.presentation.base.BaseFragment
 import com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers.AnswersBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

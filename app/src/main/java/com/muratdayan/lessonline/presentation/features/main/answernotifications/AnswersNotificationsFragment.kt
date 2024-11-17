@@ -9,10 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentAnswerNotificationsBinding
 import com.muratdayan.lessonline.presentation.adapter.AnswerNotificationsAdapter
-import com.muratdayan.lessonline.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

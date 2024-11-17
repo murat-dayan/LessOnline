@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.muratdayan.chatbot.databinding.FragmentChatBotBinding
 import com.muratdayan.chatbot.domain.model.ChatMessage
 import com.muratdayan.chatbot.presentation.adapter.ChatAdapter
+import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.doIfIsEmptyAndReturn
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChatBotFragment : Fragment() {
+class ChatBotFragment : BaseFragment() {
 
     private var _binding : FragmentChatBotBinding? = null
     private val binding get() = _binding!!
@@ -39,13 +40,19 @@ class ChatBotFragment : Fragment() {
         binding.rvMessages.layoutManager = LinearLayoutManager(requireContext())
 
         binding.btnSend.setOnClickListener {
-            val userMessage = binding.etMessage.text.toString()
-            if(userMessage.isNotEmpty()){
+            val isUserQuestionEmpty = binding.etMessage.doIfIsEmptyAndReturn {
+                showToast("Your Question is empty",false)
+            }
+
+            isUserQuestionEmpty.takeUnless { it }?.let {
+                val userMessage = binding.etMessage.text.toString().trim()
                 messages.add(ChatMessage(userMessage, isUser = true))
                 chatAdapter.submitList(messages.toList())
                 chatBotViewModel.sendMessageToChatBot(userMessage)
                 binding.etMessage.text.clear()
             }
+
+
         }
 
         chatBotViewModel.chatResponse.observe(viewLifecycleOwner){response ->

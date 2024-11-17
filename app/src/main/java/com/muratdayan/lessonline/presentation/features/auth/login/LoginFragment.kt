@@ -13,10 +13,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.doIfIsEmptyAndReturn
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentLoginBinding
-import com.muratdayan.lessonline.presentation.base.BaseFragment
-import com.muratdayan.lessonline.presentation.util.doIfIsEmptyAndReturn
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

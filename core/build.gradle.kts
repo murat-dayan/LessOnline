@@ -3,12 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlinAndroidKsp)
-    alias(libs.plugins.google.gms.google.services)
-    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    namespace = "com.muratdayan.chat"
+    namespace = "com.muratdayan.core"
     compileSdk = 34
 
     defaultConfig {
@@ -34,15 +32,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
     buildFeatures {
         viewBinding = true
     }
 }
 
 dependencies {
-
-    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -51,16 +46,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore)
-
-    // VIEWMODEL
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
     //HILT
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+    implementation (libs.androidx.core.splashscreen)
 }

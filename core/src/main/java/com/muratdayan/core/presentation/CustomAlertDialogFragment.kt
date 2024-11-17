@@ -1,11 +1,11 @@
-package com.muratdayan.lessonline.presentation.base
+package com.muratdayan.core.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.muratdayan.lessonline.databinding.DialogFragmentCustomAlertDialogBinding
+import com.muratdayan.core.databinding.DialogFragmentCustomAlertDialogBinding
 
 class CustomAlertDialogFragment(
     private val message: String,

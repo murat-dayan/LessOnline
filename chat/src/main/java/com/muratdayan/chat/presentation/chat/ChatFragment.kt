@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -12,11 +11,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.muratdayan.chat.databinding.FragmentChatBinding
 import com.muratdayan.chat.presentation.adapter.ChatWithUserAdapter
+import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.doIfIsEmptyAndReturn
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ChatFragment : Fragment() {
+class ChatFragment : BaseFragment() {
 
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
@@ -51,11 +52,15 @@ class ChatFragment : Fragment() {
                 layoutManager = LinearLayoutManager(requireContext())
             }
             binding.btnSend.setOnClickListener {
-                val messageContent = binding.etMessage.text.toString()
-                messageContent.let {
+                val isMessageEmpty = binding.etMessage.doIfIsEmptyAndReturn {
+                    showToast("Message is empty",false)
+                }
+
+                isMessageEmpty.takeUnless { it }?.let {
+                    val messageContent = binding.etMessage.text.toString().trim()
                     chatViewModel.sendMessage(
                         chatId = chatViewModel.chatIdState.value ?: "",
-                        messageContent = it,
+                        messageContent = messageContent,
                         targetUserId = userId
                     )
                 }

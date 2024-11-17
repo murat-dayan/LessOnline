@@ -47,6 +47,7 @@ dependencies {
 
     implementation(project(":chatbot"))
     implementation(project(":chat"))
+    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

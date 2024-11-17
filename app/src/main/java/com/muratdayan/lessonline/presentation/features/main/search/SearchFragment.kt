@@ -3,7 +3,6 @@ package com.muratdayan.lessonline.presentation.features.main.search
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.muratdayan.lessonline.R
+import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.lessonline.databinding.FragmentSearchBinding
 import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
-import com.muratdayan.lessonline.presentation.base.BaseFragment
-import com.muratdayan.lessonline.presentation.features.main.profile.yourprofile.ProfileFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

@@ -1,11 +1,11 @@
-package com.muratdayan.lessonline.presentation.base
+package com.muratdayan.core.presentation
 
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.muratdayan.lessonline.R
-import com.muratdayan.lessonline.databinding.CustomToastBinding
+import com.muratdayan.core.R
+import com.muratdayan.core.databinding.CustomToastBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,7 +66,8 @@ open class BaseFragment: Fragment() {
         isError: Boolean
     ){
         val inflater: LayoutInflater = layoutInflater
-        val binding:CustomToastBinding = CustomToastBinding.inflate(inflater)
+        val binding: CustomToastBinding =
+            CustomToastBinding.inflate(inflater)
 
         binding.tvCustomToastMessage.text = message
         if(isError){
