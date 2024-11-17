@@ -7,22 +7,19 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentLoginBinding
 import com.muratdayan.lessonline.presentation.base.BaseFragment
+import com.muratdayan.lessonline.presentation.util.doIfIsEmptyAndReturn
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 @AndroidEntryPoint
 class LoginFragment (): BaseFragment() {
@@ -88,7 +85,7 @@ class LoginFragment (): BaseFragment() {
                     }
                     is LoginState.Error -> {
                         hideLoading()
-                        showError(loginState.message.toString())
+                        showToast(loginState.message.toString(),true)
                     }
                 }
             }
@@ -96,11 +93,17 @@ class LoginFragment (): BaseFragment() {
 
 
         binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
+            val isEmailEmpty = binding.etEmail.doIfIsEmptyAndReturn {
+                showToast("Email is empty",false)
+            }
+            val isPasswordEmpty = binding.etPassword.doIfIsEmptyAndReturn {
+                showToast("Password is empty",false)
+            }
 
-            if (email.isNotEmpty() && password.isNotEmpty()){
-                loginViewModel.login(email, password)
+            if (!isEmailEmpty && !isPasswordEmpty){
+                val email = binding.etEmail.text.toString().trim()
+                val password = binding.etPassword.text.toString().trim()
+                loginViewModel.login(email,password)
             }
         }
 

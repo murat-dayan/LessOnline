@@ -1,6 +1,11 @@
 package com.muratdayan.lessonline.presentation.base
 
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.muratdayan.lessonline.R
+import com.muratdayan.lessonline.databinding.CustomToastBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -56,12 +61,25 @@ open class BaseFragment: Fragment() {
         dialog.show(parentFragmentManager,"customAlertDialog")
     }
 
-    fun hideError() {
-        errorDialog?.let {
-            if (it.isAdded) {
-                it.dismiss()
-                errorDialog = null
-            }
+    fun showToast(
+        message: String,
+        isError: Boolean
+    ){
+        val inflater: LayoutInflater = layoutInflater
+        val binding:CustomToastBinding = CustomToastBinding.inflate(inflater)
+
+        binding.tvCustomToastMessage.text = message
+        if(isError){
+            binding.ivCustomToastIcon.setImageResource(R.drawable.ic_error)
+        }else{
+            binding.ivCustomToastIcon.setImageResource(R.drawable.ic_info_outline)
+        }
+
+        with(Toast(requireContext())){
+            duration = Toast.LENGTH_SHORT
+            view = binding.root
+            setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 100)
+            show()
         }
     }
 }
