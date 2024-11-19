@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.goBack
 import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.databinding.FragmentOtherProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -94,6 +96,10 @@ class OtherProfileFragment : BaseFragment() {
             }else{
                 otherProfileViewModel.followUser(otherUserId)
             }
+        }
+
+        binding.ibtnBack.setOnClickListener {
+            Navigation.goBack(requireView())
         }
 
     }

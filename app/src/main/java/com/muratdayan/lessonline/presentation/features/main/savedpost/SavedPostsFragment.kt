@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.muratdayan.core.util.goBack
 import com.muratdayan.lessonline.databinding.FragmentSavedPostsBinding
 import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,7 +58,7 @@ class SavedPostsFragment : Fragment() {
         savedPostsViewModel.fetchSavedPosts()
 
         binding.ibtnBack.setOnClickListener {
-            findNavController().navigateUp()
+            Navigation.goBack(requireView())
         }
 
     }

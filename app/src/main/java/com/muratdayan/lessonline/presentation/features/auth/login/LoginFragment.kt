@@ -3,18 +3,17 @@ package com.muratdayan.lessonline.presentation.features.auth.login
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.core.util.doIfIsEmptyAndReturn
+import com.muratdayan.core.util.setUpPasswordVisibility
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -112,7 +111,7 @@ class LoginFragment() : BaseFragment() {
         }
 
         binding.tilPassword.setEndIconOnClickListener {
-            setUpPasswordVisibility()
+            isPasswordVisible = binding.etPassword.setUpPasswordVisibility(isPasswordVisible,binding.tilPassword,requireContext())
         }
 
         binding.tvSignUp.setOnClickListener {
@@ -131,12 +130,12 @@ class LoginFragment() : BaseFragment() {
         _binding = null
     }
 
-    private fun setUpPasswordVisibility() {
+    /*private fun setUpPasswordVisibility() {
         if (isPasswordVisible) {
             binding.etPassword.inputType =
                 InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             binding.tilPassword.endIconDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_eye)
+                ContextCompat.getDrawable(requireContext(), com.muratdayan.core.R.drawable.ic_close_eye)
         } else {
             binding.etPassword.inputType =
                 InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
@@ -146,6 +145,6 @@ class LoginFragment() : BaseFragment() {
 
         binding.etPassword.setSelection(binding.etPassword.text?.length ?: 0)
         isPasswordVisible = !isPasswordVisible
-    }
+    }*/
 
 }

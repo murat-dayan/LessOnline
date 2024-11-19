@@ -35,6 +35,31 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
 
+    <ImageButton
+        android:id="@+id/ibtn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        android:background="@color/transparent"
+        app:tint="@color/md_theme_primary"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        tools:text="username"
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        app:layout_constraintStart_toEndOf="@id/ibtn_back"
+        app:layout_constraintTop_toTopOf="@id/ibtn_back"
+        app:layout_constraintBottom_toBottomOf="@id/ibtn_back"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_profile"
         android:layout_width="100dp"
@@ -48,18 +73,7 @@
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintTop_toBottomOf="@id/horizontal_top_gl"/>
 
-    <TextView
-        android:id="@+id/tv_username"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        tools:text="username"
-        android:textSize="@dimen/text_large"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/horizontal_top_gl"
-        />
+
 
 
     <TextView

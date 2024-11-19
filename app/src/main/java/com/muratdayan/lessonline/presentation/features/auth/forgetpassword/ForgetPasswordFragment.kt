@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.core.util.doIfIsEmptyAndReturn
+import com.muratdayan.core.util.goBack
 import com.muratdayan.lessonline.databinding.FragmentForgetPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -21,6 +22,8 @@ class ForgetPasswordFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val forgetPasswordViewModel: ForgetPasswordViewModel by viewModels()
+
+    private var hasFragmentOpened = false
 
 
     override fun onCreateView(
@@ -46,12 +49,21 @@ class ForgetPasswordFragment : BaseFragment() {
 
         lifecycleScope.launch {
             forgetPasswordViewModel.resetResult.collectLatest { result->
-                if (result){
-                    Navigation.findNavController(requireView()).navigateUp()
+                if (hasFragmentOpened){
+                    if (result){
+                        showToast("Email sent",false)
+                        Navigation.goBack(requireView())
+                    }else{
+                        showToast("Email is not registered",true)
+                    }
                 }else{
-                    showToast("Something went wrong",true)
+                    hasFragmentOpened = true
                 }
             }
+        }
+
+        binding.ibtnBack.setOnClickListener {
+            Navigation.goBack(requireView())
         }
 
     }

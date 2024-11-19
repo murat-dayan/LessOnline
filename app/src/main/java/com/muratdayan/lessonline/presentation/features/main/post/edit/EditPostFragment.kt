@@ -12,13 +12,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.goBack
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentEditPostBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -159,7 +159,7 @@ class EditPostFragment : BaseFragment() {
         }
 
         binding.ibtnBack.setOnClickListener {
-            findNavController().navigateUp()
+            Navigation.goBack(requireView())
         }
     }
 

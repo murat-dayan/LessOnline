@@ -13,6 +13,7 @@
         android:background="@color/transparent"
         android:layout_marginTop="@dimen/margin_small"
         android:src="@drawable/ic_back"
+        app:tint="@color/md_theme_primary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

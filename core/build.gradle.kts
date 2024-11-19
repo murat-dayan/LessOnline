@@ -51,4 +51,8 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation (libs.androidx.core.splashscreen)
+
+    //NAVIGATION
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 }

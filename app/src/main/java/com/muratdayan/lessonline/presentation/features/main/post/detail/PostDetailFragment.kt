@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.goBack
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentPostDetailBinding
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
@@ -74,7 +75,7 @@ class PostDetailFragment : BaseFragment() {
         }
 
         binding.ibtnBack.setOnClickListener {
-            Navigation.findNavController(requireView()).navigateUp()
+            Navigation.goBack(requireView())
         }
 
         postDetailViewModel.getPostById(postId)

@@ -26,14 +26,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.10" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_bottom_gl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90" />
+        app:layout_constraintGuide_percent="0.95" />
+
+    <ImageButton
+        android:id="@+id/ibtn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tint="@color/md_theme_primary"
+        android:src="@drawable/ic_back"
+        android:background="@color/transparent"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"/>
 
     <TextView
         android:id="@+id/tv_title"

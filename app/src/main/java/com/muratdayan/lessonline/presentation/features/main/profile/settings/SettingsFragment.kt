@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.goBack
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +52,7 @@ class SettingsFragment : BaseFragment() {
         }
 
         binding.ibtnBack.setOnClickListener {
-            Navigation.findNavController(requireView()).navigateUp()
+            Navigation.goBack(requireView())
         }
 
         binding.ibtnSavedPosts.setOnClickListener {

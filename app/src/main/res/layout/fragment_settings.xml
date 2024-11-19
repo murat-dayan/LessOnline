@@ -43,6 +43,7 @@
         android:contentDescription="@string/back"
         android:src="@drawable/ic_back"
         android:background="@color/transparent"
+        app:tint="@color/md_theme_primary"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"
         app:layout_constraintBottom_toTopOf="@id/sv_settings"
