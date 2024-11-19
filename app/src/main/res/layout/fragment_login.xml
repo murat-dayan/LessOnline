@@ -26,14 +26,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.10"/>
+        app:layout_constraintGuide_percent="0.05"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_bottom_gl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90"/>
+        app:layout_constraintGuide_percent="0.95"/>
 
     <TextView
         android:id="@+id/tv_title"
@@ -52,6 +52,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_xxlarge"
+        app:boxBackgroundMode="none"
+        app:hintEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
         app:layout_constraintRight_toRightOf="@id/vertical_right_gl">
@@ -60,8 +62,14 @@
             android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:drawableStart="@drawable/core_custom_email_icon"
+            android:drawablePadding="@dimen/padding_small"
+            android:paddingStart="@dimen/padding_medium"
+            android:paddingEnd="@dimen/padding_medium"
+            android:background="@drawable/core_custom_input"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
+            android:textStyle="bold"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -73,6 +81,8 @@
         android:layout_marginTop="@dimen/margin_medium"
         app:endIconDrawable="@drawable/ic_close_eye"
         app:endIconMode="custom"
+        app:boxBackgroundMode="none"
+        app:hintEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/til_email"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
         app:layout_constraintRight_toRightOf="@id/vertical_right_gl">
@@ -81,8 +91,14 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:drawableStart="@drawable/core_custom_password_icon"
+            android:drawablePadding="@dimen/padding_small"
+            android:background="@drawable/core_custom_input"
+            android:paddingStart="@dimen/padding_medium"
+            android:paddingEnd="@dimen/padding_medium"
             android:hint="@string/password"
             android:inputType="textPassword"
+            android:textStyle="bold"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -32,7 +32,7 @@ import com.muratdayan.lessonline.domain.model.firebasemodels.Post
                         .load(post.photoUri)
                         .into(binding.ivPostPhoto)
                 }else{
-                    binding.ivPostPhoto.setImageResource(R.drawable.ic_person)
+                    binding.ivPostPhoto.setImageResource(com.muratdayan.core.R.drawable.ic_person_focused)
                 }
 
                 Glide.with(binding.ivUserPhoto.context)

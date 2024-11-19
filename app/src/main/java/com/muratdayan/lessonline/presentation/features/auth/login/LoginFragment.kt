@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginFragment (): BaseFragment() {
+class LoginFragment() : BaseFragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -35,7 +35,7 @@ class LoginFragment (): BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,8 +49,8 @@ class LoginFragment (): BaseFragment() {
 
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
-        ){result->
-            if (result.resultCode == RESULT_OK){
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
                 val data = result.data
                 loginViewModel.handleGoogleSignInResult(data)
             }
@@ -61,31 +61,35 @@ class LoginFragment (): BaseFragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            loginViewModel.loginState.collectLatest {loginState->
-                when(loginState){
+            loginViewModel.loginState.collectLatest { loginState ->
+                when (loginState) {
                     is LoginState.Nothing -> {
                         hideLoading()
                     }
+
                     is LoginState.Loading -> {
                         showLoading()
                     }
+
                     is LoginState.Success -> {
                         hideLoading()
                         val navController = Navigation.findNavController(requireView())
 
-                        if (loginState.isGoogleLogin){
-                            if (loginState.isNewUser){
+                        if (loginState.isGoogleLogin) {
+                            if (loginState.isNewUser) {
                                 navController.navigate(R.id.action_loginFragment_to_getProfileInfoFragment)
-                            }else{
+                            } else {
                                 navController.navigate(R.id.action_loginFragment_to_homeFragment)
                             }
-                        }else{
-                            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_homeFragment)
+                        } else {
+                            Navigation.findNavController(requireView())
+                                .navigate(R.id.action_loginFragment_to_homeFragment)
                         }
                     }
+
                     is LoginState.Error -> {
                         hideLoading()
-                        showToast(loginState.message.toString(),true)
+                        showToast(loginState.message.toString(), true)
                     }
                 }
             }
@@ -94,17 +98,17 @@ class LoginFragment (): BaseFragment() {
 
         binding.btnLogin.setOnClickListener {
             val isEmailEmpty = binding.etEmail.doIfIsEmptyAndReturn {
-                showToast("Email is empty",false)
+                showToast("Email is empty", false)
             }
+            if (isEmailEmpty) return@setOnClickListener
             val isPasswordEmpty = binding.etPassword.doIfIsEmptyAndReturn {
-                showToast("Password is empty",false)
+                showToast("Password is empty", false)
             }
+            if (isPasswordEmpty) return@setOnClickListener
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
+            loginViewModel.login(email, password)
 
-            if (!isEmailEmpty && !isPasswordEmpty){
-                val email = binding.etEmail.text.toString().trim()
-                val password = binding.etPassword.text.toString().trim()
-                loginViewModel.login(email,password)
-            }
         }
 
         binding.tilPassword.setEndIconOnClickListener {
@@ -117,7 +121,8 @@ class LoginFragment (): BaseFragment() {
         }
 
         binding.tvForgottenPassword.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
+            Navigation.findNavController(requireView())
+                .navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
         }
     }
 
@@ -126,13 +131,17 @@ class LoginFragment (): BaseFragment() {
         _binding = null
     }
 
-    private fun setUpPasswordVisibility(){
-        if (isPasswordVisible){
-            binding.etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.tilPassword.endIconDrawable = ContextCompat.getDrawable(requireContext(),R.drawable.ic_close_eye)
-        }else{
-            binding.etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            binding.tilPassword.endIconDrawable = ContextCompat.getDrawable(requireContext(),R.drawable.ic_open_eye)
+    private fun setUpPasswordVisibility() {
+        if (isPasswordVisible) {
+            binding.etPassword.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.tilPassword.endIconDrawable =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_eye)
+        } else {
+            binding.etPassword.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.tilPassword.endIconDrawable =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye)
         }
 
         binding.etPassword.setSelection(binding.etPassword.text?.length ?: 0)

@@ -5,7 +5,6 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +12,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.doIfIsEmptyAndReturn
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentRegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +57,7 @@ class RegisterFragment : BaseFragment() {
 
                     is SignUpState.Error -> {
                         hideLoading()
-                        Toast.makeText(requireContext(), "Error: ${signUpState.message}", Toast.LENGTH_SHORT).show()
+                        showToast("${signUpState.message}", isError = true)
                     }
                 }
 
@@ -65,12 +65,23 @@ class RegisterFragment : BaseFragment() {
         }
 
         binding.btnSignUp.setOnClickListener {
-            val username = binding.etUsername.text.toString().trim()
-            val email = binding.etEmail.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
-            val repassword = binding.etRepassword.text.toString().trim()
+            val isUserNameEmpty = binding.etUsername.doIfIsEmptyAndReturn {
+                showToast("username is empty",false)
+            }
+            val isEmailEmpty = binding.etEmail.doIfIsEmptyAndReturn {
+                showToast("email is empty",false)
+            }
+            val isPasswordEmpty = binding.etPassword.doIfIsEmptyAndReturn {
+                showToast("password is empty",false)
+            }
+            val isRepasswordEmpty = binding.etRepassword.doIfIsEmptyAndReturn {
+                showToast("repassword is empty",false)
+            }
 
-            if ((username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && repassword.isNotEmpty()) && (password == repassword)) {
+            if (!isUserNameEmpty && !isEmailEmpty && !isPasswordEmpty && !isRepasswordEmpty) {
+                val username = binding.etUsername.text.toString().trim()
+                val email = binding.etEmail.text.toString().trim()
+                val password = binding.etPassword.text.toString().trim()
                 registerViewModel.signUp(username, email, password)
             }
         }

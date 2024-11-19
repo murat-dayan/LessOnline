@@ -1,22 +1,21 @@
 package com.muratdayan.lessonline.presentation.features.auth.forgetpassword
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import com.muratdayan.lessonline.R
+import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.doIfIsEmptyAndReturn
 import com.muratdayan.lessonline.databinding.FragmentForgetPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ForgetPasswordFragment : Fragment() {
+class ForgetPasswordFragment : BaseFragment() {
 
     private var _binding: FragmentForgetPasswordBinding? = null
     private val binding get() = _binding!!
@@ -36,11 +35,12 @@ class ForgetPasswordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnResetPassword.setOnClickListener {
-            val email = binding.etEmail.text.toString().trim()
-            if (email.isNotEmpty()){
+            val isEmailEmpty = binding.etEmail.doIfIsEmptyAndReturn {
+                showToast("email is empty",false)
+            }
+            if (!isEmailEmpty){
+                val email = binding.etEmail.text.toString().trim()
                 forgetPasswordViewModel.resetPassword(email)
-            }else{
-                Toast.makeText(requireContext(),"fill Fields",Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -49,7 +49,7 @@ class ForgetPasswordFragment : Fragment() {
                 if (result){
                     Navigation.findNavController(requireView()).navigateUp()
                 }else{
-                    Toast.makeText(requireContext(),"Error",Toast.LENGTH_SHORT).show()
+                    showToast("Something went wrong",true)
                 }
             }
         }

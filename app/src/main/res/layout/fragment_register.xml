@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.features.auth.register.RegisterFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -11,14 +11,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05"/>
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_right_gl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95"/>
+        app:layout_constraintGuide_percent="0.95" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -26,14 +26,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.10"/>
+        app:layout_constraintGuide_percent="0.10" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_bottom_gl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90"/>
+        app:layout_constraintGuide_percent="0.90" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -52,17 +52,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_xxlarge"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:boxBackgroundMode="none"
+        app:hintEnabled="false"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
-        app:layout_constraintRight_toRightOf="@id/vertical_right_gl">
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_username"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/user_name"
-        android:inputType="textEmailAddress"
-        />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/core_custom_input"
+            android:drawableStart="@drawable/core_custom_person_icon"
+            android:drawablePadding="@dimen/padding_small"
+            android:hint="@string/user_name"
+            android:inputType="textEmailAddress"
+            android:paddingStart="@dimen/padding_medium"
+            android:paddingEnd="@dimen/padding_medium" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -70,17 +76,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
-        app:layout_constraintTop_toBottomOf="@id/til_username"
+        app:boxBackgroundMode="none"
+        app:hintEnabled="false"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
-        app:layout_constraintRight_toRightOf="@id/vertical_right_gl">
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
+        app:layout_constraintTop_toBottomOf="@id/til_username">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/core_custom_input"
+            android:drawableStart="@drawable/core_custom_email_icon"
+            android:drawablePadding="@dimen/padding_small"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            />
+            android:paddingStart="@dimen/padding_medium"
+            android:paddingEnd="@dimen/padding_medium" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,19 +101,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
+        app:boxBackgroundMode="none"
         app:endIconDrawable="@drawable/ic_close_eye"
         app:endIconMode="custom"
-        app:layout_constraintTop_toBottomOf="@id/til_email"
+        app:hintEnabled="false"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
-        app:layout_constraintRight_toRightOf="@id/vertical_right_gl">
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
+        app:layout_constraintTop_toBottomOf="@id/til_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/core_custom_input"
+            android:drawableStart="@drawable/core_custom_password_icon"
+            android:drawablePadding="@dimen/padding_small"
             android:hint="@string/password"
             android:inputType="textPassword"
-            />
+            android:paddingStart="@dimen/padding_medium"
+            android:paddingEnd="@dimen/padding_medium" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,32 +128,38 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
+        app:boxBackgroundMode="none"
         app:endIconDrawable="@drawable/ic_close_eye"
         app:endIconMode="custom"
-        app:layout_constraintTop_toBottomOf="@id/til_password"
+        app:hintEnabled="false"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
-        app:layout_constraintRight_toRightOf="@id/vertical_right_gl">
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
+        app:layout_constraintTop_toBottomOf="@id/til_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_repassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/core_custom_input"
+            android:drawableStart="@drawable/core_custom_password_icon"
+            android:drawablePadding="@dimen/padding_small"
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
-            />
+            android:paddingStart="@dimen/padding_medium"
+            android:paddingEnd="@dimen/padding_medium" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_sign_up"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_xlarge"
+        android:paddingVertical="@dimen/padding_small"
         android:text="@string/sign_up"
         android:visibility="visible"
-        android:paddingVertical="@dimen/padding_small"
-        android:layout_marginTop="@dimen/margin_xlarge"
-        app:layout_constraintTop_toBottomOf="@id/til_repassword"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
-        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"/>
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
+        app:layout_constraintTop_toBottomOf="@id/til_repassword" />
 
     <ProgressBar
         android:id="@+id/pb_register"
@@ -143,9 +167,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_xlarge"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/til_repassword"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
-        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"/>
+        app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
+        app:layout_constraintTop_toBottomOf="@id/til_repassword" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
