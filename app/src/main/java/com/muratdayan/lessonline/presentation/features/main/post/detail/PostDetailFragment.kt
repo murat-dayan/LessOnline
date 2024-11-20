@@ -67,7 +67,11 @@ class PostDetailFragment : BaseFragment() {
                         toggleLike(post)
                     }
                     binding.incPostItem.ibtnAnswer.setOnClickListener {
-                        val answersBottomSheet = AnswersBottomSheetFragment(postId)
+                        val answersBottomSheet = AnswersBottomSheetFragment(postId){isAnswerChanged->
+                            if (isAnswerChanged){
+                                postDetailViewModel.getPostById(postId)
+                            }
+                        }
                         answersBottomSheet.show(childFragmentManager,answersBottomSheet.tag)
                     }
                 }

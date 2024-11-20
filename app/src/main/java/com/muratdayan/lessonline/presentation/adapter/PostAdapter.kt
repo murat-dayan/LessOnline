@@ -14,17 +14,17 @@ import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
     class PostAdapter(
         private var postList: List<Post>,
-        private val onAnswerIconClick: (String)->Unit,
+        private val onAnswerIconClick: (String,Int)->Unit,
         private val onLikeIconClick: (post:Post,position:Int)->Unit,
         private val onProfilePhotoClick:(String)->Unit,
         private val onBookmarkIconClick: (String,ImageButton) -> Unit,
-        private val onPostPhotoClick:(String)->Unit
+        private val onPostPhotoClick:(String)->Unit,
     ): RecyclerView.Adapter<PostAdapter.PostRowHolder>() {
 
         inner class PostRowHolder(view: View): RecyclerView.ViewHolder(view){
             val binding = ItemPostBinding.bind(view)
 
-            fun bind(post: Post){
+            fun bind(post: Post, position: Int){
                 binding.tvPostComment.text = post.comment
                 binding.tvUsername.text = post.username
                 if (post.photoUri.isNotEmpty()){
@@ -39,9 +39,10 @@ import com.muratdayan.lessonline.domain.model.firebasemodels.Post
                     .load(post.userPhoto)
                     .into(binding.ivUserPhoto)
                 binding.ibtnAnswer.setOnClickListener {
-                    onAnswerIconClick(post.postId)
+                    onAnswerIconClick(post.postId,position)
                 }
                 binding.tvLikeCounts.text = post.likeCount.toString()
+                binding.tvAnswersCount.text = post.answerCount.toString()
                 binding.ibtnLike.setImageResource(
                     if (FirebaseAuth.getInstance().currentUser?.let { post.likedByUsers.contains(it.uid) } == true){
                         R.drawable.ic_like
@@ -79,7 +80,7 @@ import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 
         override fun onBindViewHolder(holder: PostRowHolder, position: Int) {
             val post = postList[position]
-            holder.bind(post)
+            holder.bind(post, position)
         }
 
         fun updatePostList(newPostList: List<Post>){

@@ -12,8 +12,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-    import androidx.navigation.NavDeepLinkRequest
-    import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -27,7 +27,8 @@ import kotlinx.coroutines.launch
 
     @AndroidEntryPoint
     class AnswersBottomSheetFragment(
-        private val postId:String
+        private val postId:String,
+        private val onDismiss: (Boolean) -> Unit
     ) : BottomSheetDialogFragment(){
 
         private var _binding: BottomSheetFragmentAnswersBinding?=null
@@ -37,8 +38,6 @@ import kotlinx.coroutines.launch
 
         private lateinit var answerAdapter: AnswerAdapter
         private var selectedAnswer: String?=null
-
-        private var isPostOwner:Boolean = false
 
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -60,11 +59,6 @@ import kotlinx.coroutines.launch
             answerViewModel.getAnswers(postId)
             answerViewModel.getPostAnswers(postId)
             answerViewModel.checkIfPostOwner(postId)
-
-
-
-
-
 
             answerViewModel.isPostOwner.observe(viewLifecycleOwner) { isPostOwnerRes ->
                 val currentUserId =FirebaseAuth.getInstance().currentUser?.uid ?: ""
@@ -122,6 +116,14 @@ import kotlinx.coroutines.launch
                 answerViewModel.addResult.collectLatest {
                     if (it){
                         answerViewModel.getAnswers(postId)
+                    }
+                }
+            }
+
+            lifecycleScope.launch {
+                answerViewModel.isAnswerCountChanged.observe(viewLifecycleOwner){
+                    if (it){
+                        onDismiss.invoke(true)
                     }
                 }
             }

@@ -4,25 +4,26 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.User
+import com.muratdayan.lessonline.core.Result
+import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.domain.model.firebasemodels.Answer
 import com.muratdayan.lessonline.domain.model.firebasemodels.NotificationModel
-import com.muratdayan.lessonline.presentation.util.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
 class AnswerViewModel @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val firebaseRepository: FirebaseRepository
 ) :ViewModel(){
 
     private val _answers = MutableStateFlow<List<Answer>>(emptyList())
@@ -37,6 +38,9 @@ class AnswerViewModel @Inject constructor(
 
     private val _isPostOwner = MutableLiveData<Boolean>()
     val isPostOwner: LiveData<Boolean> = _isPostOwner
+
+    private val _isAnswerCountChanged = MutableLiveData<Boolean>()
+    val isAnswerCountChanged : LiveData<Boolean> = _isAnswerCountChanged
 
     fun checkIfPostOwner(postId: String){
         val currentUserId = firebaseAuth.currentUser?.uid
@@ -107,6 +111,30 @@ class AnswerViewModel @Inject constructor(
             }
     }
 
+    private fun updateAnswersCount(postId: String){
+
+        viewModelScope.launch {
+            val postRef = firebaseFirestore.collection("posts").document(postId).get().await()
+            val currentCount = postRef.getLong("answerCount") ?: 0
+            val fieldsToUpdate = mapOf("answerCount" to currentCount+1)
+            firebaseRepository.updatePostInFirebase(postId,fieldsToUpdate).collect{result->
+                when(result){
+                    is Result.Error -> {
+                        Log.d("AnswerViewModel",result.exception.message.toString())
+                        _isAnswerCountChanged.value = false
+                    }
+                    Result.Idle -> {}
+                    Result.Loading -> {}
+                    is Result.Success -> {
+                        _isAnswerCountChanged.value = result.data
+                    }
+                }
+            }
+        }
+    }
+
+
+
     fun addAnswer(postId: String,answerText:String){
         firebaseAuth.currentUser?.let {currentUser->
             canUserAddAnswer(postId){canAdd->
@@ -123,6 +151,7 @@ class AnswerViewModel @Inject constructor(
                         .add(answer)
                         .addOnSuccessListener {
                             _addResult.value = true
+                            updateAnswersCount(postId)
                             sendNotificationToPostOwner(postId,currentUser.uid)
                         }
                         .addOnFailureListener {

@@ -4,21 +4,26 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.AdRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.muratdayan.lessonline.core.Result
+import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 
     private val _postList = MutableStateFlow<PostListState>(PostListState.Nothing)
@@ -76,18 +81,22 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    fun updatePostInFirebase(post: Post, onComplete: () -> Unit ={}) {
-        val postRef = firebaseFirestore.collection("posts").document(post.postId)
-        postRef.update("likeCount", post.likeCount, "likedByUsers", post.likedByUsers)
-            .addOnSuccessListener {
-                fetchPosts()
-                onComplete.invoke()
+    private fun updateLikesCount(postId: String,fieldsToUpdate:Map<String,Any>, onComplete: () -> Unit){
+        viewModelScope.launch {
+            firebaseRepository.updatePostInFirebase(postId,fieldsToUpdate).collect{result->
+                when(result){
+                    is Result.Error -> {}
+                    Result.Idle -> {}
+                    Result.Loading -> {}
+                    is Result.Success -> {
+                        onComplete.invoke()
+                    }
+                }
             }
-            .addOnFailureListener { exception ->
-                exception.printStackTrace()
-                Log.e("HomeViewModel", "Error fetching posts: ${exception.message}")
-            }
+        }
     }
+
+
 
     fun toggleBookmark(postId:String){
         val userId = firebaseAuth.currentUser?.uid
@@ -145,7 +154,8 @@ class HomeViewModel @Inject constructor(
                 post.likedByUsers += currentUserId
                 post.likeCount++
             }
-            updatePostInFirebase(post){
+            val fieldsToUpdate = mapOf("likeCount" to post.likeCount)
+            updateLikesCount(post.postId,fieldsToUpdate){
                 onComplete.invoke()
             }
 

@@ -59,8 +59,14 @@ class HomeFragment : BaseFragment() {
 
         }*/
 
-        postAdapter = PostAdapter(emptyList(), onAnswerIconClick = {
-            val answersBottomSheet = AnswersBottomSheetFragment(it)
+        postAdapter = PostAdapter(
+            emptyList(),
+            onAnswerIconClick = {postId, position->
+            val answersBottomSheet = AnswersBottomSheetFragment(postId){isAnswerChanged->
+                if (isAnswerChanged){
+                    postAdapter.notifyItemChanged(position)
+                }
+            }
             answersBottomSheet.show(childFragmentManager,answersBottomSheet.tag)
         },onLikeIconClick = {post,position->
             homeViewModel.toggleLikePost(post){

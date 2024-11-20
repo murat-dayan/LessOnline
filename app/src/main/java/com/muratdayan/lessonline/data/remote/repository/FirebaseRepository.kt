@@ -5,9 +5,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
 import com.muratdayan.lessonline.presentation.util.UserRole
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -17,7 +19,7 @@ class FirebaseRepository @Inject constructor(
 )
 {
 
-    suspend fun getUserProfile(otherUserId:String?=null) : Flow<Result<UserProfile?>> = flow {
+    fun getUserProfile(otherUserId:String?=null) : Flow<Result<UserProfile?>> = flow {
         emit(Result.Loading)
 
         val userId = otherUserId ?: firebaseAuth.currentUser?.uid
@@ -39,7 +41,7 @@ class FirebaseRepository @Inject constructor(
         emit(Result.Error(exception))
     }
 
-    suspend fun createUserProfile(
+    fun createUserProfile(
         uid:String,
         email:String?,
         name:String?,
@@ -71,7 +73,7 @@ class FirebaseRepository @Inject constructor(
         emit(Result.Error(exception))  // Hata oluşursa hatayı yay
     }
 
-    suspend fun checkUserRole(): Flow<Result<Boolean>> = flow{
+    fun checkUserRole(): Flow<Result<Boolean>> = flow{
         emit(Result.Loading)
 
         val userId = firebaseAuth.currentUser?.uid
@@ -93,5 +95,21 @@ class FirebaseRepository @Inject constructor(
         }
     }.catch { exception->
         emit(Result.Error(exception))
+    }
+
+    fun updatePostInFirebase(
+        postId:String,
+        fieldsToUpdate: Map<String,Any>
+    ) : Flow<Result<Boolean>> = flow {
+        try {
+            emit(Result.Loading)
+            val postRef = firebaseFirestore.collection("posts").document(postId)
+            postRef.update(fieldsToUpdate).await()
+            emit(Result.Success(true))
+        }catch (e:Exception){
+            emit(Result.Error(e))
+        }
+    }.flowOn(Dispatchers.IO).catch {
+        emit(Result.Error(it))
     }
 }

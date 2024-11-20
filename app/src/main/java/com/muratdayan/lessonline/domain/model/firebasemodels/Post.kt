@@ -12,7 +12,7 @@ data class Post(
     val photoUri: String="",
     val comment:String="",
     var likeCount:Int =0,
-    val answerCount:Int=0,
+    val answerCount:Long=0,
     var likedByUsers: List<String> = emptyList(),
     val postAnswers: List<String> = emptyList(),
     var isBookmarked : Boolean = false,

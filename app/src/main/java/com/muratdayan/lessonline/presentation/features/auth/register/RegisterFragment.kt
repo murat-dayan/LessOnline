@@ -86,7 +86,13 @@ class RegisterFragment : BaseFragment() {
             val username = binding.etUsername.text.toString().trim()
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
-            registerViewModel.signUp(username, email, password)
+            val rePassword = binding.etRepassword.text.toString().trim()
+            if (password != rePassword) {
+                showToast("Passwords are not equal",false)
+                return@setOnClickListener
+            }else{
+                registerViewModel.signUp(username, email, password)
+            }
 
         }
 
