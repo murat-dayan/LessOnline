@@ -46,9 +46,6 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_otherProfileFragment"
-            app:destination="@id/otherProfileFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
         <action
@@ -66,6 +63,9 @@
         <action
             android:id="@+id/action_homeFragment_to_chat_graph"
             app:destination="@id/chat_graph" />
+        <action
+            android:id="@+id/action_homeFragment_to_otherProfileFragment"
+            app:destination="@id/otherProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/answernotificationsfragment"
@@ -186,5 +186,15 @@
         android:name="com.muratdayan.lessonline.presentation.features.main.bottomsheets.answers.AnswersBottomSheetFragment"
         android:label="AnswersBottomSheetFragment" >
     </dialog>
+    <fragment
+        android:id="@+id/allPostsFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.home.all_posts.AllPostsFragment"
+        android:label="fragment_all_posts"
+        tools:layout="@layout/fragment_all_posts" />
+    <fragment
+        android:id="@+id/followingPostsFragment"
+        android:name="com.muratdayan.lessonline.presentation.features.main.home.following_posts.FollowingPostsFragment"
+        android:label="fragment_following_posts"
+        tools:layout="@layout/fragment_following_posts" />
 
 </navigation>

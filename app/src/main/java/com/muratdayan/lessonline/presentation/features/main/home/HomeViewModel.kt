@@ -13,9 +13,6 @@ import com.muratdayan.lessonline.core.Result
 import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.domain.model.firebasemodels.Post
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,8 +23,7 @@ class HomeViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) : ViewModel() {
 
-    private val _postList = MutableStateFlow<PostListState>(PostListState.Nothing)
-    val postList: StateFlow<PostListState> = _postList.asStateFlow()
+
 
     // AdRequest'i canlı veri olarak yönetmek için LiveData
     private val _adRequest = MutableLiveData<AdRequest>()
@@ -45,41 +41,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun fetchPosts() {
-        _postList.value = PostListState.Loading
-        val userId = firebaseAuth.currentUser?.uid
-        if (userId != null){
-            val userRef = firebaseFirestore.collection("users").document(userId)
-            userRef.get()
-                .addOnSuccessListener { userSnapshot->
-                    val savedPosts = userSnapshot.get("savedPosts") as? List<String> ?: emptyList()
 
-                    firebaseFirestore.collection("posts").get()
-                        .addOnSuccessListener { result ->
-                            val postList = result.toObjects(Post::class.java).map { post->
-                                post.isBookmarked = savedPosts.contains(post.postId)
-                                post
-                            }
-                            _postList.value = if (postList.isNotEmpty()){
-                                PostListState.Success(postList)
-                            }else {
-                                PostListState.Error("No Posts Foundd")
-                            }
-                        }
-                        .addOnFailureListener { exception ->
-                            _postList.value = PostListState.Error(exception.message)
-                            exception.printStackTrace()
-                            Log.e("HomeViewModel", "Error fetching posts: ${exception.message}")
-                        }
-                }
-                .addOnFailureListener { exception->
-                    Log.e("HomeViewModel","Error fetching userdataa: ${exception.message}")
-                }
-        }
-
-
-
-    }
 
     private fun updateLikesCount(postId: String,fieldsToUpdate:Map<String,Any>, onComplete: () -> Unit){
         viewModelScope.launch {
@@ -98,7 +60,7 @@ class HomeViewModel @Inject constructor(
 
 
 
-    fun toggleBookmark(postId:String){
+    fun toggleBookmark(postId:String , onSuccess:()->Unit){
         val userId = firebaseAuth.currentUser?.uid
         if (userId != null){
             val userRef = firebaseFirestore.collection("users").document(userId)
@@ -117,7 +79,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
                 .addOnSuccessListener {
-                    fetchPosts()
+                    onSuccess()
                 }
                 .addOnFailureListener {e->
                     Log.e("HomeViewModel","Error Updating bookmark: ${e.message}")
@@ -164,10 +126,5 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    sealed class PostListState {
-        object Nothing : PostListState()
-        object Loading : PostListState()
-        data class Success(val postList: List<Post>) : PostListState()
-        data class Error(val message: String? = null) : PostListState()
-    }
+
 }
