@@ -55,6 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/search"
+            android:textColorHint="@color/md_theme_outline"
+            android:textColor="@color/md_theme_primary"
             android:drawableStart="@drawable/core_custom_search_icon"
             android:drawablePadding="@dimen/padding_small"
             android:paddingStart="@dimen/padding_medium"
