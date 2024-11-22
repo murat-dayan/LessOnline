@@ -71,4 +71,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <com.muratdayan.core.presentation.EmptyView
+        android:id="@+id/ev_saved_posts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:emptyMessage= "You Don't Save Anything"
+        android:visibility="gone"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ibtn_back"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

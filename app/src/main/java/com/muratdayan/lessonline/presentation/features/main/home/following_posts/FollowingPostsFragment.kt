@@ -109,9 +109,9 @@ class FollowingPostsFragment(
                         isFirstLoad = false
 
                         if (postListState.postList.isEmpty()) {
-                            binding.tvEmptyList.visibility = View.VISIBLE
+                            binding.evFollowingPosts.visibility = View.VISIBLE
                         } else {
-                            binding.tvEmptyList.visibility = View.GONE
+                            binding.evFollowingPosts.visibility = View.GONE
                         }
                     }
                     is PostListState.Error->{

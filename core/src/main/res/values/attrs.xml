@@ -4,4 +4,8 @@
     <attr name="colorOnCustomColor" format="color"/>
     <attr name="colorCustomColorContainer" format="color"/>
     <attr name="colorOnCustomColorContainer" format="color"/>
+    
+    <declare-styleable name="CoreCustomEmptyViewStyleable">
+        <attr name="emptyMessage" format="string"/>
+    </declare-styleable>
 </resources>

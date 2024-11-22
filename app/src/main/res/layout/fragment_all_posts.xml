@@ -6,20 +6,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.features.main.home.all_posts.AllPostsFragment">
 
-    <TextView
-         android:id="@+id/tv_empty_list"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="List is Empty"
-         android:textSize="@dimen/text_large"
-         android:textStyle="bold"
-         android:visibility="gone"
-         app:layout_constraintTop_toTopOf="parent"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="parent"/>
-
-
+    <com.muratdayan.core.presentation.EmptyView
+        android:id="@+id/ev_all_posts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:emptyMessage= "Nothing Found:("
+        android:visibility="gone"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
      <com.facebook.shimmer.ShimmerFrameLayout
          android:id="@+id/sfl_for_post"

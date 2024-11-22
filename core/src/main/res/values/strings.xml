@@ -39,4 +39,5 @@
     <string name="error_storage_not_authenticated">You must be authenticated to upload files.</string>
     <string name="error_storage_generic">Storage error: %1$s</string>
     <string name="info">info</string>
+    <string name="empty_image">Empty Image</string>
 </resources>

@@ -52,6 +52,11 @@ class SavedPostsFragment : Fragment() {
             savedPostsViewModel.savedPostList.collectLatest {postList->
                 Log.d("SavedPostsFragment","postList: $postList")
                 basicPostListAdapter.submitList(postList)
+                if (postList.isEmpty()){
+                    binding.evSavedPosts.visibility = View.VISIBLE
+                }else{
+                    binding.evSavedPosts.visibility = View.GONE
+                }
             }
         }
 

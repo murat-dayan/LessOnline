@@ -65,4 +65,18 @@
         app:layout_constraintBottom_toBottomOf="@id/horizontal_bottom_gl"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.muratdayan.core.presentation.EmptyView
+        android:id="@+id/ev_searched_posts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:emptyMessage= "Nothing Found:("
+        android:visibility="gone"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_search"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

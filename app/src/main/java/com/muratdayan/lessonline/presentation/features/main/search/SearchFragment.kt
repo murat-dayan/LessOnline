@@ -57,6 +57,12 @@ class SearchFragment : BaseFragment() {
         lifecycleScope.launch {
             searchViewModel.postList.collectLatest { postList ->
                 basicPostListAdapter.submitList(postList)
+
+                if(postList.isEmpty()){
+                    binding.evSearchedPosts.visibility = View.VISIBLE
+                }else{
+                    binding.evSearchedPosts.visibility = View.GONE
+                }
             }
         }
 

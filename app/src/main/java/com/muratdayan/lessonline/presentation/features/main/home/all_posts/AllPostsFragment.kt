@@ -109,9 +109,9 @@ class AllPostsFragment(
                         isFirstLoad = false
 
                         if (postListState.postList.isEmpty()) {
-                            binding.tvEmptyList.visibility = View.VISIBLE
+                            binding.evAllPosts.visibility = View.VISIBLE
                         } else {
-                            binding.tvEmptyList.visibility = View.GONE
+                            binding.evAllPosts.visibility = View.GONE
                         }
                     }
                     is PostListState.Error->{
