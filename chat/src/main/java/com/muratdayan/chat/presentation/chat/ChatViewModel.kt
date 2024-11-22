@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.muratdayan.chat.data.model.MessageModel
 import com.muratdayan.chat.data.repository.ChatRepository
+import com.muratdayan.core.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,8 +26,8 @@ class ChatViewModel @Inject constructor(
     private val _sendMessageStatus = MutableStateFlow<Boolean>(false)
     val sendMessageStatus: StateFlow<Boolean> = _sendMessageStatus
 
-    private val _messagesState = MutableStateFlow<List<MessageModel>>(emptyList())
-    val messagesState: StateFlow<List<MessageModel>> = _messagesState
+    private val _messagesState = MutableStateFlow<Result<List<MessageModel>>>(Result.Idle)
+    val messagesState: StateFlow<Result<List<MessageModel>>> = _messagesState.asStateFlow()
 
     private val _receiverName = MutableStateFlow<String>("")
     val receiverName: StateFlow<String> = _receiverName
@@ -63,9 +65,10 @@ class ChatViewModel @Inject constructor(
     }
 
     fun observeMessages(chatId: String){
+        _messagesState.value = Result.Loading
         viewModelScope.launch {
             chatRepository.getMessages(chatId).collect{messages->
-                _messagesState.value = messages
+                _messagesState.value = Result.Success(messages)
             }
         }
     }

@@ -67,7 +67,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:hint="Tartışmaya Başlayın" />
+            android:hint="Tartışmaya Başlayın"
+            android:textColorHint="@color/md_theme_outline"
+            android:textColor="@color/md_theme_primary"
+            />
 
         <Button
             android:id="@+id/btn_send"

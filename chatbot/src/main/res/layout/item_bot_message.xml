@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="start"
-    android:padding="8dp">
+    android:padding="@dimen/padding_small">
 
     <TextView
         android:id="@+id/messageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bot_message_background"
-        android:padding="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"/>
+        android:padding="@dimen/padding_small"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="@dimen/text_large"/>
 </LinearLayout>

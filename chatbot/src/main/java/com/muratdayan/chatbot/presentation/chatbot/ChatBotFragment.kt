@@ -35,6 +35,8 @@ class ChatBotFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        updateViewsVisibility()
+
         chatAdapter = ChatAdapter()
         binding.rvMessages.adapter = chatAdapter
         binding.rvMessages.layoutManager = LinearLayoutManager(requireContext())
@@ -50,6 +52,7 @@ class ChatBotFragment : BaseFragment() {
                 chatAdapter.submitList(messages.toList())
                 chatBotViewModel.sendMessageToChatBot(userMessage)
                 binding.etMessage.text.clear()
+                updateViewsVisibility()
             }
 
 
@@ -60,6 +63,7 @@ class ChatBotFragment : BaseFragment() {
             messages.add(botMessage)
             chatAdapter.submitList(messages.toList())
             binding.rvMessages.scrollToPosition(messages.size-1)
+            updateViewsVisibility()
         }
 
         chatBotViewModel.currentUser.observe(viewLifecycleOwner){user->
@@ -75,6 +79,16 @@ class ChatBotFragment : BaseFragment() {
         }
 
 
+    }
+
+    private fun updateViewsVisibility() {
+        if (messages.isEmpty()) {
+            binding.rvMessages.visibility = View.GONE
+            binding.evChatbot.visibility = View.VISIBLE
+        } else {
+            binding.rvMessages.visibility = View.VISIBLE
+            binding.evChatbot.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.muratdayan.chat.databinding.FragmentChatBinding
 import com.muratdayan.chat.presentation.adapter.ChatWithUserAdapter
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.Result
 import com.muratdayan.core.util.doIfIsEmptyAndReturn
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -87,16 +88,31 @@ class ChatFragment : BaseFragment() {
         }
 
         lifecycleScope.launch {
-            chatViewModel.messagesState.collect{messages->
-                chatWithUserAdapter.submitList(messages)
+            chatViewModel.messagesState.collect{result->
+                when(result){
+                    is Result.Error -> {
+                        hideLoading()
+                        showToast(result.exception.message.toString(),true)
+                    }
+                    Result.Idle -> {}
+                    Result.Loading -> {
+                        showLoading()
+                    }
+                    is Result.Success -> {
+                        hideLoading()
+                        chatWithUserAdapter.submitList(result.data)
 
-                if (messages.isEmpty()){
-                    binding.evChat.visibility = View.VISIBLE
-                    binding.rvMessages.visibility = View.GONE
-                }else{
-                    binding.evChat.visibility = View.GONE
-                    binding.rvMessages.visibility = View.VISIBLE
+                        if (result.data.isEmpty()){
+                            binding.evChat.visibility = View.VISIBLE
+                            binding.rvMessages.visibility = View.GONE
+                        }else{
+                            binding.evChat.visibility = View.GONE
+                            binding.rvMessages.visibility = View.VISIBLE
+                        }
+                    }
                 }
+
+
             }
         }
     }
