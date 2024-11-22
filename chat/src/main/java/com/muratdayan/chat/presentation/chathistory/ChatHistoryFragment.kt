@@ -49,6 +49,12 @@ class ChatHistoryFragment : BaseFragment() {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(requireContext())
                 }
+
+                if (users.isEmpty()){
+                    binding.evChatHistory.visibility = View.VISIBLE
+                }else{
+                    binding.evChatHistory.visibility = View.GONE
+                }
             }
         }
 

@@ -89,6 +89,14 @@ class ChatFragment : BaseFragment() {
         lifecycleScope.launch {
             chatViewModel.messagesState.collect{messages->
                 chatWithUserAdapter.submitList(messages)
+
+                if (messages.isEmpty()){
+                    binding.evChat.visibility = View.VISIBLE
+                    binding.rvMessages.visibility = View.GONE
+                }else{
+                    binding.evChat.visibility = View.GONE
+                    binding.rvMessages.visibility = View.VISIBLE
+                }
             }
         }
     }
