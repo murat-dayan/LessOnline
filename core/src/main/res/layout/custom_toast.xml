@@ -3,15 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/card_corner_radius_16"
-    app:cardBackgroundColor="@color/md_theme_secondaryContainer">
+    app:cardBackgroundColor="@color/md_theme_secondaryContainer"
+    android:layout_marginHorizontal="@dimen/margin_small"
+    >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_small">
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_small"
+        android:layout_gravity="center"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/iv_custom_toast_icon"
@@ -19,23 +24,22 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_info_outline"
             app:tint="@color/md_theme_primary"
-            android:contentDescription="@string/icon_nfo"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:contentDescription="@string/info"
+            android:layout_gravity="center"
+            />
 
         <TextView
             android:id="@+id/tv_custom_toast_message"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="message"
+            tools:text="This is a long toast message that should not overlap the icon!"
             android:textSize="@dimen/text_medium"
+            android:layout_gravity="center"
             android:textStyle="bold"
             android:textColor="@color/md_theme_primary"
-            android:layout_marginStart="@dimen/margin_small"
-            app:layout_constraintStart_toEndOf="@id/iv_custom_toast_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginHorizontal="@dimen/margin_small"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

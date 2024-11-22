@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Generic Errors -->
+    <string name="error_unknown">Unknown error occurred: %1$s</string>
+    <string name="error_network_issue">Please check your internet connection.</string>
+    <string name="error_firebase_unexpected">Unexpected Firebase error occurred.</string>
+
+    <!-- Auth Errors -->
+    <string name="error_invalid_email">Invalid email format.</string>
+    <string name="error_user_not_found">No user found with this email.</string>
+    <string name="error_wrong_password">The password is incorrect.</string>
+    <string name="error_email_in_use">This email is already in use by another account.</string>
+    <string name="error_weak_password">The password is too weak. Please use a stronger password.</string>
+    <string name="error_auth_generic">Authentication error: %1$s</string>
+    <string name="error_operation_not_allowed">This operation is not allowed. Please enable it in the Firebase console.</string>
+    <string name="error_account_exists_with_different_credential">An account already exists with the same email but different sign-in credentials.</string>
+    <string name="error_credential_already_in_use">This credential is already associated with another user account.</string>
+    <string name="error_requires_recent_login">This operation requires a recent login. Please log in again and try.</string>
+    <string name="error_provider_already_linked">This provider is already linked to this account.</string>
+    <string name="error_no_such_provider">No such provider is configured for this user.</string>
+    <string name="error_invalid_user_token">The user\'s token is invalid. Please try logging in again.</string>
+    <string name="error_user_token_expired">The user\'s token has expired. Please log in again.</string>
+    <string name="error_too_many_requests">Too many requests. Please try again later.</string>
+    <string name="error_network_request_failed">Network request failed. Please check your connection and try again.</string>
+    <string name="error_internal_error">An internal error occurred. Please try again later.</string>
+    <string name="error_user_disabled">The user account has been disabled by an administrator.</string>
+    <string name="error_invalid_credential">The credential provided is malformed or has expired.</string>
+
+    <!-- Firestore Errors -->
+    <string name="error_firestore_permission_denied">You don\'t have permission to perform this action.</string>
+    <string name="error_firestore_unavailable">The server is currently unavailable. Please try again later.</string>
+    <string name="error_firestore_aborted">The operation was aborted.</string>
+    <string name="error_firestore_generic">Firestore error: %1$s</string>
+
+    <!-- Storage Errors -->
+    <string name="error_storage_bucket_not_found">Storage bucket not found.</string>
+    <string name="error_storage_object_not_found">The requested file could not be found.</string>
+    <string name="error_storage_quota_exceeded">Storage quota exceeded. Unable to upload the file.</string>
+    <string name="error_storage_not_authenticated">You must be authenticated to upload files.</string>
+    <string name="error_storage_generic">Storage error: %1$s</string>
+    <string name="info">info</string>
+</resources>

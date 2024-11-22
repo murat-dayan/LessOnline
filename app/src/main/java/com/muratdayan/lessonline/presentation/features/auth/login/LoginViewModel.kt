@@ -42,9 +42,9 @@ class LoginViewModel @Inject constructor(
                         _loginState.value = LoginState.Success()
                         return@addOnCompleteListener
                     }
-                    _loginState.value = LoginState.Error(task.exception?.message)
+                    _loginState.value = LoginState.Error(task.exception)
                 }else{
-                    _loginState.value = LoginState.Error(task.exception?.message)
+                    _loginState.value = LoginState.Error(task.exception)
                 }
             }
     }
@@ -74,7 +74,7 @@ class LoginViewModel @Inject constructor(
                 signInWithFirebase(credential)
             }
         }else{
-            _loginState.value = LoginState.Error(task.exception?.message)
+            _loginState.value = LoginState.Error(task.exception)
         }
     }
 
@@ -86,7 +86,7 @@ class LoginViewModel @Inject constructor(
                         checkIfUserProfileExists(userId = user.uid)
                     }
                 }else{
-                    _loginState.value = LoginState.Error(task.exception?.message)
+                    _loginState.value = LoginState.Error(task.exception)
                 }
             }
     }
@@ -103,7 +103,7 @@ class LoginViewModel @Inject constructor(
                 }
             }
             .addOnFailureListener {exc->
-                _loginState.value = LoginState.Error(exc.message)
+                _loginState.value = LoginState.Error(exc)
             }
     }
     fun checkIfUserIsLoggedIn(){
@@ -117,6 +117,6 @@ sealed class LoginState{
     object Nothing: LoginState()
     object Loading: LoginState()
     data class Success(val isGoogleLogin: Boolean= false, val isNewUser:Boolean = false): LoginState()
-    data class Error(val message: String? = null): LoginState()
+    data class Error(val exception: Exception?=null): LoginState()
 
 }

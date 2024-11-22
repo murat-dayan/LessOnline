@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.FirebaseErrorHandler
 import com.muratdayan.core.util.doIfIsEmptyAndReturn
 import com.muratdayan.core.util.setUpPasswordVisibility
 import com.muratdayan.lessonline.R
@@ -88,7 +89,12 @@ class LoginFragment() : BaseFragment() {
 
                     is LoginState.Error -> {
                         hideLoading()
-                        showToast(loginState.message.toString(), true)
+                        val errorMessage = loginState.exception?.let {
+                            FirebaseErrorHandler.getErrorMessage(requireContext(),
+                                it
+                            )
+                        } ?: "Unknown error occurred"
+                        showToast(errorMessage, true)
                     }
                 }
             }
@@ -129,22 +135,5 @@ class LoginFragment() : BaseFragment() {
         super.onDestroy()
         _binding = null
     }
-
-    /*private fun setUpPasswordVisibility() {
-        if (isPasswordVisible) {
-            binding.etPassword.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.tilPassword.endIconDrawable =
-                ContextCompat.getDrawable(requireContext(), com.muratdayan.core.R.drawable.ic_close_eye)
-        } else {
-            binding.etPassword.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            binding.tilPassword.endIconDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye)
-        }
-
-        binding.etPassword.setSelection(binding.etPassword.text?.length ?: 0)
-        isPasswordVisible = !isPasswordVisible
-    }*/
 
 }
