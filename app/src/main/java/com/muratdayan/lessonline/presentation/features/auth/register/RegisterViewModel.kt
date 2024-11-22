@@ -4,10 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
-import com.muratdayan.lessonline.core.Result
+import com.muratdayan.core.util.Result
 import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
-import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
 import com.muratdayan.lessonline.presentation.util.PreferenceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

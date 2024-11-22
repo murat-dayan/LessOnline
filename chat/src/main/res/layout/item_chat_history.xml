@@ -1,17 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/tv_username"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small"
+    app:cardElevation="@dimen/elevation10"
+    app:cardCornerRadius="@dimen/card_corner_radius_16"
+    >
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="User"
-        android:textSize="@dimen/text_large"
-        android:textStyle="bold"
-        android:gravity="center" />
+        android:layout_height="match_parent"
+        >
 
-</LinearLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/profile_photo_chat_history"
+            tools:srcCompat="@tools:sample/avatars"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/md_theme_primary"
+            />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_small"
+            tools:text="User"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            />
+
+        <ImageView
+            android:id="@+id/iv_arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/arrow_right_icon"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_gravity="center"
+            app:tint="@color/md_theme_primary"/>
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

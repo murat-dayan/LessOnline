@@ -3,4 +3,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>
     <string name="direct_messages">Direct Messages</string>
+    <string name="profile_photo_chat_history">Profile Photo Chat History</string>
+    <string name="arrow_right_icon">Arrow Right Icon</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.muratdayan.lessonline.core
+package com.muratdayan.core.util
 
 sealed class Result<out T> {
     object Idle : Result<Nothing>()

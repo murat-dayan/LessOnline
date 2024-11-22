@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.android.material.textfield.TextInputLayout
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.FirebaseErrorHandler
+import com.muratdayan.core.util.Result
 import com.muratdayan.lessonline.databinding.FragmentSearchBinding
 import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,14 +64,29 @@ class SearchFragment : BaseFragment() {
         }
 
         lifecycleScope.launch {
-            searchViewModel.postList.collectLatest { postList ->
-                basicPostListAdapter.submitList(postList)
-
-                if(postList.isEmpty()){
-                    binding.evSearchedPosts.visibility = View.VISIBLE
-                }else{
-                    binding.evSearchedPosts.visibility = View.GONE
+            searchViewModel.postList.collectLatest { result ->
+                when (result) {
+                    is Result.Error -> {
+                        hideLoading()
+                        val errorMessage = FirebaseErrorHandler.getErrorMessage(requireContext(),result.exception)
+                        showToast(errorMessage,true)
+                    }
+                    Result.Idle -> {}
+                    Result.Loading -> {
+                        showLoading()
+                    }
+                    is Result.Success -> {
+                        hideLoading()
+                        basicPostListAdapter.submitList(result.data)
+                        if(result.data.isEmpty()){
+                            binding.evSearchedPosts.visibility = View.VISIBLE
+                        }else{
+                            binding.evSearchedPosts.visibility = View.GONE
+                        }
+                    }
                 }
+
+
             }
         }
 

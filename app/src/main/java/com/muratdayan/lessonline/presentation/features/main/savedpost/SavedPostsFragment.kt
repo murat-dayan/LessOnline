@@ -1,15 +1,15 @@
 package com.muratdayan.lessonline.presentation.features.main.savedpost
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.Result
 import com.muratdayan.core.util.goBack
 import com.muratdayan.lessonline.databinding.FragmentSavedPostsBinding
 import com.muratdayan.lessonline.presentation.adapter.BasicPostListAdapter
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SavedPostsFragment : Fragment() {
+class SavedPostsFragment : BaseFragment() {
 
     private var _binding: FragmentSavedPostsBinding? = null
     private val binding get() = _binding!!
@@ -49,14 +49,28 @@ class SavedPostsFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            savedPostsViewModel.savedPostList.collectLatest {postList->
-                Log.d("SavedPostsFragment","postList: $postList")
-                basicPostListAdapter.submitList(postList)
-                if (postList.isEmpty()){
-                    binding.evSavedPosts.visibility = View.VISIBLE
-                }else{
-                    binding.evSavedPosts.visibility = View.GONE
+            savedPostsViewModel.savedPostList.collectLatest {result->
+
+                when(result){
+                    is Result.Error -> {
+                        hideLoading()
+                        showToast("Error",true)
+                    }
+                    Result.Idle -> {}
+                    Result.Loading -> {
+                        showLoading()
+                    }
+                    is Result.Success -> {
+                        hideLoading()
+                        basicPostListAdapter.submitList(result.data)
+                        if (result.data.isEmpty()){
+                            binding.evSavedPosts.visibility = View.VISIBLE
+                        }else{
+                            binding.evSavedPosts.visibility = View.GONE
+                        }
+                    }
                 }
+
             }
         }
 

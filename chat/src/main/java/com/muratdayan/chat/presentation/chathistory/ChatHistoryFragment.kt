@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.muratdayan.chat.databinding.FragmentChatHistoryBinding
 import com.muratdayan.chat.presentation.adapter.ChatHistoryAdapter
 import com.muratdayan.core.presentation.BaseFragment
+import com.muratdayan.core.util.Result
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -39,22 +40,36 @@ class ChatHistoryFragment : BaseFragment() {
 
 
         lifecycleScope.launch {
-            chatHistoryViewModel.userState.collect { users ->
-                chatHistoryAdapter = ChatHistoryAdapter(users){
-                    val action = ChatHistoryFragmentDirections.actionChatHistoryFragmentToChatFragment(it)
-                    findNavController().navigate(action)
-                }
-                binding.rvChatHistory.apply {
-                    adapter = chatHistoryAdapter
-                    setHasFixedSize(true)
-                    layoutManager = LinearLayoutManager(requireContext())
+            chatHistoryViewModel.usersChattedList.collect { result ->
+                when (result) {
+                    is Result.Error -> {
+                        hideLoading()
+                    }
+                    Result.Idle -> {}
+                    Result.Loading -> {
+                        showLoading()
+                    }
+                    is Result.Success -> {
+                        hideLoading()
+                        chatHistoryAdapter = ChatHistoryAdapter(result.data){
+                            val action = ChatHistoryFragmentDirections.actionChatHistoryFragmentToChatFragment(it)
+                            findNavController().navigate(action)
+                        }
+                        binding.rvChatHistory.apply {
+                            adapter = chatHistoryAdapter
+                            setHasFixedSize(true)
+                            layoutManager = LinearLayoutManager(requireContext())
+                        }
+                        if (result.data.isEmpty()){
+                            binding.evChatHistory.visibility = View.VISIBLE
+                        }else{
+                            binding.evChatHistory.visibility = View.GONE
+                        }
+                    }
+
                 }
 
-                if (users.isEmpty()){
-                    binding.evChatHistory.visibility = View.VISIBLE
-                }else{
-                    binding.evChatHistory.visibility = View.GONE
-                }
+
             }
         }
 

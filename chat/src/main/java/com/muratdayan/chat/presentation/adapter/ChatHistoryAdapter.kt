@@ -3,6 +3,7 @@ package com.muratdayan.chat.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.muratdayan.chat.data.model.ChatUserModel
 import com.muratdayan.chat.databinding.ItemChatHistoryBinding
 
@@ -16,6 +17,11 @@ class ChatHistoryAdapter(
             binding.tvUsername.text = user.name
             binding.root.setOnClickListener {
                 onItemClickListener(user.id)
+            }
+            user.photoUrl?.let { photoUrl ->
+                Glide.with(binding.ivProfile.context)
+                    .load(photoUrl)
+                    .into(binding.ivProfile)
             }
         }
     }

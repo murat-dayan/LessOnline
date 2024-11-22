@@ -13,7 +13,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.lessonline.R
-import com.muratdayan.lessonline.core.Result
+import com.muratdayan.core.util.Result
 import com.muratdayan.lessonline.databinding.FragmentGetProfileInfoBinding
 import com.muratdayan.lessonline.presentation.util.UserRole
 import dagger.hilt.android.AndroidEntryPoint

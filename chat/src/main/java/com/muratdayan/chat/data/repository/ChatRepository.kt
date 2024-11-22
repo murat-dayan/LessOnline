@@ -120,7 +120,8 @@ class ChatRepository @Inject constructor(
                 val userSnapshot = firestore.collection("users").document(userId).get().await()
                 val name =userSnapshot.getString("username")
                 val id =userSnapshot.getString("userId")
-                ChatUserModel(id!!,name!!)
+                val photoUrl = userSnapshot.getString("profilePhotoUrl")
+                ChatUserModel(id!!,name,photoUrl)
             }
             emit(userNames)
         } catch (e: Exception) {

@@ -3,8 +3,7 @@ package com.muratdayan.lessonline.presentation.features.main.profile.info
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.muratdayan.lessonline.core.Result
+import com.muratdayan.core.util.Result
 import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.presentation.util.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel

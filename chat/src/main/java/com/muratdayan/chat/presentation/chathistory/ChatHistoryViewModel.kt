@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.muratdayan.chat.data.model.ChatUserModel
 import com.muratdayan.chat.data.repository.ChatRepository
+import com.muratdayan.core.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,19 +18,20 @@ class ChatHistoryViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _userState = MutableStateFlow<List<ChatUserModel>>(emptyList())
-    val userState: StateFlow<List<ChatUserModel>> = _userState
+    private val _usersChattedList = MutableStateFlow<Result<List<ChatUserModel>>>(Result.Idle)
+    val usersChattedList: StateFlow<Result<List<ChatUserModel>>> = _usersChattedList
 
     init {
-        loadChatParticipiantsAndGetNames()
+        loadChatParticipantsAndGetNames()
     }
 
-    private fun loadChatParticipiantsAndGetNames() {
+    private fun loadChatParticipantsAndGetNames() {
         viewModelScope.launch {
+            _usersChattedList.value = Result.Loading
             chatRepository.getChatParticipants().collect { userIds ->
                 chatRepository.getUserProfiles(userIds).collect { userNames ->
                     Log.d("ChatHistoryViewModel", "User Names: $userNames")
-                    _userState.value = userNames
+                    _usersChattedList.value = Result.Success(userNames)
                 }
             }
         }

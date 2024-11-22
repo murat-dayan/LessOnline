@@ -9,7 +9,7 @@ import java.io.IOException
 
 object FirebaseErrorHandler {
 
-    fun getErrorMessage(context: Context, exception: Exception): String {
+    fun getErrorMessage(context: Context, exception: Throwable): String {
         return when (exception) {
             is FirebaseAuthException -> handleAuthException(context, exception)
             is FirebaseFirestoreException -> handleFirestoreException(context, exception)

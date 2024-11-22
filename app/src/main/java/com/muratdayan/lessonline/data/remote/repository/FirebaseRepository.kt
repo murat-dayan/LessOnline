@@ -2,7 +2,7 @@ package com.muratdayan.lessonline.data.remote.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.muratdayan.lessonline.core.Result
+import com.muratdayan.core.util.Result
 import com.muratdayan.lessonline.domain.model.firebasemodels.UserProfile
 import com.muratdayan.lessonline.presentation.util.UserRole
 import kotlinx.coroutines.Dispatchers

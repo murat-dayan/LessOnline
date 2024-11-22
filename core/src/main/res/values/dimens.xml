@@ -36,4 +36,10 @@
     <dimen name="card_margin">16dp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="card_corner_radius_16">16dp</dimen>
+
+    <!--Elevation-->
+    <dimen name="elevation5">5dp</dimen>
+    <dimen name="elevation10">10dp</dimen>
+    <dimen name="elevation15">15dp</dimen>
+    <dimen name="elevation20">20dp</dimen>
 </resources>
