@@ -6,10 +6,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.muratdayan.chat.data.model.ChatModel
 import com.muratdayan.chat.data.model.ChatUserModel
 import com.muratdayan.chat.data.model.MessageModel
+import com.muratdayan.core.util.Result
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -33,6 +37,10 @@ class ChatRepository @Inject constructor(
         val chatData = ChatModel(
             chatId = chatId,
             participiants = listOf(currentUserId, targetUserId),
+            participiantsVisibility = mapOf(
+                currentUserId to true,
+                targetUserId to true
+            ),
             createdAt = Timestamp.now()
         )
 
@@ -116,14 +124,14 @@ class ChatRepository @Inject constructor(
 
     fun getUserProfiles(userIds: List<String>): Flow<List<ChatUserModel>> = flow {
         try {
-            val userNames = userIds.map { userId ->
+            val usersList = userIds.map { userId ->
                 val userSnapshot = firestore.collection("users").document(userId).get().await()
                 val name =userSnapshot.getString("username")
                 val id =userSnapshot.getString("userId")
                 val photoUrl = userSnapshot.getString("profilePhotoUrl")
                 ChatUserModel(id!!,name,photoUrl)
             }
-            emit(userNames)
+            emit(usersList)
         } catch (e: Exception) {
             emit(emptyList())
         }
@@ -137,6 +145,18 @@ class ChatRepository @Inject constructor(
         }catch (e:Exception){
             emit(null)
         }
+    }
+
+    fun deleteChat(chatId: String): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            firestore.collection("chats").document(chatId).delete().await()
+            emit(Result.Success(true))
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
+    }.flowOn(Dispatchers.IO).catch {
+        emit(Result.Error(it))
     }
 
 

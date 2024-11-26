@@ -1,5 +1,6 @@
 package com.muratdayan.chat.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,9 +9,11 @@ import com.muratdayan.chat.data.model.ChatUserModel
 import com.muratdayan.chat.databinding.ItemChatHistoryBinding
 
 class ChatHistoryAdapter(
-    private val ChatHistoryNamesList: List<ChatUserModel>,
+    private var chatHistoryNamesList: MutableList<ChatUserModel>,
     private val onItemClickListener: (String) -> Unit
 ) : RecyclerView.Adapter<ChatHistoryAdapter.ChatHistoryViewHolder>() {
+
+
 
     inner class ChatHistoryViewHolder(val binding: ItemChatHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user:ChatUserModel, onItemClickListener: (String) -> Unit) {
@@ -32,10 +35,29 @@ class ChatHistoryAdapter(
     }
 
     override fun getItemCount(): Int {
-        return  ChatHistoryNamesList.size
+        return  chatHistoryNamesList.size
     }
 
     override fun onBindViewHolder(holder: ChatHistoryViewHolder, position: Int) {
-        holder.bind(ChatHistoryNamesList[position], onItemClickListener)
+        holder.bind(chatHistoryNamesList[position], onItemClickListener)
     }
+
+    fun removeItem(position: Int) {
+        chatHistoryNamesList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newList: List<ChatUserModel>) {
+        chatHistoryNamesList.clear()
+        chatHistoryNamesList.addAll(newList)
+        notifyDataSetChanged()
+
+    }
+
+    fun getItem(position: Int): ChatUserModel {
+        return chatHistoryNamesList[position]
+    }
+
+
 }

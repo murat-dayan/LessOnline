@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.muratdayan.chat.databinding.FragmentChatHistoryBinding
 import com.muratdayan.chat.presentation.adapter.ChatHistoryAdapter
 import com.muratdayan.core.presentation.BaseFragment
@@ -36,7 +38,37 @@ class ChatHistoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chatHistoryAdapter = ChatHistoryAdapter(emptyList()){}
+        chatHistoryAdapter = ChatHistoryAdapter(mutableListOf()){
+            val action = ChatHistoryFragmentDirections.actionChatHistoryFragmentToChatFragment(it)
+            findNavController().navigate(action)
+        }
+
+        binding.rvChatHistory.apply {
+            adapter = chatHistoryAdapter
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                /*val position = viewHolder.adapterPosition
+                val chatId = chatHistoryAdapter.getItem(position).id
+                    Log.d("ChatHistoryFragment", "Chat ID: $chatId")
+                chatHistoryViewModel.deleteChat(chatId)
+                chatHistoryAdapter.removeItem(position)*/
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.rvChatHistory)
 
 
         lifecycleScope.launch {
@@ -51,15 +83,8 @@ class ChatHistoryFragment : BaseFragment() {
                     }
                     is Result.Success -> {
                         hideLoading()
-                        chatHistoryAdapter = ChatHistoryAdapter(result.data){
-                            val action = ChatHistoryFragmentDirections.actionChatHistoryFragmentToChatFragment(it)
-                            findNavController().navigate(action)
-                        }
-                        binding.rvChatHistory.apply {
-                            adapter = chatHistoryAdapter
-                            setHasFixedSize(true)
-                            layoutManager = LinearLayoutManager(requireContext())
-                        }
+                        chatHistoryAdapter.updateList(result.data)
+
                         if (result.data.isEmpty()){
                             binding.evChatHistory.visibility = View.VISIBLE
                         }else{

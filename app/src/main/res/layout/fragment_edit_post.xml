@@ -47,6 +47,18 @@
         />
 
     <ImageButton
+        android:id="@+id/ibtn_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image_filter_button"
+        android:src="@drawable/ic_image_filter"
+        android:background="@color/transparent"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        app:layout_constraintEnd_toStartOf="@id/ibtn_edit_photo"
+        app:layout_constraintTop_toTopOf="@id/ibtn_edit_photo"
+        app:layout_constraintBottom_toBottomOf="@id/ibtn_edit_photo"/>
+
+    <ImageButton
         android:id="@+id/ibtn_edit_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,13 +69,11 @@
         app:layout_constraintBottom_toTopOf="@id/iv_photo"/>
 
 
-    <ImageView
+    <jp.co.cyberagent.android.gpuimage.GPUImageView
         android:id="@+id/iv_photo"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:contentDescription="@string/selected_photo"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_person"
         app:layout_constraintLeft_toLeftOf="@id/vertical_left_gl"
         app:layout_constraintRight_toRightOf="@id/vertical_right_gl"
         app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"/>
@@ -133,6 +143,40 @@
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
         app:layout_constraintBottom_toBottomOf="@id/horizontal_bottom_gl"/>
 
+
+    <LinearLayout
+        android:id="@+id/ll_filters"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_share"
+        android:background="@color/md_theme_primary"
+        android:paddingBottom="@dimen/padding_medium"
+        android:visibility="gone"
+        >
+
+        <ImageButton
+            android:id="@+id/ibtn_close_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tint="@color/md_theme_background"
+            android:contentDescription="@string/close_filters"
+            android:src="@drawable/ic_close"
+            android:background="@color/transparent"
+            android:layout_gravity="end"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_filtres"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_filter"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
 
 
 

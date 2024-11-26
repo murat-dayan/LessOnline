@@ -50,4 +50,7 @@
     <string name="direct_messages">Direct Messages</string>
     <string name="icon_nfo">Icon İnfo</string>
     <string name="reset_password">Reset Password</string>
+    <string name="image_filter_button">Image Filter Button</string>
+    <string name="filter_item_image">Filter Item Image</string>
+    <string name="close_filters">Close Filters</string>
 </resources>

@@ -9,6 +9,7 @@ import com.muratdayan.core.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +22,9 @@ class ChatHistoryViewModel @Inject constructor(
     private val _usersChattedList = MutableStateFlow<Result<List<ChatUserModel>>>(Result.Idle)
     val usersChattedList: StateFlow<Result<List<ChatUserModel>>> = _usersChattedList
 
+    private val _deleteStatus = MutableStateFlow<Result<Boolean>>(Result.Idle)
+    val deleteStatus: StateFlow<Result<Boolean>> = _deleteStatus.asStateFlow()
+
     init {
         loadChatParticipantsAndGetNames()
     }
@@ -29,6 +33,7 @@ class ChatHistoryViewModel @Inject constructor(
         viewModelScope.launch {
             _usersChattedList.value = Result.Loading
             chatRepository.getChatParticipants().collect { userIds ->
+                Log.d("ChatHistoryViewModel", "User IDs: $userIds")
                 chatRepository.getUserProfiles(userIds).collect { userNames ->
                     Log.d("ChatHistoryViewModel", "User Names: $userNames")
                     _usersChattedList.value = Result.Success(userNames)
@@ -36,6 +41,19 @@ class ChatHistoryViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteChat(chatId: String) {
+        viewModelScope.launch {
+            chatRepository.deleteChat(chatId).collect { result ->
+                _deleteStatus.value = result
+                if (result is Result.Success && result.data) {
+                    loadChatParticipantsAndGetNames()
+                }
+            }
+        }
+    }
+
+
 
 
 }

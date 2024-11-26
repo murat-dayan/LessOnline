@@ -1,5 +1,7 @@
 package com.muratdayan.lessonline.presentation.features.main.post.edit
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
@@ -21,7 +24,13 @@ import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.core.util.goBack
 import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentEditPostBinding
+import com.muratdayan.lessonline.presentation.adapter.FilterAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageEmbossFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSepiaToneFilter
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageSketchFilter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -37,10 +46,17 @@ class EditPostFragment : BaseFragment() {
 
     private var croppedImageUri: Uri? = null
 
+    private lateinit var selectedFilter: GPUImageFilter
+
     private val cropImageLauncher = registerForActivityResult(CropImageContract()){result->
         if (result.isSuccessful){
             croppedImageUri = result.uriContent
-            binding.ivPhoto.setImageURI(croppedImageUri)
+            val originalBitmap:Bitmap = BitmapFactory.decodeStream(croppedImageUri?.let {
+                requireContext().contentResolver.openInputStream(
+                    it
+                )
+            })
+            binding.ivPhoto.setImage(originalBitmap)
         }else{
             val exception = result.error
             Toast.makeText(requireContext(),exception?.message,Toast.LENGTH_SHORT).show()
@@ -65,7 +81,8 @@ class EditPostFragment : BaseFragment() {
 
         uriString.let {
             val uri = Uri.parse(uriString)
-            binding.ivPhoto.setImageURI(uri)
+            val originalBitmap:Bitmap = BitmapFactory.decodeStream(requireContext().contentResolver.openInputStream(uri))
+            binding.ivPhoto.setImage(originalBitmap)
 
             binding.ibtnEditPhoto.setOnClickListener {
                 cropImageLauncher.launch(
@@ -156,10 +173,43 @@ class EditPostFragment : BaseFragment() {
                     editPostViewModel.uploadPhotoToFirebaseStorage(uri)
                 }
             }
+            binding.ibtnFilter.setOnClickListener {
+                binding.llFilters.visibility = View.VISIBLE
+                setUpFilters(uri)
+            }
         }
 
         binding.ibtnBack.setOnClickListener {
             Navigation.goBack(requireView())
+        }
+
+        binding.ibtnCloseFilters.setOnClickListener {
+            binding.llFilters.visibility = View.GONE
+        }
+
+
+    }
+
+    private fun setUpFilters(originalUri: Uri){
+
+        val originalBitmap = BitmapFactory.decodeStream(requireContext().contentResolver.openInputStream(originalUri))
+
+        val filters = listOf(
+            GPUImageFilter(),
+            GPUImageSepiaToneFilter(),
+            GPUImageGrayscaleFilter(),
+            GPUImageSketchFilter(),
+            GPUImageEmbossFilter()
+        )
+
+        val filterAdapter = FilterAdapter(filters, originalBitmap =originalBitmap ){filter->
+            binding.ivPhoto.filter = filter
+            selectedFilter = filter
+        }
+
+        binding.rvFiltres.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = filterAdapter
         }
     }
 

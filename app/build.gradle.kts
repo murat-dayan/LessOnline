@@ -111,4 +111,7 @@ dependencies {
 
     // SWIPE REFRESH LAYOUT
     implementation(libs.androidx.swiperefreshlayout)
+
+    // IMAGE FILTER
+    implementation (libs.gpuimage)
 }
