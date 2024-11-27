@@ -153,7 +153,12 @@ class MainActivity : AppCompatActivity() {
     ) {
         FirebaseFirestore.getInstance().collection("users").document(currentUserId)
             .collection("notifications")
+            .whereEqualTo("read", false)
             .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.e("MainActivity", "Error listening for notifications", error)
+                    return@addSnapshotListener
+                }
                 val notificationCount = snapshot?.size() ?: 0
                 val badge = bottomNavigationView.getOrCreateBadge(R.id.answernotificationsfragment)
                 if (notificationCount > 0) {

@@ -1,6 +1,5 @@
 package com.muratdayan.lessonline.domain.model.firebasemodels
 
-import com.google.firebase.Timestamp
 import java.util.UUID
 
 data class Answer(

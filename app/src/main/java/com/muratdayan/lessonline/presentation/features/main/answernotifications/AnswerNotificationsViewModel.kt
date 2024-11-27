@@ -1,5 +1,6 @@
 package com.muratdayan.lessonline.presentation.features.main.answernotifications
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,17 +39,41 @@ class AnswerNotificationsViewModel @Inject constructor(
 
                 _uiState.value = if (notificationList.isEmpty()) {
                     NotificationUIState.Empty
+
                 } else {
+                    markNotificationsAsRead()
                     NotificationUIState.Success(notificationList)
                 }
             }
 
     }
 
+    private fun markNotificationsAsRead(){
+        val userId = firebaseAuth.currentUser?.uid ?: return
+
+        val notificationsRef = firebaseFirestore.collection("users").document(userId)
+            .collection("notifications")
+
+        notificationsRef.get()
+            .addOnSuccessListener { snapshot ->
+                val batch = firebaseFirestore.batch()
+                snapshot.documents.forEach { document ->
+                    val docRef = notificationsRef.document(document.id)
+                    batch.update(docRef, "read", true)
+                }
+                batch.commit().addOnSuccessListener {
+                    Log.d("AnswerNotificationsViewModel", "Notifications marked as read")
+                }.addOnFailureListener { e ->
+                    Log.e("AnswerNotificationsViewModel", "Error marking notifications as read", e)
+                }
+
+            }
+    }
+
     sealed class NotificationUIState {
-        object Loading : NotificationUIState()  // Yükleniyor durumu
+        data object Loading : NotificationUIState()  // Yükleniyor durumu
         data class Success(val notifications: List<NotificationModel>) : NotificationUIState()  // Başarı durumu, liste dolu
         data class Error(val message: String) : NotificationUIState()  // Hata durumu
-        object Empty : NotificationUIState() // Bildirim yoksa
+        data object Empty : NotificationUIState() // Bildirim yoksa
     }
 }

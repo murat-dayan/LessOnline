@@ -5,5 +5,6 @@ data class NotificationModel(
     val postId: String="",
     val commenterId: String="",
     val commenterName: String="",
+    val isRead: Boolean = false,
     val timestamp: Long = System.currentTimeMillis()
 )
