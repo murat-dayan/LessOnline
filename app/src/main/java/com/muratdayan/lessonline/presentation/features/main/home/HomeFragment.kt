@@ -74,8 +74,6 @@ class HomeFragment : BaseFragment() {
         }.attach()
     }
 
-    /**/
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

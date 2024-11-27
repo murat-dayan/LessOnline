@@ -121,8 +121,8 @@ import kotlinx.coroutines.launch
             }
 
             lifecycleScope.launch {
-                answerViewModel.isAnswerCountChanged.observe(viewLifecycleOwner){
-                    if (it){
+                answerViewModel.isAnswerCountChanged.collectLatest {result->
+                    if (result){
                         onDismiss.invoke(true)
                     }
                 }

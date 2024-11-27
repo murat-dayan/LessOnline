@@ -117,6 +117,7 @@ class AllPostsFragment(
                     is PostListState.Error->{
                         stopShimmer()
                         showError(postListState.message.toString())
+                        postAdapter.updatePostList(emptyList())
                         Log.d("HomeFragment","postliststate: ${postListState.message}")
                     }
                     else->{}

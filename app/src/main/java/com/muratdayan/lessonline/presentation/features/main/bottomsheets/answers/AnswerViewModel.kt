@@ -39,8 +39,8 @@ class AnswerViewModel @Inject constructor(
     private val _isPostOwner = MutableLiveData<Boolean>()
     val isPostOwner: LiveData<Boolean> = _isPostOwner
 
-    private val _isAnswerCountChanged = MutableLiveData<Boolean>()
-    val isAnswerCountChanged : LiveData<Boolean> = _isAnswerCountChanged
+    private val _isAnswerCountChanged = MutableStateFlow<Boolean>(false)
+    val isAnswerCountChanged : StateFlow<Boolean> = _isAnswerCountChanged.asStateFlow()
 
     fun checkIfPostOwner(postId: String){
         val currentUserId = firebaseAuth.currentUser?.uid
@@ -112,7 +112,6 @@ class AnswerViewModel @Inject constructor(
     }
 
     private fun updateAnswersCount(postId: String){
-
         viewModelScope.launch {
             val postRef = firebaseFirestore.collection("posts").document(postId).get().await()
             val currentCount = postRef.getLong("answerCount") ?: 0
@@ -173,6 +172,7 @@ class AnswerViewModel @Inject constructor(
                         postId = postId,
                         commenterId = commenterId,
                         timestamp = System.currentTimeMillis(),
+                        isRead = false,
                         commenterName = firebaseAuth.currentUser?.displayName.toString()
                     )
 
@@ -182,12 +182,5 @@ class AnswerViewModel @Inject constructor(
                 }
             }
     }
-    /*suspend fun loadAnswers(postId: String) {
-        // Veri yükleme kodu
-        answers.collectLatest { newAnswers ->
-            _answers.value = newAnswers // StateFlow veya LiveData kullanıyorsanız
-            Log.d("Answers", "Answer list size: ${newAnswers.size}")
-        }
-    }*/
 
 }
