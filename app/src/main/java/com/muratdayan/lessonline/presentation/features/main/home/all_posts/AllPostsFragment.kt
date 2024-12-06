@@ -35,6 +35,8 @@ class AllPostsFragment(
 
     private lateinit var postAdapter: PostAdapter
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -116,11 +118,21 @@ class AllPostsFragment(
                     }
                     is PostListState.Error->{
                         stopShimmer()
-                        showError(postListState.message.toString())
+                        showToast("No Posts Found",true)
                         postAdapter.updatePostList(emptyList())
                         Log.d("HomeFragment","postliststate: ${postListState.message}")
                     }
                     else->{}
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            allPostsViewModel.isConnected.collectLatest { isConnected->
+                when(isConnected){
+                    true -> Log.d("ConnectivityObserver", "Connected")
+                    false -> showToast("No Internet Connection", true)
+                    null -> Log.d("ConnectivityObserver", "Loading connection state")
                 }
             }
         }

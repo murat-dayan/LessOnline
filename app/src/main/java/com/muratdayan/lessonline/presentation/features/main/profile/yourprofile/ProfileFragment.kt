@@ -1,6 +1,7 @@
 package com.muratdayan.lessonline.presentation.features.main.profile.yourprofile
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -39,14 +41,11 @@ class ProfileFragment : BaseFragment() {
     private val galleryPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ){permissions->
-        // permissions: Map<String, Boolean>
         val allPermissionsGranted = permissions.values.all { it } // Eğer tüm izinler granted ise true döner
 
         if (allPermissionsGranted) {
-            // Tüm izinler verilmişse galeriyi açabilirsin
             photoViewModel.openGallery(galleryLauncher)
         } else {
-            // En az bir izin verilmemişse, kullanıcıya uyarı göster
             Toast.makeText(requireContext(), "Can't open gallery without required permissions", Toast.LENGTH_SHORT).show()
         }
     }
@@ -59,6 +58,7 @@ class ProfileFragment : BaseFragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,6 +77,12 @@ class ProfileFragment : BaseFragment() {
             profileViewModel.userPosts.collectLatest { posts->
                 basicPostListAdapter.submitList(posts)
                 binding.tvPosts.text = posts.size.toString()
+
+                if (posts.isEmpty()){
+                    binding.evProfile.visibility = View.VISIBLE
+                }else{
+                    binding.evProfile.visibility = View.GONE
+                }
             }
         }
 
@@ -96,14 +102,18 @@ class ProfileFragment : BaseFragment() {
             profileViewModel.uploadState.collectLatest {uploadState->
                 when(uploadState){
                     is ProfileViewModel.UploadState.Idle -> {}
-                    is ProfileViewModel.UploadState.Loading -> {}
+                    is ProfileViewModel.UploadState.Loading -> {
+                        showLoading()
+                    }
                     is ProfileViewModel.UploadState.Success -> {
+                        hideLoading()
                         Glide.with(requireContext())
                             .load(uploadState.uri)
                             .into(binding.ivProfile)
                     }
                     is ProfileViewModel.UploadState.Error -> {
-                        Toast.makeText(requireContext(),uploadState.error,Toast.LENGTH_SHORT).show()
+                        hideLoading()
+                        showToast("Your profile photo could not be uploaded",false)
                     }
                 }
             }

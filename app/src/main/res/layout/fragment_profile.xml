@@ -163,6 +163,20 @@
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"/>
 
+
+    <com.muratdayan.core.presentation.EmptyView
+        android:id="@+id/ev_profile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:emptyMessage= "You Are Not Share Any Posts Yet"
+        android:visibility="gone"
+        android:gravity="center"
+        android:alpha="0.5"
+        app:layout_constraintTop_toBottomOf="@id/view_line"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        app:layout_constraintBottom_toBottomOf="@id/horizontal_bottom_gl"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_my_posts"
         android:layout_width="0dp"

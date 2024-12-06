@@ -6,11 +6,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.features.main.answernotifications.AnswersNotificationsFragment">
 
+    <TextView
+        android:id="@+id/tv_answer_notifications_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/post_answers_nofifications"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/md_theme_primary"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_margin="@dimen/margin_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+    <com.muratdayan.core.presentation.EmptyView
+        android:id="@+id/ev_answer_notifications"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:emptyMessage= "You Are Not Have Any Notifications Yet"
+        android:visibility="gone"
+        android:gravity="center"
+        android:alpha="0.5"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_answer_notifications_title"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_notifications"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@id/tv_answer_notifications_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

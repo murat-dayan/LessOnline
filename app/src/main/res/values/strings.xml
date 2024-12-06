@@ -53,4 +53,5 @@
     <string name="image_filter_button">Image Filter Button</string>
     <string name="filter_item_image">Filter Item Image</string>
     <string name="close_filters">Close Filters</string>
+    <string name="post_answers_nofifications">Post Answers Nofifications</string>
 </resources>

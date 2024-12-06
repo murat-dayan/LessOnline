@@ -116,7 +116,6 @@ class FollowingPostsFragment(
                     }
                     is PostListState.Error->{
                         stopShimmer()
-                        showError(postListState.message.toString())
                         Log.d("HomeFragment","postliststate: ${postListState.message}")
                     }
                     else->{}

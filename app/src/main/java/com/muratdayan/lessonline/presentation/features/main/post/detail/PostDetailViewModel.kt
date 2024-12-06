@@ -47,16 +47,4 @@ class PostDetailViewModel @Inject constructor(
                 Log.e("HomeViewModel", "Error fetching posts: ${exception.message}")
             }
     }
-
-
-    fun toggleLike(post: Post, onSuccess: () -> Unit, onFailure: (Exception) -> Unit){
-        val currentUserId = firebaseAuth.currentUser?.uid
-        if (currentUserId != null){
-            if (post.likedByUsers.contains(currentUserId)){
-
-            }
-        }
-    }
-
-
 }

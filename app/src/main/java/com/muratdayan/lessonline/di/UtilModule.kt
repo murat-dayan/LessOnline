@@ -3,6 +3,8 @@ package com.muratdayan.lessonline.di
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.muratdayan.core.util.connectivity.AndroidConnectivityObserver
+import com.muratdayan.core.util.connectivity.ConnectivityObserver
 import com.muratdayan.lessonline.data.remote.repository.FirebaseRepository
 import com.muratdayan.lessonline.presentation.util.PreferenceHelper
 import dagger.Module
@@ -26,6 +28,12 @@ object UtilModule {
     @Singleton
     fun provideFirebaseRepository(firebaseFirestore: FirebaseFirestore, firebaseAuth: FirebaseAuth): FirebaseRepository{
         return  FirebaseRepository(firebaseFirestore,firebaseAuth)
+    }
+
+    @Provides
+    @Singleton
+    fun provideConnectivityObserver(@ApplicationContext context: Context): ConnectivityObserver {
+        return AndroidConnectivityObserver(context)
     }
 
 }

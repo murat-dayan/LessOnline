@@ -2,22 +2,23 @@ package com.muratdayan.lessonline.presentation.features.main.post.add
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import com.muratdayan.core.presentation.BaseFragment
 import com.muratdayan.lessonline.databinding.FragmentAddPostBinding
 import com.muratdayan.lessonline.presentation.features.main.post.PhotoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddPostFragment : Fragment() {
+class AddPostFragment : BaseFragment() {
 
     private var _binding: FragmentAddPostBinding? = null
     private val binding get() = _binding!!
@@ -33,22 +34,20 @@ class AddPostFragment : Fragment() {
         if (isGranted){
             photoViewModel.startCamera(this, requireContext(),binding.previewView)
         }else{
-            Toast.makeText(requireContext(),"permission need",Toast.LENGTH_SHORT).show()
+            showToast("Can't open camera without required permissions",false)
         }
     }
 
     private val galleryPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ){permissions->
-        // permissions: Map<String, Boolean>
-        val allPermissionsGranted = permissions.values.all { it } // Eğer tüm izinler granted ise true döner
+        val allPermissionsGranted = permissions.values.all { it }
 
         if (allPermissionsGranted) {
-            // Tüm izinler verilmişse galeriyi açabilirsin
+
             photoViewModel.openGallery(galleryLauncher)
         } else {
-            // En az bir izin verilmemişse, kullanıcıya uyarı göster
-            Toast.makeText(requireContext(), "Can't open gallery without required permissions", Toast.LENGTH_SHORT).show()
+            showToast("Can't open gallery without required permissions",false)
         }
     }
 
@@ -61,6 +60,7 @@ class AddPostFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -70,7 +70,7 @@ class AddPostFragment : Fragment() {
             if (result.resultCode == PackageManager.PERMISSION_GRANTED){
                 photoViewModel.startCamera(this,requireContext(),binding.previewView)
             }else{
-                Toast.makeText(requireContext(),"Camera cant open",Toast.LENGTH_SHORT).show()
+                showToast("permission need",true)
             }
         }
 
@@ -78,7 +78,6 @@ class AddPostFragment : Fragment() {
             ActivityResultContracts.GetContent()
         ){uri->
             uri?.let {
-                photoViewModel.handleGalleryResult(it,requireContext())
                 val action = AddPostFragmentDirections.actionAddPostFragmentToEditPostFragment(it.toString())
                 Navigation.findNavController(requireView()).navigate(action)
             }
@@ -95,7 +94,7 @@ class AddPostFragment : Fragment() {
                 uri?.let {
                     val action = AddPostFragmentDirections.actionAddPostFragmentToEditPostFragment(it.toString())
                     Navigation.findNavController(requireView()).navigate(action)
-                } ?: Toast.makeText(requireContext(),"Photo not Taken",Toast.LENGTH_SHORT).show()
+                } ?: showToast("Photo could not be taken",true)
             }
         }
 

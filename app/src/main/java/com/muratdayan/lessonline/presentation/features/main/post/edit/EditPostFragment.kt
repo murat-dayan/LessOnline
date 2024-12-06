@@ -123,11 +123,7 @@ class EditPostFragment : BaseFragment() {
                                     }
                                 }
                             } else {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Please add 4 answers",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showToast("Please add 4 answers",false)
                             }
                         }
 
@@ -161,8 +157,7 @@ class EditPostFragment : BaseFragment() {
                     }
                     binding.llAnswers.addView(tvPostAnswer)
                 } else {
-                    Toast.makeText(requireContext(), "You can add up to 4 answers", Toast.LENGTH_SHORT)
-                        .show()
+                    showToast("You can add up 4 answers",false)
                 }
             }
 

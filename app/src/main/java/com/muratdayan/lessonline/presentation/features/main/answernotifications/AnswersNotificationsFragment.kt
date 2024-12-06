@@ -59,6 +59,12 @@ class AnswersNotificationsFragment : BaseFragment() {
                     is AnswerNotificationsViewModel.NotificationUIState.Success -> {
                         hideLoading()
                         likeNotificationsAdapter.submitList(uiState.notifications)
+
+                        if (uiState.notifications.isEmpty()) {
+                            binding.evAnswerNotifications.visibility = View.VISIBLE
+                        } else {
+                            binding.evAnswerNotifications.visibility = View.GONE
+                        }
                     }
 
                     is AnswerNotificationsViewModel.NotificationUIState.Error -> {

@@ -11,8 +11,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.RequiresApi
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -33,7 +33,8 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var imageCapture: ImageCapture
 
-    fun checkGalleryPermission(context: Context,permissionLauncher: ActivityResultLauncher<Array<String>>, contentLauncher: ActivityResultLauncher<String>) {
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    fun checkGalleryPermission(context: Context, permissionLauncher: ActivityResultLauncher<Array<String>>, contentLauncher: ActivityResultLauncher<String>) {
         if (hasGalleryPermission(context)){
             openGallery(contentLauncher)
         }else{
@@ -83,7 +84,7 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
             cameraProvider.unbindAll()
             cameraProvider.bindToLifecycle(fragment,cameraSelector,preview,imageCapture)
         }catch(e:Exception) {
-            //Toast.makeText(requireContext(),"Camera cant start", Toast.LENGTH_SHORT).show()
+            Log.e("PhotoViewModel",e.message.toString())
         }
     }
 
@@ -93,18 +94,13 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun hasGalleryPermission(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(context, READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED ) {
-                return  true
-            } else if (ContextCompat.checkSelfPermission(context, READ_MEDIA_VISUAL_USER_SELECTED) == PackageManager.PERMISSION_GRANTED) {
-                return true
-            }
-            else{
-                return false
-            }
-        }else{
-            return true
+            ContextCompat.checkSelfPermission(context, READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(context, READ_MEDIA_VISUAL_USER_SELECTED) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
         }
     }
 
@@ -120,15 +116,6 @@ class PhotoViewModel @Inject constructor() : ViewModel() {
 
     fun openGallery(launcher: ActivityResultLauncher<String>){
         launcher.launch("image/*")
-    }
-
-    fun handleGalleryResult(uri: Uri?, context: Context) {
-        uri?.let {
-            // Uri ile resmi işleyebilirsiniz
-            Toast.makeText(context, "Resim başarıyla seçildi: $uri", Toast.LENGTH_SHORT).show()
-        } ?: run {
-            Toast.makeText(context, "Resim seçilemedi", Toast.LENGTH_SHORT).show()
-        }
     }
 
     fun takePhoto(context:Context,onImageCaptured: (Uri?)->Unit){

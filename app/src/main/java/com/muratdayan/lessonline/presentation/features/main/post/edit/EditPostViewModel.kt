@@ -94,8 +94,8 @@ class EditPostViewModel @Inject constructor(
 
 
 sealed class UploadAndSaveState {
-    object Nothing : UploadAndSaveState()
-    object Loading : UploadAndSaveState()
+    data object Nothing : UploadAndSaveState()
+    data object Loading : UploadAndSaveState()
     data class Success(val downloadUri: String? = null) : UploadAndSaveState()
     data class Error(val message: String? = null) : UploadAndSaveState()
 
