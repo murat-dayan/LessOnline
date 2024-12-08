@@ -35,13 +35,30 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.90"/>
 
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_profile_get_info"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/profile"
+        tools:srcCompat="@tools:sample/avatars"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/CircleImageView"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/md_theme_primary"
+        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_top_gl"
+        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
+        />
+
     <EditText
         android:id="@+id/et_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:hint="Username"
-        app:layout_constraintTop_toTopOf="@id/horizontal_top_gl"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile_get_info"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"/>
 
@@ -65,21 +82,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
+        android:padding="@dimen/padding_small"
         app:layout_constraintTop_toBottomOf="@id/tv_bio"
-        app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
-        app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
-        />
-
-
-    <Button
-        android:id="@+id/btn_add_photo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Add Photo"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_marginTop="@dimen/margin_small"
-        app:layout_constraintTop_toBottomOf="@id/sp_role"
         app:layout_constraintStart_toStartOf="@id/vertical_left_gl"
         app:layout_constraintEnd_toEndOf="@id/vertical_right_gl"
         />

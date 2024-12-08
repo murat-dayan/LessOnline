@@ -1,5 +1,6 @@
 package com.muratdayan.lessonline.presentation.features.main.profile.info
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +8,19 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import com.muratdayan.core.presentation.BaseFragment
-import com.muratdayan.lessonline.R
 import com.muratdayan.core.util.Result
+import com.muratdayan.lessonline.R
 import com.muratdayan.lessonline.databinding.FragmentGetProfileInfoBinding
+import com.muratdayan.lessonline.presentation.features.main.post.PhotoViewModel
 import com.muratdayan.lessonline.presentation.util.UserRole
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -27,6 +33,21 @@ class GetProfileInfoFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val getProfileInfoViewModel: GetProfileInfoViewModel by viewModels()
+    private val photoViewModel: PhotoViewModel by viewModels()
+
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
+
+    private val galleryPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ){permissions->
+        val allPermissionsGranted = permissions.values.all { it } // Eğer tüm izinler granted ise true döner
+
+        if (allPermissionsGranted) {
+            photoViewModel.openGallery(galleryLauncher)
+        } else {
+            Toast.makeText(requireContext(), "Can't open gallery without required permissions", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private var selectedRole: UserRole?=null
 
@@ -38,6 +59,7 @@ class GetProfileInfoFragment : BaseFragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -102,6 +124,39 @@ class GetProfileInfoFragment : BaseFragment() {
                 .setPopUpTo(R.id.getProfileInfoFragment,true)
                 .build()
             navController.navigate(R.id.action_getProfileInfoFragment_to_homeFragment,null,navOptions)
+        }
+
+        galleryLauncher = registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ){uri->
+            uri?.let {
+                getProfileInfoViewModel.uploadProfilePhotoAndSaveUrl(it)
+            }
+        }
+
+        binding.ivProfileGetInfo.setOnClickListener {
+            photoViewModel.checkGalleryPermission(requireContext(),galleryPermissionLauncher,galleryLauncher)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            getProfileInfoViewModel.profilePhotouploadState.collectLatest {profilePhotouploadState->
+                when(profilePhotouploadState){
+                    is GetProfileInfoViewModel.UploadState.Idle -> {}
+                    is GetProfileInfoViewModel.UploadState.Loading -> {
+                        showLoading()
+                    }
+                    is GetProfileInfoViewModel.UploadState.Success -> {
+                        hideLoading()
+                        Glide.with(requireContext())
+                            .load(profilePhotouploadState.uri)
+                            .into(binding.ivProfileGetInfo)
+                    }
+                    is GetProfileInfoViewModel.UploadState.Error -> {
+                        hideLoading()
+                        showToast("Your profile photo could not be uploaded",false)
+                    }
+                }
+            }
         }
     }
 
